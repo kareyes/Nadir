@@ -1,0 +1,17 @@
+{
+	"name": "maze",
+	"version": "1.0.0",
+	"main": "app.js",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"@effect/platform": "^0.80.7",
+		"@inquirer/prompts": "^7.4.1",
+		"@nadir/backend-maze": "workspace:*",
+		"effect": "^3.12.6"
+	},
+	"devDependencies": {
+		"@effect/vitest": "^0.17.1",
+		"vite-tsconfig-paths": "^5.1.3"
+	}
+}

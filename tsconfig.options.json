@@ -1,0 +1,23 @@
+{
+	"extends": "tsconfig-moon/tsconfig.json",
+  	"exclude": [
+        "**/coverage/**"
+    ],
+	"compilerOptions": {
+		"strict": true,
+		"strictNullChecks": true,
+		"noUnusedLocals": true,
+		"allowJs": true,
+			"composite": true,
+			"declaration": true,
+			"emitDeclarationOnly": true,
+			"incremental": true,
+			"noEmit": false,
+			"noEmitOnError": true,
+			"skipLibCheck": true,
+			"moduleResolution": "nodenext",
+			"target": "ESNext",
+		"lib": ["ESNext", "DOM"],
+		"module": "NodeNext"
+	} 
+}

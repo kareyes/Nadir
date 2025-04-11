@@ -1,0 +1,17 @@
+type: "application"
+
+tasks:
+  build:
+    command:  "vite build"
+  
+  dev:
+    command: "tsx --no-watch --experimental-sqlite src/app.ts"
+    local: true
+    options:
+      envFile: "/.env.shared"
+
+
+  preview:
+    command: "node dist/app.js"
+    env:
+      NODE_ENV: "production"

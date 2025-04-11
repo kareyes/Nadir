@@ -1,0 +1,16 @@
+# https://moonrepo.dev/docs/config/workspace
+$schema: 'https://moonrepo.dev/schemas/workspace.json'
+
+# extends: './shared/workspace.yml'
+
+projects:
+  - 'node-apps/maze'
+  - 'packages/backend-maze'
+
+vcs:
+  hooks: 
+    pre-commit:
+      - "moon run :lint-and-format :test :typecheck --affected"
+  syncHooks: true
+  provider: "github"
+  defaultBranch: "main"

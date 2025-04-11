@@ -1,0 +1,22 @@
+
+tasks:
+  build:
+    command:  "vite build"
+  
+  dev:
+    command: "tsx --no-watch --experimental-sqlite src/index.ts"
+    local: true
+    options:
+      envFile: "/.env.shared"
+      
+  dev-db:
+    command: "tsx --no-watch --experimental-sqlite src/db/invoke.ts"
+    local: true
+    options:
+      envFile: "/.env.shared"
+
+
+  preview:
+    command: "node dist/index.js"
+    env:
+      NODE_ENV: "production"
