@@ -1,11 +1,12 @@
 {
 	"extends": "../../tsconfig.options.json",
 	"compilerOptions": {
-		"outDir": "../../.moon/cache/types/packages/backend-maze",
-    },
-    "include": [
-      "src/**/*",
-      "tests/**/*"
-    ]
-  }
-  
+		"outDir": "../../.moon/cache/types/packages/backend-maze"
+	},
+	"include": ["../global-types/**/*", "src/**/*", "tests/**/*"],
+	"references": [
+		{
+			"path": "../global-types"
+		}
+	]
+}

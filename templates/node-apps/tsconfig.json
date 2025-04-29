@@ -1,0 +1,10 @@
+{
+	"extends": "../../tsconfig.options.json",
+	
+	"include": ["src/**/*", "tests/**/*", "tsconfig.lib.json"],
+	"references": [
+		{
+			"path": "./tsconfig.lib.json"
+		}
+	]
+}

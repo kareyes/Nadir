@@ -1,0 +1,26 @@
+{
+	"name": "@nadir/global-types",
+	"version": "0.0.0",
+	"description": "global types",
+	"main": "./src/index.js",
+	"files": [
+		"src/**/*"
+	],
+	"scripts": {
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@effect/vitest": "^0.17.1",
+		"@types/node": "^22.10.1",
+		"vite": "^6.0.2",
+		"vitest": "^2.1.8"
+	},
+	"dependencies": {
+		"@effect/platform": "^0.80.7",
+		"@effect/platform-bun": "^0.60.12",
+		"@fastify/cors": "^11.0.1",
+		"effect": "^3.12.6",
+		"fastify": "^5.2.2"
+	},
+	"type": "module"
+}

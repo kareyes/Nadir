@@ -1,0 +1,9 @@
+type: 'library'
+
+tasks:
+  build:
+    outputs:
+      - 'lib'
+
+  format:
+    command: 'prettier --write .'

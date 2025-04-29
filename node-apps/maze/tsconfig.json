@@ -3,19 +3,21 @@
 	"include": [
 		"../../packages/backend-maze/**/*",
 		"../../packages/backend-maze/src/**/*",
+		"../../packages/global-types/**/*",
 		"src/**/*"
 	],
 	"compilerOptions": {
 		"outDir": "../../.moon/cache/types/node-apps/maze",
 		"paths": {
-			"@nadir/backend-maze": [
-				"../../packages/backend-maze/src/index.ts"
-			]
+			"@nadir/backend-maze": ["../../packages/backend-maze/src/index.ts"]
 		}
 	},
 	"references": [
 		{
 			"path": "../../packages/backend-maze"
+		},
+		{
+			"path": "../../packages/global-types"
 		}
 	]
 }

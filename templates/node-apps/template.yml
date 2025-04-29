@@ -1,0 +1,22 @@
+# https://moonrepo.dev/docs/config/template
+$schema: "https://moonrepo.dev/schemas/template.json"
+
+# REQUIRED: Name of the template in a human readable format.
+title: "internal package"
+
+# REQUIRED: Description of what the template is for and other relevant information.
+description: "A typescript package for internal use."
+
+# Mapping of variables that will be interpolated and rendered within template files.
+# Users will be prompted to provide a value when running the generator.
+variables:
+    description:
+        type: "string"
+        default: ""
+        required: true
+        prompt: "Description?"
+    name:
+        type: "string"
+        default: ""
+        required: true
+        prompt: "Package name?"

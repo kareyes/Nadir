@@ -6,6 +6,7 @@ $schema: 'https://moonrepo.dev/schemas/workspace.json'
 projects:
   - 'node-apps/maze'
   - 'packages/backend-maze'
+  - 'packages/global-types'
 
 vcs:
   hooks: 
@@ -14,3 +15,7 @@ vcs:
   syncHooks: true
   provider: "github"
   defaultBranch: "main"
+
+generator:
+  templates:
+    - "./templates"

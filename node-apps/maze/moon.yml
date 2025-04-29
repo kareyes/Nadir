@@ -1,17 +1,20 @@
-type: "application"
+type: 'application'
+language: 'typescript'
 
 tasks:
   build:
-    command:  "vite build"
-  
+    command: 'vite build'
+
   dev:
-    command: "tsx --no-watch --experimental-sqlite src/app.ts"
+    command: 'tsx --no-watch --experimental-sqlite src/app.ts'
     local: true
     options:
-      envFile: "/.env.shared"
+      envFile: '/.env.shared'
 
+  format:
+    command: 'prettier --write .'
 
   preview:
-    command: "node dist/app.js"
+    command: 'node dist/app.js'
     env:
-      NODE_ENV: "production"
+      NODE_ENV: 'production'
