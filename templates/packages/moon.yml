@@ -6,4 +6,4 @@ tasks:
             - "lib"
     
     format:
-        command: 'prettier --write .'
+        command: 'biome check --fix --unsafe'
