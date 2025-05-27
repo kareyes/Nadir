@@ -1,15 +1,15 @@
-import { Effect, pipe, Ref } from 'effect';
-import { CurrentPositionState, MazeDataState } from '../constant.js';
-import { BuilderMaze } from './builder.js';
+import readline from "node:readline";
 import type {
 	CurrentPosition,
 	GamePlayState,
 	GameState,
 	Grid,
-} from '@nadir/global-types';
-import readline from 'readline';
-import { runAutoMove, validateMovement } from './gameplay.js';
-import { clear } from '../util/index.js';
+} from "@nadir/global-types";
+import { Effect, Ref, pipe } from "effect";
+import { CurrentPositionState, MazeDataState } from "../constant.js";
+import { clear } from "../util/index.js";
+import { BuilderMaze } from "./builder.js";
+import { runAutoMove, validateMovement } from "./gameplay.js";
 
 const getCurrentPosition = ({ x, y }: CurrentPosition, index: number) =>
 	x === index ? y : -1;
@@ -21,8 +21,8 @@ const mapMazeLayout = ({ vertical, horizontal }: Grid, index: number) =>
 			currentPosition: CurrentPositionState,
 			mazeData: MazeDataState,
 		}),
-		Effect.bind('position', ({ currentPosition }) => Ref.get(currentPosition)),
-		Effect.bind('maze', ({ mazeData }) => Ref.get(mazeData)),
+		Effect.bind("position", ({ currentPosition }) => Ref.get(currentPosition)),
+		Effect.bind("maze", ({ mazeData }) => Ref.get(mazeData)),
 		Effect.flatMap(({ builderMaze, position, maze }) =>
 			Effect.all({
 				verticalRow: builderMaze.buildVerticalRow(
@@ -34,7 +34,7 @@ const mapMazeLayout = ({ vertical, horizontal }: Grid, index: number) =>
 			}),
 		),
 		Effect.map(({ verticalRow, horizontalRow }) => [
-			'|',
+			"|",
 			...verticalRow,
 			...horizontalRow,
 		]),
@@ -45,9 +45,9 @@ const builder = pipe(
 		mazeData: MazeDataState,
 		builder: BuilderMaze,
 	}),
-	Effect.bind('state', ({ mazeData }) => Ref.get(mazeData)),
-	Effect.bind('topWall', ({ builder }) => builder.buildTopWall),
-	Effect.bind('mazeLayout', ({ state: { maze } }) =>
+	Effect.bind("state", ({ mazeData }) => Ref.get(mazeData)),
+	Effect.bind("topWall", ({ builder }) => builder.buildTopWall),
+	Effect.bind("mazeLayout", ({ state: { maze } }) =>
 		pipe(
 			maze.grid,
 			Effect.forEach(mapMazeLayout),
@@ -78,26 +78,24 @@ export const move = ({ currentPosition, maze, playerMoves }: GamePlayState) =>
 				Effect.zip(finalizePosition({ currentPosition, maze })),
 			),
 		),
-		Effect.catchTag('GamePlayError', Effect.succeed),
+		Effect.catchTag("GamePlayError", Effect.succeed),
 		Effect.runPromise,
 	);
 
 const finalizePosition = (state: GameState) =>
 	pipe(
 		Effect.succeed(state),
-		Effect.bind('position', () => Ref.get(state.currentPosition)),
-		Effect.bind('mazeState', () => Ref.get(state.maze)),
+		Effect.bind("position", () => Ref.get(state.currentPosition)),
+		Effect.bind("mazeState", () => Ref.get(state.maze)),
 		Effect.tap(({ position, mazeState: { maze } }) => {
 			if (position.x === maze.numRows - 1 && position.y === maze.numCols - 1) {
 				console.log(
-					'Congratulations \u{1F389} \u{1F389} \u{1F389}! You have reached the end of the maze.',
+					"Congratulations \u{1F389} \u{1F389} \u{1F389}! You have reached the end of the maze.",
 				);
 				process.exit();
 			}
 		}),
 	);
-
-
 
 const listener = (state: GameState) =>
 	pipe(
@@ -108,22 +106,22 @@ const listener = (state: GameState) =>
 		}),
 		Effect.flatMap(() =>
 			Effect.async(() => {
-				process.stdin.on('keypress', (str, key) => {
+				process.stdin.on("keypress", (str, key) => {
 					let playerMoves: CurrentPosition = { x: 0, y: 0 };
-					if (str === '\u0003') {
+					if (str === "\u0003") {
 						process.exit();
 					} else {
 						switch (key.name) {
-							case 'up':
+							case "up":
 								playerMoves = { x: -1, y: 0 };
 								break;
-							case 'down':
+							case "down":
 								playerMoves = { x: 1, y: 0 };
 								break;
-							case 'left':
+							case "left":
 								playerMoves = { x: 0, y: -1 };
 								break;
-							case 'right':
+							case "right":
 								playerMoves = { x: 0, y: 1 };
 								break;
 						}
@@ -138,7 +136,7 @@ const drawMaze = (state: GameState) =>
 	pipe(
 		builder,
 		Effect.tap(() => clear()),
-		Effect.tap((mazeLayout) => console.log(mazeLayout.join(''))),
+		Effect.tap((mazeLayout) => console.log(mazeLayout.join(""))),
 		Effect.provideServiceEffect(MazeDataState, Effect.succeed(state.maze)),
 		Effect.provideServiceEffect(
 			CurrentPositionState,
@@ -150,7 +148,7 @@ export const gameMode = Effect.gen(function* (_) {
 	const maze = yield* _(MazeDataState);
 	const currentPosition = yield* _(CurrentPositionState);
 	const game = yield* Ref.get(maze);
-	game.gameMode === 'Freedom'
+	game.gameMode === "Freedom"
 		? runAutoMove({ maze, currentPosition }).pipe(Effect.runPromise)
 		: listener({ maze, currentPosition }).pipe(Effect.runPromise);
 });

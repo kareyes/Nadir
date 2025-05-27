@@ -1,4 +1,4 @@
-import { createInterface } from 'readline/promises';
+import { createInterface } from "node:readline/promises";
 
 const rl = createInterface({
 	input: process.stdin,
@@ -11,7 +11,7 @@ const question = async (query: string) => {
 };
 
 const clear = () => {
-	process.stdout.write('\u001b[H\u001b[2J\u001b[3J');
+	process.stdout.write("\u001b[H\u001b[2J\u001b[3J");
 };
 
 export { question, clear };

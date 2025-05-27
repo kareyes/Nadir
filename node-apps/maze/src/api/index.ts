@@ -1,17 +1,17 @@
-import { Effect, flow, pipe, Schema } from 'effect';
-import { API_URL } from '../constant.js';
-import {
-	GET_SELECTED_MAZE,
-	GET_ALL_MAZE_METADATA,
-	MazeSchema,
-	MetaArraySchema,
-} from '@nadir/global-types';
 import {
 	FetchHttpClient,
 	HttpClient,
 	HttpClientRequest,
 	HttpClientResponse,
-} from '@effect/platform';
+} from "@effect/platform";
+import {
+	GET_ALL_MAZE_METADATA,
+	GET_SELECTED_MAZE,
+	MazeSchema,
+	MetaArraySchema,
+} from "@nadir/global-types";
+import { Effect, type Schema, flow, pipe } from "effect";
+import { API_URL } from "../constant.js";
 
 const fetchAPI = Effect.gen(function* () {
 	const BASE_URL = yield* API_URL;
@@ -33,14 +33,12 @@ const parseResponse = <A, I, R>(
 	Effect.gen(function* () {
 		const clientResponse = HttpClientResponse.matchStatus({
 			200: (response) => HttpClientResponse.schemaBodyJson(schema)(response),
-			orElse: function (_: HttpClientResponse.HttpClientResponse) {
-				return Effect.fail(_);
-			},
+			orElse: (_: HttpClientResponse.HttpClientResponse) => Effect.fail(_),
 		})(response);
 		return yield* clientResponse;
 	});
 
-export class MazeAPI extends Effect.Service<MazeAPI>()('MazeAPI', {
+export class MazeAPI extends Effect.Service<MazeAPI>()("MazeAPI", {
 	dependencies: [],
 	effect: Effect.gen(function* () {
 		return {
@@ -48,7 +46,7 @@ export class MazeAPI extends Effect.Service<MazeAPI>()('MazeAPI', {
 				pipe(
 					fetchAPI,
 					Effect.flatMap((request) =>
-						request.get(GET_SELECTED_MAZE.replace(':maze_id', maze_id)),
+						request.get(GET_SELECTED_MAZE.replace(":maze_id", maze_id)),
 					),
 					Effect.flatMap((response) => parseResponse(response, MazeSchema)),
 					Effect.provide(FetchHttpClient.layer),

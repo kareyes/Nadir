@@ -1,20 +1,20 @@
-import { Effect, pipe, Ref, Schedule, Schema } from 'effect';
 import {
 	type GamePlay,
+	GamePlayError,
 	type GameState,
 	type PlayMovement,
 	PlayMovementSchema,
-	GamePlayError,
-} from '@nadir/global-types';
-import { directions } from '../constant.js';
-import { move } from './maze.js';
+} from "@nadir/global-types";
+import { Effect, Ref, Schedule, Schema, pipe } from "effect";
+import { directions } from "../constant.js";
+import { move } from "./maze.js";
 
 const OutofBounds = (m: PlayMovement) =>
 	pipe(
 		Effect.succeed(m),
-		Effect.bind('newX', (m) => Effect.succeed(m.dx + m.currentX)),
-		Effect.bind('newY', (m) => Effect.succeed(m.dy + m.currentY)),
-		Effect.bind('condition', ({ newX, newY }) =>
+		Effect.bind("newX", (m) => Effect.succeed(m.dx + m.currentX)),
+		Effect.bind("newY", (m) => Effect.succeed(m.dy + m.currentY)),
+		Effect.bind("condition", ({ newX, newY }) =>
 			Effect.succeed(
 				newX < 0 ||
 					newY < 0 ||
@@ -24,7 +24,7 @@ const OutofBounds = (m: PlayMovement) =>
 		),
 		Effect.flatMap(({ condition }) =>
 			condition
-				? Effect.fail(new GamePlayError('Out of bounds'))
+				? Effect.fail(new GamePlayError("Out of bounds"))
 				: Effect.succeed(false),
 		),
 	);
@@ -32,7 +32,7 @@ const OutofBounds = (m: PlayMovement) =>
 const WallRight = (m: PlayMovement) =>
 	pipe(
 		Effect.succeed(m),
-		Effect.bind('condition', (m) =>
+		Effect.bind("condition", (m) =>
 			Effect.succeed(
 				m.dx === 0 &&
 					m.dy === 1 &&
@@ -42,7 +42,7 @@ const WallRight = (m: PlayMovement) =>
 		),
 		Effect.flatMap(({ condition }) =>
 			condition
-				? Effect.fail(new GamePlayError('Wall to the right'))
+				? Effect.fail(new GamePlayError("Wall to the right"))
 				: Effect.succeed(false),
 		),
 	);
@@ -50,7 +50,7 @@ const WallRight = (m: PlayMovement) =>
 const WallBelow = (m: PlayMovement) =>
 	pipe(
 		Effect.succeed(m),
-		Effect.bind('condition', (m) =>
+		Effect.bind("condition", (m) =>
 			Effect.succeed(
 				m.dx === 1 &&
 					m.dy === 0 &&
@@ -60,7 +60,7 @@ const WallBelow = (m: PlayMovement) =>
 		),
 		Effect.flatMap(({ condition }) =>
 			condition
-				? Effect.fail(new GamePlayError('Wall below'))
+				? Effect.fail(new GamePlayError("Wall below"))
 				: Effect.succeed(false),
 		),
 	);
@@ -68,7 +68,7 @@ const WallBelow = (m: PlayMovement) =>
 const WallLeft = (m: PlayMovement) =>
 	pipe(
 		Effect.succeed(m),
-		Effect.bind('condition', (m) =>
+		Effect.bind("condition", (m) =>
 			Effect.succeed(
 				m.dx === 0 &&
 					m.dy === -1 &&
@@ -78,7 +78,7 @@ const WallLeft = (m: PlayMovement) =>
 		),
 		Effect.flatMap(({ condition }) =>
 			condition
-				? Effect.fail(new GamePlayError('Wall to the left'))
+				? Effect.fail(new GamePlayError("Wall to the left"))
 				: Effect.succeed(false),
 		),
 	);
@@ -86,7 +86,7 @@ const WallLeft = (m: PlayMovement) =>
 const WallAbove = (m: PlayMovement) =>
 	pipe(
 		Effect.succeed(m),
-		Effect.bind('condition', (m) =>
+		Effect.bind("condition", (m) =>
 			Effect.succeed(
 				m.dx === -1 &&
 					m.dy === 0 &&
@@ -96,7 +96,7 @@ const WallAbove = (m: PlayMovement) =>
 		),
 		Effect.flatMap(({ condition }) =>
 			condition
-				? Effect.fail(new GamePlayError('Wall above'))
+				? Effect.fail(new GamePlayError("Wall above"))
 				: Effect.succeed(false),
 		),
 	);
@@ -134,20 +134,20 @@ export const validateMovement = (m: GamePlay) =>
 				y: m.currentPosition.y + m.playerMoves.y,
 			}),
 		),
-		Effect.catchTag('GamePlayError', (err) => Effect.fail(err)),
+		Effect.catchTag("GamePlayError", (err) => Effect.fail(err)),
 	);
 
 const autoMove = (m: GameState) =>
 	Effect.sync(() =>
 		pipe(
 			Effect.succeed(m),
-			Effect.bindTo('gameState'),
-			Effect.bind('randomDirection', () =>
+			Effect.bindTo("gameState"),
+			Effect.bind("randomDirection", () =>
 				Effect.succeed(
 					directions[Math.floor(Math.random() * directions.length)],
 				),
 			),
-			Effect.bind('state', ({ randomDirection, gameState }) =>
+			Effect.bind("state", ({ randomDirection, gameState }) =>
 				Effect.succeed({ playerMoves: randomDirection, ...gameState }),
 			),
 			Effect.tap(({ state }) => move(state)),
@@ -158,21 +158,22 @@ const autoMove = (m: GameState) =>
 const checkFinalPosition = (state: GameState) =>
 	pipe(
 		Effect.succeed(state),
-		Effect.bind('position', () => Ref.get(state.currentPosition)),
-		Effect.bind('mazeState', () => Ref.get(state.maze)),
+		Effect.bind("position", () => Ref.get(state.currentPosition)),
+		Effect.bind("mazeState", () => Ref.get(state.maze)),
 		Effect.map(({ position, mazeState: { maze } }) => {
 			if (position.x === maze.numRows - 1 && position.y === maze.numCols - 1) {
-				return Effect.succeed('Game Over');
+				return Effect.succeed("Game Over");
 			}
-			return Effect.fail(new GamePlayError('Game not over'));
+			return Effect.fail(new GamePlayError("Game not over"));
 		}),
+		// Effect.flatMap((status) => status),
 		Effect.flatMap((status) => status),
-		Effect.catchTag('GamePlayError', (err) => Effect.succeed(err)),
+		Effect.catchTag("GamePlayError", (err) => Effect.succeed(err)),
 	);
 
 export const runAutoMove = (state: GameState) =>
 	Effect.repeat(autoMove(state), {
 		until: (action) =>
-			action.pipe(Effect.map((status) => status === 'Game Over')),
-		schedule: Schedule.addDelay(Schedule.forever, () => '50 millis'),
+			action.pipe(Effect.map((status) => status === "Game Over")),
+		schedule: Schedule.addDelay(Schedule.forever, () => "50 millis"),
 	});

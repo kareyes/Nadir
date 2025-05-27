@@ -18,4 +18,4 @@ tasks:
       NODE_ENV: "production"
 
   format:
-    command: 'prettier --write .'
+    command: 'biome check --fix --unsafe'

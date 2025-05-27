@@ -1,33 +1,102 @@
 $schema: "https://moonrepo.dev/schemas/tasks.json"
 
 implicitDeps:
-    - "^:build"
+  - "^:build"
 
 implicitInputs:
-    - "package.json"
+  - "package.json"
 
+fileGroups:
+  # Application specific files
+  app: []
+  configs:
+    - "*.{js,json,yml,yaml}"
+  sources:
+    - "public/**/*"
+    - "src/**/*"
+    - "types/**/*"
+  tests:
+    - "tests/**/*.test.*"
+    - "tests/**/*.stories.*"
+    - "**/__tests__/**/*"
+  assets:
+    - "assets/**/*"
+    - "images/**/*"
+    - "static/**/*"
+    - "**/*.{scss,css}"
+    - "**/*.{md,mdx}"
 
 tasks:
-    # https://moonrepo.dev/docs/guides/examples/prettier
-  format:
+  
+  # using biome for linting and formatting and sorting
+  lint-and-format:
     command:
-      - 'prettier'
-      # Use the same config for the entire repo
-      - '--config'
-      - '@in(4)'
-      # Use the same ignore patterns as well
-      - '--ignore-path'
-      - '@in(3)'
-      # Fail for unformatted code
-      - '--check'
+      - 'biome'
+      # Support other extensions
+      - "check"
+      # Always fix and run extra checks
+      - "--fix"
+
       # Run in current dir
       - '.'
+    inputs:
+      - "@group(app)"
+      - "@globs(sources)"
+      - "@globs(tests)"
+
+    local: true
+    
+
+  # https://moonrepo.dev/docs/guides/examples/jest
+  test:
+    command:
+      - "vitest"
+      - "--run"
+      - "--coverage"
+      - "--passWithNoTests"
+
+      # - "--passWithNoTests"
+      # - "--preset"
+      # - "jest-preset-moon"
+    inputs:
+      - "@globs(sources)"
+      - "@globs(tests)"
+      - "vitest.config.*"
+
+  test-watch:
+    command:
+      - "vitest"
+      # - "--passWithNoTests"
+      # - "--preset"
+      # - "jest-preset-moon"
+    inputs:
+      - "@globs(sources)"
+      - "@globs(tests)"
+      - "vitest.config.*"
+
+    local: true
+
+  # https://moonrepo.dev/docs/guides/examples/typescript
+  typecheck:
+    command:
+      - 'tsc'
+      # Use incremental builds with project references
+      - '--build'
+      # Always use pretty output
+      - '--pretty'
+      # Use verbose logging to see affected projects
+      - '--verbose'
     inputs:
       # Source and test files
       - 'src/**/*'
       - 'tests/**/*'
-      # Config and other files
-      - '**/*.{md,mdx,yml,yaml,json}'
-      # Root configs, any format
-      - '/.prettierignore'
-      - '/.prettierrc.*'
+      # Type declarations
+      - 'types/**/*'
+      # Project configs
+      - 'tsconfig.json'
+      - 'tsconfig.*.json'
+      # Root configs (extended from only)
+      - '/tsconfig.options.json'
+    # outputs:
+    #   # Matches `compilerOptions.outDir`
+    #   - 'lib'

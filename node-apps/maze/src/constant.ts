@@ -1,17 +1,17 @@
-import { Context, Effect, Ref } from 'effect';
 import {
 	type CurrentPosition,
-	type MazeGameData,
 	HOST,
+	type MazeGameData,
 	PORT,
-} from '@nadir/global-types';
+} from "@nadir/global-types";
+import { Context, Effect, type Ref } from "effect";
 
-export class CurrentPositionState extends Context.Tag('CurrentPositionState')<
+export class CurrentPositionState extends Context.Tag("CurrentPositionState")<
 	CurrentPositionState,
 	Ref.Ref<CurrentPosition>
 >() {}
 
-export class MazeDataState extends Context.Tag('MazeDataState')<
+export class MazeDataState extends Context.Tag("MazeDataState")<
 	MazeDataState,
 	Ref.Ref<MazeGameData>
 >() {}
@@ -30,11 +30,11 @@ export const directions: CurrentPosition[] = [
 ];
 
 export const RawData: MazeGameData = {
-	player: '',
+	player: "",
 	maze: {
-		maze_id: '',
-		mazeName: '',
-		description: '',
+		maze_id: "",
+		mazeName: "",
+		description: "",
 		created_at: 0,
 		numCols: 0,
 		numRows: 0,
@@ -45,38 +45,38 @@ export const RawData: MazeGameData = {
 			},
 		],
 	},
-	gameMode: '',
+	gameMode: "",
 };
 
 export const playerSymbols = [
 	{
-		name: '🐶 - Brian Griffin',
-		value: '\u{1F436}',
+		name: "🐶 - Brian Griffin",
+		value: "\u{1F436}",
 		description:
-			'Has average agility, often displaying quick reflexes in comedic situations but not particularly athletic.',
+			"Has average agility, often displaying quick reflexes in comedic situations but not particularly athletic.",
 	},
 	{
-		name: '🐱 - Pusheen',
-		value: '\u{1F431}',
+		name: "🐱 - Pusheen",
+		value: "\u{1F431}",
 		description:
-			'A cute, chubby cat with limited agility, often depicted as more playful and relaxed than physically nimble.',
+			"A cute, chubby cat with limited agility, often depicted as more playful and relaxed than physically nimble.",
 	},
 	{
-		name: '🐭 - Jerry',
-		value: '\u{1F42D}',
+		name: "🐭 - Jerry",
+		value: "\u{1F42D}",
 		description:
-			'Jerry is highly agile, swiftly outmaneuvering Tom with quick reflexes and clever tricks.',
+			"Jerry is highly agile, swiftly outmaneuvering Tom with quick reflexes and clever tricks.",
 	},
 	{
-		name: '🐼 - Pan-Pan',
-		value: '\u{1F43C}',
+		name: "🐼 - Pan-Pan",
+		value: "\u{1F43C}",
 		description:
-			'Playful and energetic character with surprising agility, often darting around with quick movements.',
+			"Playful and energetic character with surprising agility, often darting around with quick movements.",
 	},
 	{
-		name: '🐰 - Snowball',
-		value: '\u{1F430}',
+		name: "🐰 - Snowball",
+		value: "\u{1F430}",
 		description:
-			'Snowball is incredibly agile, darting swiftly and gracefully to evade attacks and outmaneuver opponents.',
+			"Snowball is incredibly agile, darting swiftly and gracefully to evade attacks and outmaneuver opponents.",
 	},
 ];

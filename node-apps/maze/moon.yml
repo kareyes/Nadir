@@ -12,7 +12,7 @@ tasks:
       envFile: '/.env.shared'
 
   format:
-    command: 'prettier --write .'
+    command: 'biome check --fix --unsafe'
 
   preview:
     command: 'node dist/app.js'

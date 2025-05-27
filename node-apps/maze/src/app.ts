@@ -1,8 +1,8 @@
-import { Effect, pipe, Ref } from 'effect';
-import { MazeMenu } from './components/menu.js';
-import { MazeDataState, RawData } from './constant.js';
-import { gameStart } from './components/maze.js';
-import { live } from '@nadir/backend-maze';
+import { live } from "@nadir/backend-maze";
+import { Effect, Ref, pipe } from "effect";
+import { gameStart } from "./components/maze.js";
+import { MazeMenu } from "./components/menu.js";
+import { MazeDataState, RawData } from "./constant.js";
 
 const maze = pipe(
 	MazeMenu,

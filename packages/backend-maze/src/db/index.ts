@@ -1,6 +1,7 @@
 import { DatabaseSync, type SupportedValueType } from 'node:sqlite';
-import { Effect, pipe } from 'effect';
+import {Effect, pipe } from 'effect';
 import { DatabaseError } from '@nadir/global-types';
+// import 
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -8,6 +9,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// const location = process.env.SQLITE_DB_LOCATION || '/etc/todos/todo.db';
+// const dirName = path.dirname(location);
+
+// console.log('dirname', fs.existsSync(__dirname));
 // export interface DatabaseService {
 //   getDB: Effect.Effect<unknown, never, DatabaseSync>;
 //   closeAll: Effect.Effect<unknown, never, void>;
@@ -31,10 +36,29 @@ const DBMazeClient = Effect.succeed(() => {
 	return client;
 });
 
+// const builder = {
+	
+// 	buildVerticalRow: (vertical: string ) =>
+// 		pipe(
+// 			Effect.succeed(vertical)
+
+// 		),}
+
+// export const BuilderMaze = Context.Tag('BuilderMaze')<
+// 	BuilderMaze,
+// 	typeof builder
+// >();
+
+// export const BuilderMazeLive = Layer.succeed(
+// 	BuilderMaze,  
+// 	builder,
+// );
+
 
 export class DatabaseService extends Effect.Service<DatabaseService>()(
 	'DatabaseService',
 	{
+		// dependencies: [BuilderMazeLive],
 		effect: Effect.gen(function* () {
 			return {
 				run: (sql: string, params: SupportedValueType[]) =>

@@ -22,7 +22,11 @@
 		"enabled": true,
 		"include": ["*.js", "*.ts", ".svelte"],
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"correctness" :{
+				"noFlatMapIdentity": "off"
+			}
+			
 		}
 	},
 	"javascript": {
