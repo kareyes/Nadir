@@ -16,6 +16,9 @@ tasks:
 
   format:
     command: 'biome check --fix --unsafe'
+  
+  test:
+    command: 'vitest run'
 
   preview:
     command: 'node dist/index.js'

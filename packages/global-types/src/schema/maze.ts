@@ -16,7 +16,7 @@ export const MazeMetaSchema = Schema.Struct({
 	maze_id: Schema.String,
 	mazeName: Schema.String,
 	description: Schema.String,
-	created_at: Schema.Number,
+	created_at: Schema.String,
 });
 
 export const MetaArraySchema = Schema.Array(MazeMetaSchema);
@@ -46,6 +46,8 @@ export const ParseMazeSchema = Schema.transform(
 		}),
 	},
 );
+
+export const ParseMazeSchemArray = Schema.Array(ParseMazeSchema);
 
 // export type Maze = typeof ParseMazeSchema.Type;
 

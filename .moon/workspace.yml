@@ -4,9 +4,8 @@ $schema: 'https://moonrepo.dev/schemas/workspace.json'
 # extends: './shared/workspace.yml'
 
 projects:
-  - 'node-apps/maze'
-  - 'packages/backend-maze'
-  - 'packages/global-types'
+  - 'node-apps/*'
+  - 'packages/*'
 
 vcs:
   hooks: 

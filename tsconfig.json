@@ -2,19 +2,20 @@
   "extends": "./tsconfig.options.json",
   "files": [],
   "exclude": [
-      "**/coverage/**"
+    "**/coverage/**"
   ],
   "references": [
-      {
-          "path": "node-apps/maze"
-      },
-
-      {
-          "path": "packages/backend-maze"
-      },
-      
-      {
-        "path": "packages/global-types"
+    {
+      "path": "node-apps/maze"
+    },
+    {
+      "path": "packages/backend-maze"
+    },
+    {
+      "path": "packages/global-types"
+    },
+    {
+      "path": "packages/maze-db"
     }
   ]
 }
