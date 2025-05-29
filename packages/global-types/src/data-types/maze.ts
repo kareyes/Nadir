@@ -11,6 +11,7 @@ import type {
 	PlayMovementSchema,
 	ResponseMazeSchema,
 	RowSchema,
+	ParseMazeSchemArray,
 } from '../schema/maze.js';
 
 export type Cell = typeof CellSchema.Type;
@@ -20,6 +21,7 @@ export type MazeMetaArray = typeof MetaArraySchema.Type;
 export type MazeMeta = typeof MazeMetaSchema.Type;
 export type ResponseMaze = typeof ResponseMazeSchema.Type;
 export type Maze = typeof ParseMazeSchema.Type;
+export type MazeArray = typeof ParseMazeSchemArray.Type;
 
 export type GameState = {
 	maze: Ref.Ref<MazeGameData>;

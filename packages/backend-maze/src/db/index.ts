@@ -1,4 +1,4 @@
-import { DatabaseSync, type SupportedValueType } from 'node:sqlite';
+import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
 import {Effect, pipe } from 'effect';
 import { DatabaseError } from '@nadir/global-types';
 // import 
@@ -30,7 +30,7 @@ const __dirname = path.dirname(__filename);
 //   ) => Effect.Effect<unknown, never, T[]>;
 // }
 
-const DBMaze = `${__dirname}/maze.db`;
+const DBMaze = `${__dirname}/data.sqlite`;
 const DBMazeClient = Effect.succeed(() => {
 	const client = new DatabaseSync(DBMaze);
 	return client;
@@ -55,13 +55,15 @@ const DBMazeClient = Effect.succeed(() => {
 // );
 
 
+
+
+
 export class DatabaseService extends Effect.Service<DatabaseService>()(
 	'DatabaseService',
 	{
-		// dependencies: [BuilderMazeLive],
 		effect: Effect.gen(function* () {
 			return {
-				run: (sql: string, params: SupportedValueType[]) =>
+				run: (sql: string, params: SQLInputValue[]) =>
 					pipe(
 						DBMazeClient,
 						Effect.map((db) => {
@@ -70,7 +72,7 @@ export class DatabaseService extends Effect.Service<DatabaseService>()(
 						}),
 						Effect.catchAll((e) => Effect.fail(new DatabaseError(e))),
 					),
-				get: <T>(sql: string, params: SupportedValueType[]) =>
+				get: <T>(sql: string, params: SQLInputValue[]) =>
 					pipe(
 						DBMazeClient,
 						Effect.map((db) => {
@@ -79,7 +81,7 @@ export class DatabaseService extends Effect.Service<DatabaseService>()(
 						}),
 						Effect.catchAll((e) => Effect.fail(new DatabaseError(e))),
 					),
-				all: <T>(sql: string, params: SupportedValueType[]) =>
+				all: <T>(sql: string, params: SQLInputValue[]) =>
 					pipe(
 						DBMazeClient,
 						Effect.map((db) => {

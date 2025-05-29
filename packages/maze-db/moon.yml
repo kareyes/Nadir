@@ -1,0 +1,21 @@
+type: "library"
+
+tasks:
+    build:
+        outputs:
+            - "lib"
+    dev:
+        command: 'tsx --no-watch --experimental-sqlite src/index.ts'
+        local: true
+        options:
+            envFile: '/.env.shared'
+    dev-watch:
+        command: 'tsx --no-watch --experimental-sqlite src/db/Database.ts'
+        local: true
+        options:
+            envFile: '/.env.shared'
+    test:
+        command: 'vitest run'
+    
+    format:
+        command: 'biome check --fix --unsafe'

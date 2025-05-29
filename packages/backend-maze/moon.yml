@@ -9,7 +9,7 @@ tasks:
       envFile: '/.env.shared'
 
   dev-db:
-    command: 'tsx --no-watch --experimental-sqlite src/db/invoke.ts'
+    command: 'tsx --no-watch --experimental-sqlite src/db/db.ts'
     local: true
     options:
       envFile: '/.env.shared'

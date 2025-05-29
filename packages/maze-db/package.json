@@ -1,0 +1,22 @@
+{
+    "name": "@nadir/maze-db",
+    "version": "0.0.0",
+    "description": "Maze Database",
+	"main": "./src/index.js",
+	"files": [
+		"src/**/*"
+	],
+	"dependencies": {
+		"@effect/platform": "^0.80.7",
+		"@effect/platform-bun": "^0.60.12",
+		"effect": "^3.12.6",
+		"@nadir/global-types": "workspace:*"
+	},
+	"devDependencies": {
+		"@effect/vitest": "^0.17.1",
+		"@types/node": "^22.10.1",
+		"vite": "^6.0.2",
+		"vitest": "^2.1.8"
+	},
+	"type": "module"
+}

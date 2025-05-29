@@ -4,7 +4,7 @@ export const SELECT_METADATA =
 	'SELECT maze_id, mazeName, description, created_at FROM mazes';
 export const UPDATE_MAZE = 'UPDATE mazes SET grid = ? WHERE maze_id = ?';
 export const INSERT_MAZE =
-	'INSERT INTO mazes (maze_id, mazeName, description, numCols, numRows, grid, created_at) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING maze_id, created_at';
+	'INSERT INTO mazes (maze_id, mazeName, description, created_at ,numCols, numRows, grid) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING maze_id, created_at';
 export const DELETE_MAZE = 'DELETE FROM mazes WHERE maze_id = ?';
 export const CREATE_MAZE_TABLE = `
 CREATE TABLE IF NOT EXISTS mazes (

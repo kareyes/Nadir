@@ -1,0 +1,17 @@
+{
+	"extends": "../../tsconfig.options.json",
+	"include": [
+		"tsconfig.lib.json",
+		"../global-types/**/*",
+		"src/**/*",
+		"tests/**/*"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.lib.json"
+		},
+		{
+			"path": "../global-types"
+		}
+	]
+}
