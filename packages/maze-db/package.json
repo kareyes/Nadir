@@ -1,16 +1,15 @@
 {
-    "name": "@nadir/maze-db",
-    "version": "0.0.0",
-    "description": "Maze Database",
+	"name": "@nadir/maze-db",
+	"version": "0.0.0",
+	"description": "Maze Database",
 	"main": "./src/index.js",
-	"files": [
-		"src/**/*"
-	],
+	"files": ["src/**/*"],
 	"dependencies": {
 		"@effect/platform": "^0.80.7",
 		"@effect/platform-bun": "^0.60.12",
+		"@nadir/global-types": "workspace:*",
 		"effect": "^3.12.6",
-		"@nadir/global-types": "workspace:*"
+		"vite-plugin-node": "^5.0.1"
 	},
 	"devDependencies": {
 		"@effect/vitest": "^0.17.1",

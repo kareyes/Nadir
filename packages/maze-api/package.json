@@ -1,16 +1,17 @@
 {
-    "name": "@nadir/{{ name | kebab_case }}",
-    "version": "0.0.0",
-    "description": "{{ description }}",
+	"name": "@nadir/maze-api",
+	"version": "0.0.0",
+	"description": "Maze API",
 	"main": "./src/index.js",
-	"files": [
-		"src/**/*"
-	],
+	"files": ["src/**/*"],
 	"dependencies": {
 		"@effect/platform": "^0.80.7",
 		"@effect/platform-bun": "^0.60.12",
+		"@fastify/cors": "^11.0.1",
+		"@nadir/global-types": "workspace:*",
+		"@nadir/maze-db": "workspace:*",
 		"effect": "^3.12.6",
-		"@nadir/global-types": "workspace:*"
+		"fastify": "^5.2.2"
 	},
 	"devDependencies": {
 		"@effect/vitest": "^0.17.1",

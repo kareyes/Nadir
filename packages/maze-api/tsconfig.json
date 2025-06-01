@@ -3,6 +3,7 @@
 	"include": [
 		"tsconfig.lib.json",
 		"../global-types/**/*",
+		"../maze-db/**/*",
 		"src/**/*",
 		"tests/**/*"
 	],
@@ -13,6 +14,8 @@
 		{
 			"path": "../global-types"
 		},
-		
+		{
+			"path": "../maze-db"
+		}
 	]
 }
