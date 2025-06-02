@@ -1,21 +1,17 @@
+import fastify, { type FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
-import { Effect, Layer } from "effect";
-import {
-	type FastifyInstance,
-	type FastifyReply,
-	type FastifyRequest,
-	fastify,
-} from "fastify";
+import { Effect, pipe } from "effect";
 
 export interface HTTPServer {
 	start: () => Effect.Effect<never, unknown, never>;
-	get: (
-		path: string,
-		handler: (req: FastifyRequest, res: FastifyReply) => void,
-	) => void;
+	register: (
+		routes: (fastify: FastifyInstance) => Effect.Effect<void, never, never>,
+	) => Effect.Effect<void, never, never>;
+	server: () => FastifyInstance;
+	process: () => void;
 }
 
-const HTTPServerLive = (): HTTPServer => {
+export const createServer = (): HTTPServer => {
 	const server = fastify();
 	server.register(cors, { origin: "*" });
 
@@ -23,7 +19,8 @@ const HTTPServerLive = (): HTTPServer => {
 		start: () =>
 			Effect.async<never, unknown, never>((_resume) => {
 				const port = Number(process.env.PORT || "8080");
-				server.listen({ port, host: "0.0.0.0" }, (err, address) => {
+
+				server.listen({ port }, (err, address) => {
 					if (err) {
 						console.error("Server error:", err);
 						process.exit(1);
@@ -32,12 +29,35 @@ const HTTPServerLive = (): HTTPServer => {
 					// Do not call resume, as the effect never completes
 				});
 			}),
-		get: (path, handler) => {
-			server.get(path, handler);
+		register: (routes) =>
+			pipe(
+				server,
+				routes,
+				Effect.tap(() => Effect.log("Routes registered successfully")),
+			),
+			
+		process: () => {
+			Effect.sync(() => {
+				process.on("SIGINT", () => {
+					console.log("SIGINT signal received: closing HTTP server");
+					server.close(() => {
+						console.log("HTTP server closed");
+						process.exit(0);
+					});
+				});
+				process.on("SIGTERM", () => {
+					console.log("SIGTERM signal received: closing HTTP server");
+					server.close(() => {
+						console.log("HTTP server closed");
+						process.exit(0);
+					});
+				});
+			});
 		},
+		server: () => server,
 	};
 };
 
 export const HTTPServer = Effect.Service<HTTPServer>()("HTTPServer", {
-	effect: Effect.succeed(HTTPServerLive()),
+	effect: Effect.succeed(createServer()),
 });

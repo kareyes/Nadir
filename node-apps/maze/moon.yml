@@ -7,9 +7,12 @@ tasks:
 
   dev:
     command: 'tsx --no-watch --experimental-sqlite src/app.ts'
+    deps:
+      - 'maze-api:dev'
     local: true
     options:
       envFile: '/.env.shared'
+
 
   format:
     command: 'biome check --fix --unsafe'

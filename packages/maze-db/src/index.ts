@@ -1,8 +1,8 @@
-import { Effect, pipe } from "effect";
-// import { DatabaseService } from "./db/DB.js";
-// import { SELECT_METADATA, type MazeMetaArray } from "@nadir/global-types";
-// import { MazeDB } from "./db/Database.js";
-import { MazeDBService } from "./service/service.js";
+// import { Effect, pipe } from "effect";
+// // import { DatabaseService } from "./db/DB.js";
+// // import { SELECT_METADATA, type MazeMetaArray } from "@nadir/global-types";
+// // import { MazeDB } from "./db/Database.js";
+// import { MazeDBService } from "./service/service.js";
 
 // import { MazeDB } from "./db/Database.js";
 
@@ -16,5 +16,5 @@ import { MazeDBService } from "./service/service.js";
 // 	.then((result) => console.log("Result:", result))
 // 	.catch((error) => console.error("Error:", error));
 
-export * from "./service/service.js";
-export * from "./db/DB.js";
+export * from "./service/index.js";
+export * from "./db/index.js";

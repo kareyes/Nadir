@@ -5,20 +5,18 @@ import {
 } from "@nadir/global-types";
 import { MazeDBService } from "@nadir/maze-db";
 import { Effect, pipe } from "effect";
-import { type FastifyInstance, fastify } from "fastify";
-import { HTTPServer } from "./server.js";
+import type { FastifyInstance } from "fastify";
 
-export const registerUserRoutes = (fastify: FastifyInstance) =>
+export const MazeRoutes = (server: FastifyInstance) =>
 	pipe(
 		Effect.sync(() => {
-			fastify.get("/", async (_, reply) => {
-				reply.send([{ username: "demo", age: 99 }]);
+			server.get("/", async (_, reply) => {
+				reply.send([{ Hell: "Maze", age: 99 }]);
 			});
-			fastify.get(GET_SELECTED_MAZE, async (request, reply) => {
+			server.get(GET_SELECTED_MAZE, async (request, reply) => {
 				const { maze_id } = request.params as { maze_id: string };
 
-				return RouterApp()
-					.getMaze(maze_id)
+				return Router.getMaze(maze_id)
 					.then((maze) => {
 						reply.send(maze);
 					})
@@ -28,9 +26,8 @@ export const registerUserRoutes = (fastify: FastifyInstance) =>
 					});
 			});
 
-			fastify.get(GET_ALL_MAZE_METADATA, async (_, reply) => {
-				return RouterApp()
-					.getAllMazes()
+			server.get(GET_ALL_MAZE_METADATA, async (_, reply) => {
+				return Router.getAllMazes()
 					.then((mazes) => {
 						reply.send(mazes);
 					})
@@ -41,24 +38,22 @@ export const registerUserRoutes = (fastify: FastifyInstance) =>
 					});
 			});
 		}),
-		Effect.map(() => fastify),
+		Effect.map(() => server),
 	);
 
-const RouterApp = () => {
-	return {
-		getMaze: (mazeId: string) =>
-			pipe(
-				MazeDBService,
-				Effect.flatMap((service) => service.getMazeById(mazeId)),
-				Effect.provide(MazeDBService.Default),
-				Effect.runPromise,
-			),
-		getAllMazes: () =>
-			pipe(
-				MazeDBService,
-				Effect.flatMap((service) => service.getAllMazes),
-				Effect.provide(MazeDBService.Default),
-				Effect.runPromise,
-			),
-	};
+const Router = {
+	getMaze: (mazeId: string) =>
+		pipe(
+			MazeDBService,
+			Effect.flatMap((service) => service.getMazeById(mazeId)),
+			Effect.provide(MazeDBService.Default),
+			Effect.runPromise,
+		),
+	getAllMazes: () =>
+		pipe(
+			MazeDBService,
+			Effect.flatMap((service) => service.getAllMazes),
+			Effect.provide(MazeDBService.Default),
+			Effect.runPromise,
+		),
 };

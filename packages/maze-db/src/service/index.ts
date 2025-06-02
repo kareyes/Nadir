@@ -14,12 +14,11 @@ import {
 	SELECT_ALL_MAZE,
 	SELECT_METADATA,
 } from "@nadir/global-types";
-import { Context, Effect, Layer, Schema, pipe } from "effect";
-import { MazeDB, MazeDBLive, makeDB } from "../db/Database.js";
+import { Effect, Schema, pipe } from "effect";
+import { DatabaseService, DatabaseServiceMock } from "../db/index.js";
 
-// Define the MazeService interface
 export interface MazeDBService {
-	initMazeSchema: Effect.Effect<unknown, DatabaseError, void>;
+	initMazeSchema: Effect.Effect<unknown, DatabaseError, never>;
 	insertMaze: (
 		maze: ResponseMaze,
 	) => Effect.Effect<unknown, DatabaseError, never>;
@@ -29,17 +28,14 @@ export interface MazeDBService {
 	deleteMaze: (maze_id: string) => Effect.Effect<unknown, DatabaseError, never>;
 }
 
-// Helper
-export function parseValue<T = unknown>(obj: Record<string, T>): T[] {
-	return Object.values(obj);
-}
-
-// Implementation
-const MazeServiceImpl = (db: MazeDB): MazeDBService => ({
-	initMazeSchema: db.run(CREATE_MAZE_TABLE),
+const MazeServiceImpl = (db: DatabaseService): MazeDBService => ({
+	initMazeSchema: pipe(
+		db.run(CREATE_MAZE_TABLE),
+		Effect.map(() => db),
+	),
 	insertMaze: (maze) =>
 		pipe(
-			db.run(INSERT_MAZE, parseValue(maze)),
+			db.run(INSERT_MAZE, Object.values(maze)),
 			Effect.catchTag("DatabaseError", (error) => Effect.fail(error)),
 		),
 	getMazeById: (maze_id) =>
@@ -69,22 +65,15 @@ const MazeServiceImpl = (db: MazeDB): MazeDBService => ({
 		),
 });
 
-// Tag for DI
-export const MazeDBService = Context.Tag("MazeDBService")<
-	MazeDBService,
-	MazeDBService
->();
+export const MazeDBService = Effect.Service<MazeDBService>()("MazeDBService", {
+	dependencies: [DatabaseService.Default],
+	effect: DatabaseService.pipe(Effect.map(MazeServiceImpl)),
+});
 
-// Layer
-export const MazeServiceLayer = Layer.effect(
-	MazeDBService,
-	pipe(MazeDB, Effect.map(MazeServiceImpl)),
-);
-
-export const LayerMazeDB = Layer.merge(MazeDBLive, MazeServiceLayer);
-
-// Usage example:
-const prog = Effect.flatMap(MazeDBService, (svc) => svc.getAllMazes).pipe(
-	Effect.provide(MazeServiceLayer),
-	// Effect.provideService(MazeDB, makeDB()),
+export const MazeDBServiceMock = Effect.Service<MazeDBService>()(
+	"MazeDBService",
+	{
+		dependencies: [DatabaseServiceMock],
+		effect: DatabaseService.pipe(Effect.map(MazeServiceImpl)),
+	},
 );
