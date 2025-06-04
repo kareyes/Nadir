@@ -1,4 +1,4 @@
-import type { Ref } from 'effect';
+import type{  Schema , Ref } from 'effect';
 import type {
 	CellSchema,
 	CurrentPositionSchema,
@@ -15,13 +15,13 @@ import type {
 } from '../schema/maze.js';
 
 export type Cell = typeof CellSchema.Type;
-export type Row = typeof RowSchema.Type;
-export type Grid = typeof GridSchema.Type;
-export type MazeMetaArray = typeof MetaArraySchema.Type;
-export type MazeMeta = typeof MazeMetaSchema.Type;
-export type ResponseMaze = typeof ResponseMazeSchema.Type;
-export type Maze = typeof ParseMazeSchema.Type;
-export type MazeArray = typeof ParseMazeSchemArray.Type;
+export interface Row extends Schema.Schema.Type<typeof RowSchema> {}
+export interface Grid extends Schema.Schema.Type<typeof GridSchema> {}
+export interface MazeMetaArray extends Schema.Schema.Type<typeof MetaArraySchema> {}
+export interface MazeMeta extends Schema.Schema.Type<typeof MazeMetaSchema> {}
+export interface ResponseMaze extends Schema.Schema.Type<typeof ResponseMazeSchema> {}
+export interface Maze extends Schema.Schema.Type<typeof ParseMazeSchema> {}
+export interface MazeArray extends Schema.Schema.Type<typeof ParseMazeSchemArray> {}
 
 export type GameState = {
 	maze: Ref.Ref<MazeGameData>;
@@ -32,10 +32,8 @@ export type GamePlayState = GameState & {
 	playerMoves: CurrentPosition;
 };
 
-export type PlayMovement = typeof PlayMovementSchema.Type;
+export interface PlayMovement extends Schema.Schema.Type<typeof PlayMovementSchema> {}
+export interface GamePlay extends Schema.Schema.Type<typeof GamePlaySchema> {};
+export interface CurrentPosition extends Schema.Schema.Type<typeof CurrentPositionSchema> {}
+export interface MazeGameData extends Schema.Schema.Type<typeof MazeGameDataSchema> {}
 
-export type GamePlay = typeof GamePlaySchema.Type;
-
-export type CurrentPosition = typeof CurrentPositionSchema.Type;
-
-export type MazeGameData = typeof MazeGameDataSchema.Type;

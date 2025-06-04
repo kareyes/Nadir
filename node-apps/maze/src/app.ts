@@ -9,7 +9,7 @@ pipe(
 	Effect.flatMap(() => gameStart),
 	Effect.provide(MazeMenu.Default),
 	Effect.provideServiceEffect(MazeDataState, Ref.make(RawData)),
-	Effect.runPromise
+	Effect.runPromise,
 );
 
 // live.runPromise(maze);

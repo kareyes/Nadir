@@ -11,7 +11,8 @@ import {
 	MetaArraySchema,
 } from "@nadir/global-types";
 import { Effect, type Schema, flow, pipe } from "effect";
-import { API_URL } from "../constant.js";
+import { EffectTypeId } from "effect/Effect";
+import { APIURL, API_URL } from "../constant.js";
 
 const fetchAPI = Effect.gen(function* () {
 	const BASE_URL = yield* API_URL;
@@ -31,6 +32,7 @@ const parseResponse = <A, I, R>(
 	schema: Schema.Schema<A, I, R>,
 ) =>
 	Effect.gen(function* () {
+		console.log(APIURL);
 		const clientResponse = HttpClientResponse.matchStatus({
 			200: (response) => HttpClientResponse.schemaBodyJson(schema)(response),
 			orElse: (_: HttpClientResponse.HttpClientResponse) => Effect.fail(_),

@@ -40,7 +40,7 @@ export const DatabaseServiceImp = (loc: string): DatabaseService => {
 export const DatabaseService = Effect.Service<DatabaseService>()(
 	"DatabaseService",
 	{
-		effect: Effect.succeed(DatabaseServiceImp("../../data.sqlite")),
+		effect: Effect.succeed(DatabaseServiceImp("data.sqlite")),
 	},
 );
 

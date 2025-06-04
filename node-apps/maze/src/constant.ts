@@ -22,6 +22,8 @@ export const API_URL = Effect.gen(function* (_) {
 	return `http://${host}:${port}`;
 });
 
+export const APIURL = `http://${process.env.HOST}:${Number(process.env.PORT || "8080")}`;
+
 export const directions: CurrentPosition[] = [
 	{ x: 0, y: 1 }, // right
 	{ x: 1, y: 0 }, // down
@@ -35,7 +37,7 @@ export const RawData: MazeGameData = {
 		maze_id: "",
 		mazeName: "",
 		description: "",
-		created_at: 0,
+		created_at: "0",
 		numCols: 0,
 		numRows: 0,
 		grid: [
