@@ -6,9 +6,18 @@ tasks:
     command: 'vite build'
 
   dev:
-    command: 'tsx --no-watch --experimental-sqlite src/app.ts'
+    command: 'vite dev --host'
     deps:
       - 'maze-api:dev'
+    env:
+      NODE_ENV: 'development'
+    options:
+      envFile: '/.env.shared'
+
+  dev-run:
+    command: 'tsx --no-watch --experimental-sqlite src/app.ts'
+    deps:
+      - 'maze-api:start'
     local: true
     options:
       envFile: '/.env.shared'

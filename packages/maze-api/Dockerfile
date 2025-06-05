@@ -34,6 +34,9 @@ RUN moon docker setup
 # Copy project sources
 COPY --from=skeleton /app/.moon/docker/sources .
 
+# Build the project
+RUN moon run maze-api:build
+
 # Prune extraneous dependencies
 RUN moon docker prune
 
@@ -46,5 +49,5 @@ FROM base AS start
 COPY --from=build /root/.proto /root/.proto
 COPY --from=build /app /app
 
-CMD moon run maze-api:dev
+CMD moon run maze-api:start
 

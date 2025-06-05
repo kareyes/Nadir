@@ -7,6 +7,17 @@
 		"src/**/*",
 		"tests/**/*"
 	],
+	"compilerOptions": {
+		"types": [
+        "vite/client"
+    ]	,
+		"outDir": "../../.moon/cache/types/packages/maze-api",
+		"paths": {
+			"@nadir/global-types": ["../../packages/global-types/src/index.ts"],
+			"@nadir/maze-db": ["../../packages/maze-db/src/index.ts"],
+		}
+	},
+	
 	"references": [
 		{
 			"path": "./tsconfig.lib.json"

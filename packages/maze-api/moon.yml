@@ -2,9 +2,15 @@ type: "library"
 
 tasks:
     build:
-        outputs:
-            - "lib"
+        command: "vite build"
+    
     dev:
+        command: "vite --host"
+        local: true
+        options:
+            envFile: "/.env.shared"
+
+    dev-run:
         command: 'tsx --no-watch --experimental-sqlite src/index.ts'
         local: true
         options:
@@ -15,3 +21,10 @@ tasks:
     
     format:
         command: 'biome check --fix --unsafe'
+
+    start:
+        command: "node --experimental-sqlite dist/index.cjs"
+        deps: ["build"]
+        local: true
+        options:
+            envFile: "/.env.shared"

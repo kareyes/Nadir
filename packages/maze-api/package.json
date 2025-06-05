@@ -14,13 +14,11 @@
 		"@nadir/maze-db": "workspace:*",
 		"effect": "^3.12.6",
 		"fastify": "^5.2.2",
-		"tsx": "^4.19.2"
+		"vite-plugin-node": "^5.0.1",
+		"@effect/vitest": "^0.17.1"
 	},
 	"devDependencies": {
-		"@effect/vitest": "^0.17.1",
-		"@types/node": "^22.10.1",
-		"vite": "^6.0.2",
-		"vitest": "^2.1.8"
+		"@types/node": "^22.10.1"
 	},
 	"type": "module"
 }
