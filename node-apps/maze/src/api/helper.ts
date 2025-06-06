@@ -21,7 +21,7 @@ export const parseResponse = <A, I, R>(
 ) =>
 	Effect.succeed(
 		HttpClientResponse.matchStatus({
-			200: (response) => HttpClientResponse.schemaBodyJson(schema)(response),
+			200: (response) =>  HttpClientResponse.schemaBodyJson(schema)(response),
 			orElse: (_: HttpClientResponse.HttpClientResponse) => Effect.fail(_),
 		})(response),
 	);
