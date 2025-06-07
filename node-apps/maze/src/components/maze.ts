@@ -144,16 +144,25 @@ const drawMaze = (state: GameState) =>
 		),
 	);
 
-export const gameMode = Effect.gen(function* (_) {
-	const maze = yield* _(MazeDataState);
-	const currentPosition = yield* _(CurrentPositionState);
-	const game = yield* Ref.get(maze);
-	game.gameMode === "Freedom"
-		? runAutoMove({ maze, currentPosition }).pipe(Effect.runPromise)
-		: listener({ maze, currentPosition }).pipe(Effect.runPromise);
-});
+const gameStart = pipe(
+	Effect.all({
+		maze: MazeDataState,
+		currentPosition: CurrentPositionState,
+	}),
+	Effect.flatMap(({ maze, currentPosition }) =>
+		pipe(
+			Ref.get(maze),
+			Effect.flatMap((game) =>
+				game.gameMode === "Freedom"
+					? runAutoMove({ maze, currentPosition })
+					: listener({ maze, currentPosition },
+			)
+		),
+	),
+)
+);
 
-export const gameStart = pipe(
+export const initializeGameState = pipe(
 	Effect.all({
 		maze: MazeDataState,
 		currentPosition: CurrentPositionState,
@@ -161,6 +170,6 @@ export const gameStart = pipe(
 	Effect.tap(({ currentPosition, maze }) =>
 		drawMaze({ maze, currentPosition }),
 	),
-	Effect.tap(() => gameMode),
+	Effect.tap(() => gameStart),
 	Effect.provideServiceEffect(CurrentPositionState, Ref.make({ x: 0, y: 0 })),
 );

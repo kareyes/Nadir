@@ -27,6 +27,9 @@ tasks:
     command: 'biome check --fix --unsafe'
 
   start:
-    command: 'node dist/app.cjs'
+    command: 'node --experimental-sqlite dist/app.cjs'
     deps:
       - 'maze-api:start'
+    local: true
+    options:
+      envFile: '/.env.shared'

@@ -1,19 +1,31 @@
 import { describe, it, beforeAll, afterAll, expect } from "vitest";
 
-import { createServer } from "./server.js";
+import { createServer, HTTPServer } from "./server.js";
 
 import { Effect } from "effect";
 import { MazeRoutes } from "./router.js";
-import type { FastifyInstance } from "fastify";
+import fastify, { type FastifyInstance } from "fastify";
+
+
+function buildFastify () {
+
+}
 
 
 describe("Maze API Router Tests", () => {
     let server: FastifyInstance;
 
     beforeAll(async () => {
-        server = createServer().server();
-        await server.register(MazeRoutes);
-        await server.listen({ port: 8080 }); // Use a random available port
+          server = fastify()
+
+            server.get('/', (request, reply) => {
+                reply.send([{ Hell: 'Maze', age:99 }])
+            })
+  
+  return server
+        // server = createServer().server();
+        // await server.register(MazeRoutes);
+        // await server.listen({ port: 8080 }); // Use a random available port
     });
 
     afterAll(async () => {
@@ -26,6 +38,7 @@ describe("Maze API Router Tests", () => {
             url: "/",
         });
         expect(response.statusCode).toBe(200);
+        console.log(response.json());
         expect(response.json()).toEqual([{ Hell: "Maze", age: 99 }]);
     });
 

@@ -1,15 +1,19 @@
-// import { live } from "@nadir/backend-maze";
 import { Effect, Ref, pipe } from "effect";
-import { gameStart } from "./components/maze.js";
-import { MazeMenu } from "./components/menu.js";
+import { initializeGameState } from "./components/maze.js";
+import { Maze, MazeProvider } from "./components/menu.js";
 import { MazeDataState, RawData } from "./constant.js";
 
 pipe(
-	MazeMenu,
-	Effect.flatMap(() => gameStart),
-	Effect.provide(MazeMenu.Default),
+	Maze,
+	Effect.flatMap(() => initializeGameState),
+	Effect.provide(Maze.Default),
 	Effect.provideServiceEffect(MazeDataState, Ref.make(RawData)),
 	Effect.runPromise,
 );
 
-// live.runPromise(maze);
+// const prog = pipe(
+// 	Maze,
+// 	Effect.flatMap(() => initializeGameState),
+// 	Effect.provide(MazeProvider),
+	
+// )

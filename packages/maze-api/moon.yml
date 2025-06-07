@@ -32,7 +32,6 @@ tasks:
     deploy:
         command: ../../scripts/deploy.sh
         platform: system
-        # dependsOn: [build]
         args: [
             "--projectID", "ouro-460410",
             "--serviceName", "maze-api",

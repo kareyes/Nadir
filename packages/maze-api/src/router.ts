@@ -41,6 +41,38 @@ export const MazeRoutes = (server: FastifyInstance) =>
 		Effect.map(() => server),
 	);
 
+const MockRouter = {
+	getMaze: (mazeId: string) =>
+		Promise.resolve({
+			id: mazeId,
+			name: "Mock Maze",
+			description: "This is a mock maze for testing purposes.",
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString(),
+			// Add other necessary fields as per your schema
+		}),
+	getAllMazes: () =>
+		Promise.resolve([
+			{
+				id: "mock-maze-1",
+				name: "Mock Maze 1",
+				description: "This is the first mock maze.",
+				createdAt: new Date().toISOString(),
+				updatedAt: new Date().toISOString(),
+				// Add other necessary fields as per your schema
+			},
+			{
+				id: "mock-maze-2",
+				name: "Mock Maze 2",
+				description: "This is the second mock maze.",
+				createdAt: new Date().toISOString(),
+				updatedAt: new Date().toISOString(),
+				// Add other necessary fields as per your schema
+			},
+			// Add more mock mazes as needed
+		]),
+};
+
 const Router = {
 	getMaze: (mazeId: string) =>
 		pipe(

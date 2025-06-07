@@ -21,10 +21,10 @@ export const parseResponse = <A, I, R>(
 ) =>
 	Effect.succeed(
 		HttpClientResponse.matchStatus({
-			200: (response) =>  HttpClientResponse.schemaBodyJson(schema)(response),
+			200: (response) => HttpClientResponse.schemaBodyJson(schema)(response),
 			orElse: (_: HttpClientResponse.HttpClientResponse) => Effect.fail(_),
 		})(response),
-	);
+	).pipe(Effect.flatMap((result) => result));
 
 export const runGetRequest = <A, I, R>(
 	endpoint: string,
@@ -34,9 +34,8 @@ export const runGetRequest = <A, I, R>(
 		createHttpClient,
 		Effect.flatMap((request) => request.get(endpoint)),
 		Effect.flatMap((response) => parseResponse(response, schema)),
-		// Effect.flatMap((result) => result),
 		Effect.provide(FetchHttpClient.layer),
-	)
+	);
 
 export const runRequestWithParams = <A, I, R>(
 	endpoint: string,
@@ -56,7 +55,6 @@ export const runRequestWithParams = <A, I, R>(
 		Effect.flatMap((response) => parseResponse(response, schema)),
 		Effect.provide(FetchHttpClient.layer),
 	);
-
 // export const runPostRequest = <A, I, R>(
 // 	endpoint: string,
 // 	body: Record<string, unknown>,

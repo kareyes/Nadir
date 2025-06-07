@@ -1,13 +1,11 @@
 import { select } from "@inquirer/prompts";
-import { MazeGameDataSchema } from "@nadir/global-types";
-import { Effect, Ref, Schema, pipe } from "effect";
-import { MazeAPI } from "../api/index.js";
-import { MazeDataState, playerSymbols } from "../constant.js";
+import { MazeGameDataSchema, type MazeMetaArray } from "@nadir/global-types";
+import { Effect, Layer, Ref, Schema, pipe } from "effect";
+import { MazeAPIService } from "../api/api.js";
+import { MazeDataState, playerSymbols, RawData } from "../constant.js";
 
-export const getMaze = Effect.gen(function* () {
-	const mazeAPI = yield* MazeAPI;
-	const maze = yield* mazeAPI.getDataMaze();
-	const selected = yield* Effect.promise(() =>
+const promptMazeOptions = (maze: MazeMetaArray) =>
+	Effect.promise(() =>
 		select({
 			message: "Choose your labyrinth tier:",
 			choices: maze.map((m) => ({
@@ -16,18 +14,9 @@ export const getMaze = Effect.gen(function* () {
 				description: m.description,
 			})),
 		}),
-	);
-	const mazeById = yield* mazeAPI.getMaze(selected);
-	return mazeById;
-}).pipe(
-	Effect.catchAll((error) => {
-		console.error("Error fetching maze:", error);
-		return Effect.succeed(error);
-	}),
-	Effect.provide(MazeAPI.Default),
-);
+	).pipe(Effect.map((selected) => selected as string));
 
-export const selectPlayerCharacter = pipe(
+const selectPlayerCharacter = pipe(
 	Effect.promise(() =>
 		select({
 			message: "Select your player character:",
@@ -37,7 +26,7 @@ export const selectPlayerCharacter = pipe(
 	Effect.map((selected) => selected as string),
 );
 
-export const gameModeOption = pipe(
+const gameModeOption = pipe(
 	Effect.promise(() =>
 		select({
 			message: "Pick your gameplay mode:",
@@ -47,8 +36,20 @@ export const gameModeOption = pipe(
 	Effect.map((selected) => selected as string),
 );
 
-export class MazeMenu extends Effect.Service<MazeMenu>()("MazeMenu", {
-	dependencies: [MazeAPI.Default],
+const getMaze = MazeAPIService.pipe(
+	Effect.map((mazeAPI) => {
+		return { maze: mazeAPI.getDataMaze(), mazeAPI };
+	}),
+	Effect.flatMap(({ maze, mazeAPI }) =>
+		maze.pipe(
+			Effect.flatMap((mazeData) => promptMazeOptions(mazeData)),
+			Effect.flatMap((selected) => mazeAPI.getMaze(selected)),
+		),
+	),
+);
+
+export class Maze extends Effect.Service<Maze>()("Maze", {
+	dependencies: [MazeAPIService.Default],
 	effect: pipe(
 		Effect.all({
 			player: selectPlayerCharacter,
@@ -63,10 +64,24 @@ export class MazeMenu extends Effect.Service<MazeMenu>()("MazeMenu", {
 			}),
 		),
 		Effect.tap((mazeData) =>
-			Effect.gen(function* () {
-				const maze = yield* MazeDataState;
-				yield* Ref.set(maze, mazeData);
-			}),
+			pipe(
+				MazeDataState,
+				Effect.flatMap((maze) => Ref.set(maze, mazeData)),
+			),
 		),
 	),
 }) {}
+
+// export const MazeDataState1 = Effect.Service<MazeDataState>()(
+// 	"MazeDataState",
+// 	{
+// 		dependencies: [],
+// 		effect: Effect.succeed(MazeDataState),
+// 	},
+// );
+
+
+export const MazeProvider = Layer.mergeAll(
+	Maze.Default,
+	Layer.effect(MazeDataState, Ref.make(RawData)),
+);

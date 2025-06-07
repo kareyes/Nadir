@@ -28,7 +28,7 @@ fi
 echo "Building Docker image..."
 echo "Using image name: $IMAGE_NAME"
 
-while [ ! -f "biome.json" ] && [ "$PWD" != "/" ]; do
+while [ ! -f "README.md" ] && [ "$PWD" != "/" ]; do
   cd ..
 done
 
