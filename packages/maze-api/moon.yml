@@ -28,3 +28,16 @@ tasks:
         local: true
         options:
             envFile: "/.env.shared"
+
+    deploy:
+        command: ../../scripts/deploy.sh
+        platform: system
+        # dependsOn: [build]
+        args: [
+            "--projectID", "ouro-460410",
+            "--serviceName", "maze-api",
+            "--repository", "astrid",
+            "--region", "us-central1",
+            "--filepath", "./packages/maze-api/Dockerfile"
+        ]
+        description: Deploy Docker image to Cloud Run
