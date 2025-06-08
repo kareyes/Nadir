@@ -15,6 +15,13 @@ tasks:
         local: true
         options:
             envFile: '/.env.shared'
+
+    seed:
+        command: 'tsx --no-watch --experimental-sqlite src/invoke/index.ts'
+        local: true
+        options:
+            envFile: '/.env.shared'    
+
     test:
         command: 'vitest run'
     

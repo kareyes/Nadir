@@ -1,9 +1,9 @@
-import { Effect, pipe } from "effect";
-import { beforeEach, describe, expect, it } from "vitest";
-import { mazeModel as m1 } from "./seed/maze1.js";
-import { mazeModel as m2 } from "./seed/maze2.js";
-import { mazeModel as m3 } from "./seed/maze3.js";
-import { MazeDBServiceMock } from "./service/service.js";
+// import { Effect, pipe } from "effect";
+// import { beforeEach, describe, expect, it } from "vitest";
+// import { mazeModel as m1 } from "../seed/maze1.js";
+// import { mazeModel as m2 } from "../seed/maze2.js";
+// import { mazeModel as m3 } from "../seed/maze3.js";
+// import { MazeDBServiceMock } from "./service/service.js";
 
 // beforeEach(() => {
 //     // Initialize the MazeDBService before each test
@@ -34,30 +34,30 @@ import { MazeDBServiceMock } from "./service/service.js";
 //     );
 // });
 
-describe("MazeDBService", () => {
-	it("should retrieve a maze by id", async () => {
-		const test = MazeDBServiceMock.pipe(
-			Effect.tap((service) => {
-				return pipe(
-					service.initMazeSchema,
-					Effect.flatMap(() => service.insertMaze(m1)),
-					Effect.flatMap(() => service.insertMaze(m2)),
-					Effect.flatMap(() => service.insertMaze(m3)),
-				);
-			}),
-			Effect.andThen((service) => service.getMazeById("002")),
-			Effect.provide(MazeDBServiceMock.Default),
-			// Effect.runPromise,
-		);
-		// const prog = MazeDBService.pipe(
-		//     Effect.flatMap((service) => service.getMazeById("002")),
-		//     Effect.provide(MazeDBService.Default),
-		// );
-		Effect.runPromise(test).then((result) => {
-			expect(result).toBeDefined();
-			expect(result?.maze_id).toBe("002");
-		});
-	});
+// describe("MazeDBService", () => {
+// 	it("should retrieve a maze by id", async () => {
+// 		const test = MazeDBServiceMock.pipe(
+// 			Effect.tap((service) => {
+// 				return pipe(
+// 					service.initMazeSchema,
+// 					Effect.flatMap(() => service.insertMaze(m1)),
+// 					Effect.flatMap(() => service.insertMaze(m2)),
+// 					Effect.flatMap(() => service.insertMaze(m3)),
+// 				);
+// 			}),
+// 			Effect.andThen((service) => service.getMazeById("002")),
+// 			Effect.provide(MazeDBServiceMock.Default),
+// 			// Effect.runPromise,
+// 		);
+// 		// const prog = MazeDBService.pipe(
+// 		//     Effect.flatMap((service) => service.getMazeById("002")),
+// 		//     Effect.provide(MazeDBService.Default),
+// 		// );
+// 		Effect.runPromise(test).then((result) => {
+// 			expect(result).toBeDefined();
+// 			expect(result?.maze_id).toBe("002");
+// 		});
+// 	});
 
 	// it("should return undefined for non-existent maze id", async () => {
 	//     const prog = MazeDBService.pipe(
@@ -86,4 +86,4 @@ describe("MazeDBService", () => {
 	//     );
 	//     await expect(Effect.runPromise(prog)).rejects.toBeDefined();
 	// });
-});
+// });

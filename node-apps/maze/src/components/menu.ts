@@ -1,8 +1,8 @@
 import { select } from "@inquirer/prompts";
-import { MazeGameDataSchema, type MazeMetaArray } from "@nadir/global-types";
+import { MazeGameDataSchema, type MazeMetaArray, type PlayerDataArray } from "@nadir/global-types";
 import { Effect, Layer, Ref, Schema, pipe } from "effect";
-import { MazeAPIService } from "../api/api.js";
-import { MazeDataState, playerSymbols, RawData } from "../constant.js";
+import { MazeAPIService } from "../api/index.js";
+import { MazeDataState, RawData } from "../constant.js";
 
 const promptMazeOptions = (maze: MazeMetaArray) =>
 	Effect.promise(() =>
@@ -16,15 +16,15 @@ const promptMazeOptions = (maze: MazeMetaArray) =>
 		}),
 	).pipe(Effect.map((selected) => selected as string));
 
-const selectPlayerCharacter = pipe(
+
+const promptPlayerOptions = (player: PlayerDataArray) =>
 	Effect.promise(() =>
 		select({
 			message: "Select your player character:",
-			choices: playerSymbols,
+			choices: player,
 		}),
-	),
-	Effect.map((selected) => selected as string),
-);
+	).pipe(Effect.map((selected) => selected as string));
+
 
 const gameModeOption = pipe(
 	Effect.promise(() =>
@@ -34,6 +34,15 @@ const gameModeOption = pipe(
 		}),
 	),
 	Effect.map((selected) => selected as string),
+);
+
+const getPlayers = MazeAPIService.pipe(
+	Effect.map((mazeAPI) => mazeAPI.getAllPlayers()),
+	Effect.flatMap((players) =>
+		players.pipe(
+			Effect.flatMap((playerData) => promptPlayerOptions(playerData))
+		),
+	),
 );
 
 const getMaze = MazeAPIService.pipe(
@@ -47,12 +56,25 @@ const getMaze = MazeAPIService.pipe(
 		),
 	),
 );
+ 
+export const playAgain = pipe(
+	Effect.promise(() =>
+		select({
+			message: "Do you want to play again?",
+			choices: ["Yes", "No"],
+		}),
+	),
+	Effect.map((selected) => selected as string),
+);
+
+
 
 export class Maze extends Effect.Service<Maze>()("Maze", {
 	dependencies: [MazeAPIService.Default],
 	effect: pipe(
 		Effect.all({
-			player: selectPlayerCharacter,
+			clear: Effect.sync(() => console.clear()),
+			player: getPlayers,
 			maze: getMaze,
 			gameMode: gameModeOption,
 		}),
@@ -72,13 +94,6 @@ export class Maze extends Effect.Service<Maze>()("Maze", {
 	),
 }) {}
 
-// export const MazeDataState1 = Effect.Service<MazeDataState>()(
-// 	"MazeDataState",
-// 	{
-// 		dependencies: [],
-// 		effect: Effect.succeed(MazeDataState),
-// 	},
-// );
 
 
 export const MazeProvider = Layer.mergeAll(

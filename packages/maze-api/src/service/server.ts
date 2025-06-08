@@ -1,6 +1,6 @@
-import fastify, { type FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import { Effect, pipe } from "effect";
+import fastify, { type FastifyInstance } from "fastify";
 
 export interface HTTPServer {
 	start: () => Effect.Effect<never, unknown, never>;
@@ -34,7 +34,7 @@ export const createServer = (): HTTPServer => {
 				routes,
 				Effect.tap(() => Effect.log("Routes registered successfully")),
 			),
-			
+
 		process: () => {
 			Effect.sync(() => {
 				process.on("SIGINT", () => {

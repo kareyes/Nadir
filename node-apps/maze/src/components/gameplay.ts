@@ -2,6 +2,7 @@ import {
 	type GamePlay,
 	GamePlayError,
 	type GameState,
+	type Maze,
 	type PlayMovement,
 	PlayMovementSchema,
 } from "@nadir/global-types";
@@ -177,3 +178,107 @@ export const runAutoMove = (state: GameState) =>
 			action.pipe(Effect.map((status) => status === "Game Over")),
 		schedule: Schedule.addDelay(Schedule.forever, () => "50 millis"),
 	});
+
+
+// export const solveMaze = (maze: Maze, start = { x: 0, y: 0 }) => {
+// 	const numRows = maze.numRows;
+// 	const numCols = maze.numCols;
+// 	const grid = maze.grid;
+
+// 	const stack: { x: number; y: number; path: { x: number; y: number }[] }[] = 
+// 	[
+// 		{ x: start.x, y: start.y, path: [{ x: start.x, y: start.y }] },
+// 	];
+// 	const visited = Array.from({ length: numRows }, () =>
+// 		Array(numCols).fill(false),
+// 	);
+
+// 	while (stack.length > 0) {
+// 		const { x, y, path } = stack.pop()!;
+// 		if (x === numRows - 1 && y === numCols - 1) {
+// 			return path;
+// 		}
+// 		if (visited[x][y]) continue;
+// 		visited[x][y] = true;
+
+// 		// Move Up
+// 		if (
+// 			x > 0 &&
+// 			grid[x - 1].horizontal[y] && // no wall above
+// 			!visited[x - 1][y]
+// 		) {
+// 			stack.push({ x: x - 1, y, path: [...path, { x: x - 1, y }] });
+// 		}
+// 		// Move Down
+// 		if (
+// 			x < numRows - 1 &&
+// 			grid[x].horizontal[y] && // no wall below
+// 			!visited[x + 1][y]
+// 		) {
+// 			stack.push({ x: x + 1, y, path: [...path, { x: x + 1, y }] });
+// 		}
+// 		// Move Left
+// 		if (
+// 			y > 0 &&
+// 			grid[x].vertical[y - 1] && // no wall to the left
+// 			!visited[x][y - 1]
+// 		) {
+// 			stack.push({ x, y: y - 1, path: [...path, { x, y: y - 1 }] });
+// 		}
+// 		// Move Right
+// 		if (
+// 			y < numCols - 1 &&
+// 			grid[x].vertical[y] && // no wall to the right
+// 			!visited[x][y + 1]
+// 		) {
+// 			stack.push({ x, y: y + 1, path: [...path, { x, y: y + 1 }] });
+// 		}
+// 	}
+// 	return [];
+// };
+// export const solveMaze = (initialState: GameState) => {
+// 	return Effect.gen(function* (_) {
+// 		const visited = new Set<string>();
+// 		const path: { x: number; y: number }[] = [];
+// 		const stack: GameState[] = [initialState];
+
+// 		while (stack.length > 0) {
+// 			const state = stack.pop()!;
+// 			const { currentPosition, maze } = state;
+// 			const pos =  yield* currentPosition;
+// 			const mazeState = yield* maze;
+// 			const key = `${pos.x},${pos.y}`;
+
+// 			if (visited.has(key)) continue;
+// 			visited.add(key);
+// 			path.push({ ...pos });
+
+// 			if (
+// 				pos.x === mazeState.maze.numRows - 1 &&
+// 				pos.y === mazeState.maze.numCols - 1
+// 			) {
+// 				return path;
+// 			}
+
+// 			for (const dir of directions) {
+// 				const nextMove = {
+// 					...state,
+// 					playerMoves: dir,
+// 				};
+// 				const validation = yield* _(validateMovement(nextMove));
+// 				if (validation) {
+// 					const nextState = {
+// 						...state,
+// 						currentPosition: { x: validation.x, y: validation.y },
+// 					};
+// 					const nextKey = `${validation.x},${validation.y}`;
+// 					if (!visited.has(nextKey)) {
+// 						stack.push(nextState);
+// 					}
+// 				}
+// 			}
+// 			path.pop();
+// 		}
+// 		return [];
+// 	});
+// };

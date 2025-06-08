@@ -1,3 +1,5 @@
+
+//  SQL queries 
 export const SELECTED_MAZE = 'SELECT * FROM mazes WHERE maze_id = ?';
 export const SELECT_ALL_MAZE = 'SELECT * FROM mazes';
 export const SELECT_METADATA =
@@ -17,6 +19,25 @@ CREATE TABLE IF NOT EXISTS mazes (
 	created_at TEXT NOT NULL
 );`
 
+export const CREATE_PLAYER_TABLE = `
+CREATE TABLE IF NOT EXISTS players (
+	playerID TEXT PRIMARY KEY,
+	name TEXT NOT NULL,
+	value TEXT NOT NULL,
+	description TEXT NOT NULL
+);`
+
+export const INSERT_PLAYER =
+	'INSERT INTO players (playerID, name, value, description ) VALUES (?, ?, ?, ?) RETURNING playerID, name, value, description';
+
+export const SELECT_PLAYER = 'SELECT * FROM players WHERE playerID = ?';
+export const SELECT_ALL_PLAYERS = 'SELECT * FROM players';
+export const DELETE_PLAYER = 'DELETE FROM players WHERE playerID = ?';
+
+// API Routes
+export const GET_PLAYER_SYMBOLS = '/player/symbols';
+export const GET_PLAYER = '/player/:playerID';
+export const GET_ALL_PLAYERS = '/player';
 
 
 export const GET_SELECTED_MAZE = '/maze/:maze_id';

@@ -16,5 +16,8 @@
 // 	.then((result) => console.log("Result:", result))
 // 	.catch((error) => console.error("Error:", error));
 
-export * from "./service/index.js";
+
+
+export * from "./service/maze.js";
+export * from "./service/player.js";
 export * from "./db/index.js";

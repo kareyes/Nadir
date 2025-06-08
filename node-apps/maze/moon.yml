@@ -22,6 +22,13 @@ tasks:
     options:
       envFile: '/.env.shared'
 
+  dev-watch:
+    command: 'tsx --watch --experimental-sqlite src/components/play.ts'
+    deps:
+      - 'maze-api:start'
+    local: true
+    options:
+      envFile: '/.env.shared'
 
   format:
     command: 'biome check --fix --unsafe'
@@ -33,3 +40,15 @@ tasks:
     local: true
     options:
       envFile: '/.env.shared'
+
+  deploy:
+    command: ../../scripts/deploy.sh
+    platform: system
+    args: [
+        "--projectID", "ouro-460410",
+        "--serviceName", "maze",
+        "--repository", "astrid",
+        "--region", "us-central1",
+        "--filepath", "./node-apps/maze/Dockerfile"
+    ]
+    description: Deploy Docker image to Cloud Run

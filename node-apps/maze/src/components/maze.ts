@@ -10,6 +10,8 @@ import { CurrentPositionState, MazeDataState } from "../constant.js";
 import { clear } from "../util/index.js";
 import { BuilderMaze } from "./builder.js";
 import { runAutoMove, validateMovement } from "./gameplay.js";
+import { mazeApp } from "../app.js";
+import { playAgain } from "./menu.js";
 
 const getCurrentPosition = ({ x, y }: CurrentPosition, index: number) =>
 	x === index ? y : -1;
@@ -76,10 +78,23 @@ export const move = ({ currentPosition, maze, playerMoves }: GamePlayState) =>
 				Ref.update(currentPosition, () => newPosition),
 				Effect.zip(drawMaze({ currentPosition, maze })),
 				Effect.zip(finalizePosition({ currentPosition, maze })),
+			
 			),
 		),
 		Effect.catchTag("GamePlayError", Effect.succeed),
 		Effect.runPromise,
+	);
+
+const playAgainPrompt = () =>
+	playAgain.pipe(
+		Effect.map((selected) => {
+			if (selected === "Yes") {
+				mazeApp.pipe(Effect.runPromise);
+			} else {
+				console.log("Thank you for playing! Goodbye!");
+				process.exit();
+			}
+		}),
 	);
 
 const finalizePosition = (state: GameState) =>
@@ -92,7 +107,8 @@ const finalizePosition = (state: GameState) =>
 				console.log(
 					"Congratulations \u{1F389} \u{1F389} \u{1F389}! You have reached the end of the maze.",
 				);
-				process.exit();
+				process.stdin.removeAllListeners('keypress');
+				Effect.runPromiseExit(playAgainPrompt())		
 			}
 		}),
 	);
@@ -103,6 +119,7 @@ const listener = (state: GameState) =>
 			readline.emitKeypressEvents(process.stdin);
 			process.stdin.setRawMode(true);
 			process.stdin.resume();
+			process.stdin.setMaxListeners(100);
 		}),
 		Effect.flatMap(() =>
 			Effect.async(() => {
@@ -155,11 +172,10 @@ const gameStart = pipe(
 			Effect.flatMap((game) =>
 				game.gameMode === "Freedom"
 					? runAutoMove({ maze, currentPosition })
-					: listener({ maze, currentPosition },
-			)
+					: listener({ maze, currentPosition }),
+			),
 		),
 	),
-)
 );
 
 export const initializeGameState = pipe(

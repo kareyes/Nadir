@@ -1,19 +1,15 @@
-import { Effect, Ref, pipe } from "effect";
+import { Effect, Ref } from "effect";
 import { initializeGameState } from "./components/maze.js";
-import { Maze, MazeProvider } from "./components/menu.js";
+import { Maze } from "./components/menu.js";
 import { MazeDataState, RawData } from "./constant.js";
 
-pipe(
-	Maze,
+
+
+export const mazeApp = Maze.pipe(
 	Effect.flatMap(() => initializeGameState),
 	Effect.provide(Maze.Default),
-	Effect.provideServiceEffect(MazeDataState, Ref.make(RawData)),
-	Effect.runPromise,
-);
+	Effect.provideServiceEffect(MazeDataState, Ref.make(RawData))
+)
 
-// const prog = pipe(
-// 	Maze,
-// 	Effect.flatMap(() => initializeGameState),
-// 	Effect.provide(MazeProvider),
-	
-// )
+Effect.runPromise(mazeApp);
+
