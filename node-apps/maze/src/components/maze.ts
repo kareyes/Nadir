@@ -108,7 +108,7 @@ const finalizePosition = (state: GameState) =>
 					"Congratulations \u{1F389} \u{1F389} \u{1F389}! You have reached the end of the maze.",
 				);
 				process.stdin.removeAllListeners('keypress');
-				Effect.runPromiseExit(playAgainPrompt())		
+				Effect.runPromise(playAgainPrompt())		
 			}
 		}),
 	);
@@ -173,7 +173,7 @@ const gameStart = pipe(
 		pipe(
 			Ref.get(maze),
 			Effect.flatMap((game) =>
-				game.gameMode === "Freedom"
+				game.gameMode === "Assist Mode"
 					? pathFinding({ maze, currentPosition })
 					: listener({ maze, currentPosition }),
 			),

@@ -30,7 +30,7 @@ const gameModeOption = pipe(
 	Effect.promise(() =>
 		select({
 			message: "Pick your gameplay mode:",
-			choices: ["Freedom", "Guided"],
+			choices: ["Assist Mode", "Manual Mode"],
 		}),
 	),
 	Effect.map((selected) => selected as string),

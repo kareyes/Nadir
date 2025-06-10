@@ -1,68 +1,68 @@
-import { Effect, pipe } from "effect";
-import {
-	GamePlayError,
-	type Automove,
-	type CurrentPosition,
-	type Grid,
-	type Maze,
-	type MazePath,
-	type PlayMovement,
-} from "@nadir/global-types";
-import { directions, Directions, Directions1 } from "../constant.js";
-// import { ChceckWallDown, ChceckWallLeft, ChceckWallRight, ChceckWallUp } from "./gameplay.js";
-// import { cons } from "effect/List";
-// import { input } from "@inquirer/prompts";
-// import { solveMaze } from "./gameplay.js";
+// import { Effect, pipe } from "effect";
+// import {
+// 	GamePlayError,
+// 	type Automove,
+// 	type CurrentPosition,
+// 	type Grid,
+// 	type Maze,
+// 	type MazePath,
+// 	type PlayMovement,
+// } from "@nadir/global-types";
+// import { directions, Directions, Directions1 } from "../constant.js";
+// // import { ChceckWallDown, ChceckWallLeft, ChceckWallRight, ChceckWallUp } from "./gameplay.js";
+// // import { cons } from "effect/List";
+// // import { input } from "@inquirer/prompts";
+// // import { solveMaze } from "./gameplay.js";
 
-// MazeAPIService.pipe(
-//     Effect.flatMap((mazeAPI) => {
-//         return mazeAPI.getMaze("001").pipe(
-//             Effect.map((maze) => {
-//                 console.log("Maze Data:", maze);
-//                 const sol = solveMaze(maze)
-//                 console.log("Solved Maze:", sol);
-//             })
-//         );
-//     }
-//     ),
-//     Effect.provide(MazeAPIService.Default),
-//     Effect.runPromise,
-// )
+// // MazeAPIService.pipe(
+// //     Effect.flatMap((mazeAPI) => {
+// //         return mazeAPI.getMaze("001").pipe(
+// //             Effect.map((maze) => {
+// //                 console.log("Maze Data:", maze);
+// //                 const sol = solveMaze(maze)
+// //                 console.log("Solved Maze:", sol);
+// //             })
+// //         );
+// //     }
+// //     ),
+// //     Effect.provide(MazeAPIService.Default),
+// //     Effect.runPromise,
+// // )
 
-// import { Effect, Console } from "effect"
+// // import { Effect, Console } from "effect"
 
-const grid = [
-	{
-		vertical: [true, true, false, true, false],
-		horizontal: [true, false, true, true, true],
-	},
-	{
-		vertical: [true, false, false, false, false],
-		horizontal: [false, false, true, true, true],
-	},
-	{
-		vertical: [true, true, false, false, false],
-		horizontal: [true, false, false, false, true],
-	},
-	{
-		vertical: [false, true, true, true, false],
-		horizontal: [true, false, true, false, true],
-	},
-	{
-		vertical: [true, true, false, true, false],
-		horizontal: [false, false, false, false, true],
-	},
-];
+// const grid = [
+// 	{
+// 		vertical: [true, true, false, true, false],
+// 		horizontal: [true, false, true, true, true],
+// 	},
+// 	{
+// 		vertical: [true, false, false, false, false],
+// 		horizontal: [false, false, true, true, true],
+// 	},
+// 	{
+// 		vertical: [true, true, false, false, false],
+// 		horizontal: [true, false, false, false, true],
+// 	},
+// 	{
+// 		vertical: [false, true, true, true, false],
+// 		horizontal: [true, false, true, false, true],
+// 	},
+// 	{
+// 		vertical: [true, true, false, true, false],
+// 		horizontal: [false, false, false, false, true],
+// 	},
+// ];
 
-const maze = {
-	maze_id: "001",
-	mazeName: "Level 1: The Labyrinths",
-	description: "This is a 5x5 maze",
-	created_at: new Date().toISOString(),
-	numCols: 5,
-	numRows: 5,
-	grid: grid,
-};
+// const maze = {
+// 	maze_id: "001",
+// 	mazeName: "Level 1: The Labyrinths",
+// 	description: "This is a 5x5 maze",
+// 	created_at: new Date().toISOString(),
+// 	numCols: 5,
+// 	numRows: 5,
+// 	grid: grid,
+// };
 
 // const validateWall = (m: AutoMove, visited: Set<string>) =>
 //     pipe(
@@ -192,160 +192,160 @@ const maze = {
 //             : Effect.succeed(undefined),
 //     ));
 
-const ChceckWallRight = (
-	{ x, y, maze: { numCols, grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			y < numCols - 1 && grid[x].vertical[y] && !visited.has(`${x},${y + 1}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x, y: y + 1, path: [Directions1.right] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
+// const ChceckWallRight = (
+// 	{ x, y, maze: { numCols, grid } }: Automove,
+// 	visited: Set<string>,
+// ) =>
+// 	pipe(
+// 		Effect.succeed(
+// 			y < numCols - 1 && grid[x].vertical[y] && !visited.has(`${x},${y + 1}`),
+// 		),
+// 		Effect.flatMap((hasWall) =>
+// 			hasWall
+// 				? Effect.succeed({ x, y: y + 1, path: [Directions1.right] } as MazePath)
+// 				: Effect.succeed(undefined),
+// 		),
+// 	);
 
-const ChceckWallDown = (
-	{ x, y, maze: { numRows, grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			x < numRows - 1 && grid[x].horizontal[y] && !visited.has(`${x + 1},${y}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x: x + 1, y, path: [Directions1.down] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
+// const ChceckWallDown = (
+// 	{ x, y, maze: { numRows, grid } }: Automove,
+// 	visited: Set<string>,
+// ) =>
+// 	pipe(
+// 		Effect.succeed(
+// 			x < numRows - 1 && grid[x].horizontal[y] && !visited.has(`${x + 1},${y}`),
+// 		),
+// 		Effect.flatMap((hasWall) =>
+// 			hasWall
+// 				? Effect.succeed({ x: x + 1, y, path: [Directions1.down] } as MazePath)
+// 				: Effect.succeed(undefined),
+// 		),
+// 	);
 
-const ChceckWallLeft = (
-	{ x, y, maze: { grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			y > 0 && grid[x].vertical[y - 1] && !visited.has(`${x},${y - 1}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x, y: y - 1, path: [Directions1.left] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
+// const ChceckWallLeft = (
+// 	{ x, y, maze: { grid } }: Automove,
+// 	visited: Set<string>,
+// ) =>
+// 	pipe(
+// 		Effect.succeed(
+// 			y > 0 && grid[x].vertical[y - 1] && !visited.has(`${x},${y - 1}`),
+// 		),
+// 		Effect.flatMap((hasWall) =>
+// 			hasWall
+// 				? Effect.succeed({ x, y: y - 1, path: [Directions1.left] } as MazePath)
+// 				: Effect.succeed(undefined),
+// 		),
+// 	);
 
-const ChceckWallUp = (
-	{ x, y, maze: { grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			x > 0 && grid[x - 1].horizontal[y] && !visited.has(`${x - 1},${y}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x: x - 1, y, path: [Directions1.up] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
+// const ChceckWallUp = (
+// 	{ x, y, maze: { grid } }: Automove,
+// 	visited: Set<string>,
+// ) =>
+// 	pipe(
+// 		Effect.succeed(
+// 			x > 0 && grid[x - 1].horizontal[y] && !visited.has(`${x - 1},${y}`),
+// 		),
+// 		Effect.flatMap((hasWall) =>
+// 			hasWall
+// 				? Effect.succeed({ x: x - 1, y, path: [Directions1.up] } as MazePath)
+// 				: Effect.succeed(undefined),
+// 		),
+// 	);
 
-const validateWall = (m: Automove, visited: Set<string>) =>
-	pipe(
-		Effect.all([
-			ChceckWallRight(m, visited),
-			ChceckWallDown(m, visited),
-			ChceckWallLeft(m, visited),
-			ChceckWallUp(m, visited),
-		]),
-		Effect.flatMap((results) => {
-			const validMoves = results.filter((move) => move !== undefined);
-			if (results.length > 0) {
-				return Effect.succeed(validMoves);
-			}
-			return Effect.fail(new GamePlayError("No valid moves available"));
-		}),
-	);
+// const validateWall = (m: Automove, visited: Set<string>) =>
+// 	pipe(
+// 		Effect.all([
+// 			ChceckWallRight(m, visited),
+// 			ChceckWallDown(m, visited),
+// 			ChceckWallLeft(m, visited),
+// 			ChceckWallUp(m, visited),
+// 		]),
+// 		Effect.flatMap((results) => {
+// 			const validMoves = results.filter((move) => move !== undefined);
+// 			if (results.length > 0) {
+// 				return Effect.succeed(validMoves);
+// 			}
+// 			return Effect.fail(new GamePlayError("No valid moves available"));
+// 		}),
+// 	);
 
-const action = (visited: Set<string>, maze: Maze, stack: MazePath[]) =>
-	pipe(
-		Effect.succeed(stack.pop()),
-		Effect.flatMap((current) => {
-			if (!current) return Effect.succeed([]);
-			const { x, y, path } = current;
-			if (x === maze.numRows - 1 && y === maze.numCols - 1) {
-				return Effect.succeed(path);
-			}
-			const key = `${x},${y}`;
-			if (visited.has(key)) {
-				return Effect.succeed([]);
-			}
-			visited.add(key);
-			return pipe(
-				validateWall({ x, y, maze }, visited),
-				Effect.map((validMoves) => {
-					validMoves.forEach((move) => {
-						stack.push({ x: move.x, y: move.y, path: [...path, ...move.path] });
-					});
-				}),
-			);
-		}),
-	);
+// const action = (visited: Set<string>, maze: Maze, stack: MazePath[]) =>
+// 	pipe(
+// 		Effect.succeed(stack.pop()),
+// 		Effect.flatMap((current) => {
+// 			if (!current) return Effect.succeed([]);
+// 			const { x, y, path } = current;
+// 			if (x === maze.numRows - 1 && y === maze.numCols - 1) {
+// 				return Effect.succeed(path);
+// 			}
+// 			const key = `${x},${y}`;
+// 			if (visited.has(key)) {
+// 				return Effect.succeed([]);
+// 			}
+// 			visited.add(key);
+// 			return pipe(
+// 				validateWall({ x, y, maze }, visited),
+// 				Effect.map((validMoves) => {
+// 					validMoves.forEach((move) => {
+// 						stack.push({ x: move.x, y: move.y, path: [...path, ...move.path] });
+// 					});
+// 				}),
+// 			);
+// 		}),
+// 	);
 
 
-const loop = (maze: Maze) =>
-	Effect.loop(
-		{
-			stack: [{ x: 0, y: 0, path: [{ x: 0, y: 0 }] }],
-			visited: new Set<string>(),
-			maze,
-		},
-		{
-			while: ({ stack }) => {
-				return stack.length > 0;
-			},
-			step: (state) => state,
-			body: (state) => action(state.visited, state.maze, state.stack),
-		},
-	);
+// const loop = (maze: Maze) =>
+// 	Effect.loop(
+// 		{
+// 			stack: [{ x: 0, y: 0, path: [{ x: 0, y: 0 }] }],
+// 			visited: new Set<string>(),
+// 			maze,
+// 		},
+// 		{
+// 			while: ({ stack }) => {
+// 				return stack.length > 0;
+// 			},
+// 			step: (state) => state,
+// 			body: (state) => action(state.visited, state.maze, state.stack),
+// 		},
+// 	);
 
-export const solveMaze3 = (maze: Maze) =>
-    loop(maze).pipe(
-        Effect.flatMap((result) => {
-            const path = result.find((s) => s !== undefined) || [] as CurrentPosition[];  
-            return Effect.succeed(path);
-        }
-    ))
+// export const solveMaze3 = (maze: Maze) =>
+//     loop(maze).pipe(
+//         Effect.flatMap((result) => {
+//             const path = result.find((s) => s !== undefined) || [] as CurrentPosition[];  
+//             return Effect.succeed(path);
+//         }
+//     ))
 
-export const solveMaze2 = (maze: Maze) =>
-	Effect.gen(function* () {
-		const { numRows, numCols, grid } = maze;
-		const stack: Array<{ x: number; y: number; path: Array<CurrentPosition> }> =
-			[{ x: 0, y: 0, path: [{ x: 0, y: 0 }] }];
-		const visited = new Set<string>();
-		let result: Array<CurrentPosition> = [];
-		while (stack.length) {
-			const { x, y, path } = stack.pop()!;
-			if (x === numRows - 1 && y === numCols - 1) {
-				result = path;
-				break;
-			}
+// export const solveMaze2 = (maze: Maze) =>
+// 	Effect.gen(function* () {
+// 		const { numRows, numCols, grid } = maze;
+// 		const stack: Array<{ x: number; y: number; path: Array<CurrentPosition> }> =
+// 			[{ x: 0, y: 0, path: [{ x: 0, y: 0 }] }];
+// 		const visited = new Set<string>();
+// 		let result: Array<CurrentPosition> = [];
+// 		while (stack.length) {
+// 			const { x, y, path } = stack.pop()!;
+// 			if (x === numRows - 1 && y === numCols - 1) {
+// 				result = path;
+// 				break;
+// 			}
 
-			// console.log(stack, "Stack Length:", stack.length);
-			const key = `${x},${y}`;
-			if (visited.has(key)) continue;
+// 			// console.log(stack, "Stack Length:", stack.length);
+// 			const key = `${x},${y}`;
+// 			if (visited.has(key)) continue;
 
-			visited.add(key);
+// 			visited.add(key);
 
-			const validMoves = yield* validateWall({ x, y, maze }, visited);
-			validMoves.forEach((move) => {
-				stack.push({ x: move.x, y: move.y, path: [...path, ...move.path] });
-			});
-		}
-		return result;
-	});
+// 			const validMoves = yield* validateWall({ x, y, maze }, visited);
+// 			validMoves.forEach((move) => {
+// 				stack.push({ x: move.x, y: move.y, path: [...path, ...move.path] });
+// 			});
+// 		}
+// 		return result;
+// 	});
 
 // loop(maze).pipe(
 //     Effect.flatMap((result) => {
@@ -354,13 +354,13 @@ export const solveMaze2 = (maze: Maze) =>
 //     }
 // )),
 
-solveMaze3(maze).pipe(
-	Effect.flatMap((result) => {
-		console.log("Solved Maze Path:", result);
-		return Effect.succeed(result);
-	}),
-	Effect.runPromise,
-);
+// solveMaze3(maze).pipe(
+// 	Effect.flatMap((result) => {
+// 		console.log("Solved Maze Path:", result);
+// 		return Effect.succeed(result);
+// 	}),
+// 	Effect.runPromise,
+// );
 
 // const solveMaze = (maze: Maze) => Effect.gen(() => {
 //     const { numRows, numCols, grid } = maze;

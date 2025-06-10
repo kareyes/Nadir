@@ -13,6 +13,11 @@ export class MazeDataState extends Context.Tag("MazeDataState")<
 
 export const APIURL = `http://${process.env.HOST}:${Number(process.env.PORT || "8080")}`;
 
+export const GameMode = {
+	auto: "Assist Mode",
+	manual: "Manual Mode",
+}
+
 export const directions: CurrentPosition[] = [
 	{ x: 0, y: 1 }, // right
 	{ x: 1, y: 0 }, // down
@@ -21,13 +26,6 @@ export const directions: CurrentPosition[] = [
 ];
 
 export const Directions= {
-	"right": { dx: 0, dy: 1 },
-	"down": { dx: 1, dy: 0 },
-	"left": { dx: 0, dy: -1 },
-	"up": { dx: -1, dy: 0 },
-}
-
-export const Directions1= {
 	"right": { x: 0, y: 1 },
 	"down": { x: 1, y: 0 },
 	"left": { x: 0, y: -1 },
