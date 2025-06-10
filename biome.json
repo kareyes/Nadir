@@ -25,6 +25,13 @@
 			"recommended": true,
 			"correctness" :{
 				"noFlatMapIdentity": "off"
+				
+			},
+			"complexity": {
+				"noForEach": "off"
+			},
+			"style":{
+				"noNonNullAssertion": "off"
 			}
 			
 		}

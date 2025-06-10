@@ -1,16 +1,13 @@
 import { Schema } from 'effect';
 
 export const CellSchema = Schema.Boolean;
-// export type Cell = typeof CellSchema.Type;
 
 export const RowSchema = Schema.Array(CellSchema);
-// export type Row = typeof RowSchema.Type;
 
 export const GridSchema = Schema.Struct({
 	vertical: RowSchema,
 	horizontal: RowSchema,
 });
-// export type Grid = typeof GridSchema.Type;
 
 export const MazeMetaSchema = Schema.Struct({
 	maze_id: Schema.String,
@@ -49,8 +46,6 @@ export const ParseMazeSchema = Schema.transform(
 
 export const ParseMazeSchemArray = Schema.Array(ParseMazeSchema);
 
-// export type Maze = typeof ParseMazeSchema.Type;
-
 export const CurrentPositionSchema = Schema.Struct({
 	x: Schema.Number,
 	y: Schema.Number,
@@ -70,9 +65,11 @@ export const PlayMovementSchema = Schema.Struct({
 	maze: MazeSchema,
 });
 
+
+
 export const MazeGameDataSchema = Schema.Struct({
 	maze: MazeSchema,
 	player: Schema.String,
 	gameMode: Schema.String,
 });
-// export type MazeGameData = typeof MazeGameDataSchema.Type;
+

@@ -37,6 +37,17 @@ export interface GamePlay extends Schema.Schema.Type<typeof GamePlaySchema> {};
 export interface CurrentPosition extends Schema.Schema.Type<typeof CurrentPositionSchema> {}
 export interface MazeGameData extends Schema.Schema.Type<typeof MazeGameDataSchema> {}
 
-export type StackPath = Array<CurrentPosition & {
+export type MazePath = CurrentPosition & {
 	path: Array<CurrentPosition>;
-}>;
+};
+
+
+export type Automove = {
+	x : number;
+	y : number;
+	maze: Maze;
+}
+
+
+
+	

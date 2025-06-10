@@ -9,7 +9,7 @@ import { Effect, Ref, pipe } from "effect";
 import { CurrentPositionState, MazeDataState } from "../constant.js";
 import { clear } from "../util/index.js";
 import { BuilderMaze } from "./builder.js";
-import { runAutoMove, validateMovement } from "./gameplay.js";
+import { pathFinding, runAutoMove, validateMovement } from "./gameplay.js";
 import { mazeApp } from "../app.js";
 import { playAgain } from "./menu.js";
 
@@ -142,6 +142,9 @@ const listener = (state: GameState) =>
 								playerMoves = { x: 0, y: 1 };
 								break;
 						}
+						console.log(
+							`Player Moves: ${JSON.stringify(playerMoves)}`,
+						);
 						move({ playerMoves, ...state });
 					}
 				});
@@ -171,7 +174,7 @@ const gameStart = pipe(
 			Ref.get(maze),
 			Effect.flatMap((game) =>
 				game.gameMode === "Freedom"
-					? runAutoMove({ maze, currentPosition })
+					? pathFinding({ maze, currentPosition })
 					: listener({ maze, currentPosition }),
 			),
 		),

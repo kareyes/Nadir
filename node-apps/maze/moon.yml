@@ -24,8 +24,6 @@ tasks:
 
   dev-watch:
     command: 'tsx --watch --experimental-sqlite src/components/play.ts'
-    deps:
-      - 'maze-api:start'
     local: true
     options:
       envFile: '/.env.shared'
