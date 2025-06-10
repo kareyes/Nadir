@@ -1,17 +1,17 @@
 import {
-	type Automove,
 	type CurrentPosition,
 	type GamePlay,
 	GamePlayError,
 	type GameState,
 	type Maze,
-	type MazePath,
 	type PlayMovement,
 	PlayMovementSchema,
 } from "@nadir/global-types";
 import { Effect, Ref, Schedule, Schema, pipe } from "effect";
 import { Directions, directions } from "../constant.js";
 import { move } from "./maze.js";
+import { solveMaze3 } from "./play.js";
+
 
 const OutofBounds = (m: PlayMovement) =>
 	pipe(
@@ -159,13 +159,6 @@ const autoMove = (m: GameState) =>
 		),
 	);
 
-export const runAutoMove = (state: GameState) =>
-	Effect.repeat(autoMove(state), {
-		until: (action) =>
-			action.pipe(Effect.map((status) => status === "Game Over")),
-		schedule: Schedule.addDelay(Schedule.forever, () => "50 millis"),
-	});
-
 const checkFinalPosition = (state: GameState) =>
 	pipe(
 		Effect.succeed(state),
@@ -187,6 +180,7 @@ const movePlayer = (m: GameState, position: CurrentPosition) =>
 		Effect.succeed(m),
 		Effect.bindTo("gameState"),
 		Effect.bind("state", ({ gameState }) => {
+			console.log(`Moving player to position: (${position.x}, ${position.y})`);
 			return Effect.succeed({ playerMoves: position, ...gameState });
 		}),
 		Effect.tap(({ state }) => move(state)),
@@ -194,163 +188,26 @@ const movePlayer = (m: GameState, position: CurrentPosition) =>
 	);
 
 
-
 export const pathFinding = (state: GameState) =>
 	pipe(
 		Ref.get(state.maze),
 		Effect.flatMap(({ maze }) =>
-			solveMaze(maze).pipe(
+			solveMaze3(maze).pipe(
 				Effect.flatMap((path) =>
 					Effect.forEach(path, (position) =>
-						movePlayer(state, position).pipe(Effect.delay("100 millis"))
-					)
-				)
-			)
-		)
-	);
-
-const solveMaze = (maze: Maze) =>
-	loop(maze).pipe(
-		Effect.flatMap((result) => {
-			const path = result.filter((solution) => solution !== undefined) as CurrentPosition[];  
-			return Effect.succeed(path);
-		}
-	))
-
-
-
-const ChceckWallRight = (
-	{ x, y, maze: { numCols, grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			y < numCols - 1 && grid[x].vertical[y] && !visited.has(`${x},${y + 1}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x, y: y + 1, path: [Directions.right] } as MazePath)
-				: Effect.succeed(undefined),
+						movePlayer(state, position).pipe(Effect.delay("500 millis")),
+					),
+				),
+			),
 		),
 	);
 
-const ChceckWallDown = (
-	{ x, y, maze: { numRows, grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			x < numRows - 1 && grid[x].horizontal[y] && !visited.has(`${x + 1},${y}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x: x + 1, y, path: [Directions.down] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
-
-const ChceckWallLeft = (
-	{ x, y, maze: { grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			y > 0 && grid[x].vertical[y - 1] && !visited.has(`${x},${y - 1}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x, y: y - 1, path: [Directions.left] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
-
-const ChceckWallUp = (
-	{ x, y, maze: { grid } }: Automove,
-	visited: Set<string>,
-) =>
-	pipe(
-		Effect.succeed(
-			x > 0 && grid[x - 1].horizontal[y] && !visited.has(`${x - 1},${y}`),
-		),
-		Effect.flatMap((hasWall) =>
-			hasWall
-				? Effect.succeed({ x: x - 1, y, path: [Directions.up] } as MazePath)
-				: Effect.succeed(undefined),
-		),
-	);
-
-const validateWall = (m: Automove, visited: Set<string>) =>
-	pipe(
-		Effect.all([
-			ChceckWallRight(m, visited),
-			ChceckWallDown(m, visited),
-			ChceckWallLeft(m, visited),
-			ChceckWallUp(m, visited),
-		]),
-		Effect.flatMap((results) => {
-			const validMoves = results.filter((move) => move !== undefined);
-			if (results.length > 0) {
-				return Effect.succeed(validMoves);
-			}
-			return Effect.fail(new GamePlayError("No valid moves available"));
-		}),
-	);
-
-const action = (visited: Set<string>, maze: Maze, stack: MazePath[]) =>
-	pipe(
-		Effect.succeed(stack.pop()),
-		Effect.flatMap((current) => {
-			if (!current) return Effect.succeed(undefined);
-			const { x, y, path } = current;
-			if (x === maze.numRows - 1 && y === maze.numCols - 1) {
-				return Effect.succeed(path);
-			}
-			const key = `${x},${y}`;
-			if (visited.has(key)) {
-				return Effect.succeed(undefined);
-			}
-			visited.add(key);
-			return pipe(
-				validateWall({ x, y, maze }, visited),
-				Effect.map((validMoves) => {
-					validMoves.forEach((move) => {
-						stack.push({ x: move.x, y: move.y, path: [...path, ...move.path] });
-					});
-				}),
-			);
-		}),
-	);
-
-const loop = (maze: Maze) =>
-	Effect.loop(
-		{
-			stack: [{ x: 0, y: 0, path: [{ x: 0, y: 0 }] }],
-			visited: new Set<string>(),
-			maze,
-		},
-		{
-			while: ({ stack }) => {
-				return stack.length > 0;
-			},
-			step: (state) => state,
-			body: (state) => action(state.visited, state.maze, state.stack),
-		},
-	);
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
+export const runAutoMove = (state: GameState) =>
+	Effect.repeat(autoMove(state), {
+		until: (action) =>
+			action.pipe(Effect.map((status) => status === "Game Over")),
+		schedule: Schedule.addDelay(Schedule.forever, () => "50 millis"),
+	});
 
 // export const ChceckWallUp = (m: AutoMove, visited: Set<string>) =>
 // 	pipe(
@@ -369,16 +226,16 @@ const loop = (maze: Maze) =>
 // 		hasWall
 // 			? Effect.succeed({ x: m.currentX + 1, y: m.currentY, path: [directions[1]] } as MazePath)
 // 			: Effect.succeed(undefined),
-// 	));	
+// 	));
 
 // export const ChceckWallLeft = (m: AutoMove, visited: Set<string>) =>
 // 	pipe(
-// 		Effect.succeed(WallLeft({...m, ...Directions.left}) && !visited.has(`${m.currentX},${m.currentY - 1}`)),		
+// 		Effect.succeed(WallLeft({...m, ...Directions.left}) && !visited.has(`${m.currentX},${m.currentY - 1}`)),
 // 	Effect.flatMap((hasWall) =>
 // 		hasWall
 // 			? Effect.succeed({ x: m.currentX, y: m.currentY - 1, path: [directions[2]] } as MazePath)
 // 			: Effect.succeed(undefined),
-// 	)); 
+// 	));
 
 // export const ChceckWallRight = (m: AutoMove, visited: Set<string>) =>
 // 	pipe(
@@ -405,7 +262,7 @@ const loop = (maze: Maze) =>
 // 			}
 // 			return Effect.fail(new GamePlayError("No valid moves available"));
 // 		}),
-			
+
 // 	)
 
 // 	export const runAutoMove1 = (state: GameState) =>
@@ -433,8 +290,7 @@ const loop = (maze: Maze) =>
 // 		if (visited.has(key)) continue;
 // 			visited.add(key);
 
-// 		// const movement = 
-		 
+// 		// const movement =
 
 // 		// Up
 // 		if (x > 0 && grid[x - 1].horizontal[y] && !visited.has(`${x-1},${y}`)) {
