@@ -1,5 +1,9 @@
 import { select } from "@inquirer/prompts";
-import { MazeGameDataSchema, type MazeMetaArray, type PlayerDataArray } from "@nadir/global-types";
+import {
+	MazeGameDataSchema,
+	type MazeMetaArray,
+	type PlayerDataArray,
+} from "@nadir/global-types";
 import { Effect, Layer, Ref, Schema, pipe } from "effect";
 import { MazeAPIService } from "../api/index.js";
 import { MazeDataState, RawData } from "../constant.js";
@@ -16,7 +20,6 @@ const promptMazeOptions = (maze: MazeMetaArray) =>
 		}),
 	).pipe(Effect.map((selected) => selected as string));
 
-
 const promptPlayerOptions = (player: PlayerDataArray) =>
 	Effect.promise(() =>
 		select({
@@ -24,7 +27,6 @@ const promptPlayerOptions = (player: PlayerDataArray) =>
 			choices: player,
 		}),
 	).pipe(Effect.map((selected) => selected as string));
-
 
 const gameModeOption = pipe(
 	Effect.promise(() =>
@@ -40,7 +42,7 @@ const getPlayers = MazeAPIService.pipe(
 	Effect.map((mazeAPI) => mazeAPI.getAllPlayers()),
 	Effect.flatMap((players) =>
 		players.pipe(
-			Effect.flatMap((playerData) => promptPlayerOptions(playerData))
+			Effect.flatMap((playerData) => promptPlayerOptions(playerData)),
 		),
 	),
 );
@@ -56,7 +58,7 @@ const getMaze = MazeAPIService.pipe(
 		),
 	),
 );
- 
+
 export const playAgain = pipe(
 	Effect.promise(() =>
 		select({
@@ -66,8 +68,6 @@ export const playAgain = pipe(
 	),
 	Effect.map((selected) => selected as string),
 );
-
-
 
 export class Maze extends Effect.Service<Maze>()("Maze", {
 	dependencies: [MazeAPIService.Default],
@@ -93,8 +93,6 @@ export class Maze extends Effect.Service<Maze>()("Maze", {
 		),
 	),
 }) {}
-
-
 
 export const MazeProvider = Layer.mergeAll(
 	Maze.Default,

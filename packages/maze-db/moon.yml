@@ -11,7 +11,7 @@ tasks:
             envFile: '/.env.shared'
             
     dev-watch:
-        command: 'tsx --no-watch --experimental-sqlite src/db/Database.ts'
+        command: 'tsx --no-watch --experimental-sqlite src/db/index.ts'
         local: true
         options:
             envFile: '/.env.shared'

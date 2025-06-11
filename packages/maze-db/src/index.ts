@@ -1,15 +1,15 @@
 // import { Effect, pipe } from "effect";
-// // import { DatabaseService } from "./db/DB.js";
-// // import { SELECT_METADATA, type MazeMetaArray } from "@nadir/global-types";
+// // // import { DatabaseService } from "./db/DB.js";
+// // // import { SELECT_METADATA, type MazeMetaArray } from "@nadir/global-types";
+// // // import { MazeDB } from "./db/Database.js";
+// import { PlayerDBService } from "./service/player.js";
+
 // // import { MazeDB } from "./db/Database.js";
-// import { MazeDBService } from "./service/service.js";
 
-// import { MazeDB } from "./db/Database.js";
-
-// const prog = MazeDBService.pipe(
-// 	Effect.flatMap((service) => service.getAllMazes),
+// const prog = PlayerDBService.pipe(
+// 	Effect.flatMap((service) => service.getAllPlayers),
 // 	// Effect.map(() => "Maze schema initialized"),
-// 	Effect.provide(MazeDBService.Default),
+// 	Effect.provide(PlayerDBService.Default),
 // );
 
 // Effect.runPromise(prog)

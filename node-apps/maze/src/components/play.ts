@@ -294,7 +294,6 @@
 // 		}),
 // 	);
 
-
 // const loop = (maze: Maze) =>
 // 	Effect.loop(
 // 		{
@@ -314,7 +313,7 @@
 // export const solveMaze3 = (maze: Maze) =>
 //     loop(maze).pipe(
 //         Effect.flatMap((result) => {
-//             const path = result.find((s) => s !== undefined) || [] as CurrentPosition[];  
+//             const path = result.find((s) => s !== undefined) || [] as CurrentPosition[];
 //             return Effect.succeed(path);
 //         }
 //     ))

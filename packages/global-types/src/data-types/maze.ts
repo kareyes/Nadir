@@ -42,10 +42,14 @@ export type MazePath = CurrentPosition & {
 };
 
 
-export type Automove = {
-	x : number;
-	y : number;
+export type Automove = CurrentPosition & {
 	maze: Maze;
+}
+
+export type FindPathArgs = {
+	visited: Set<string>;
+	maze: Maze;
+	stack: MazePath[];
 }
 
 

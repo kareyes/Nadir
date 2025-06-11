@@ -1,6 +1,7 @@
 import {
 	type Automove,
 	type CurrentPosition,
+	type FindPathArgs,
 	type GamePlay,
 	GamePlayError,
 	type GameState,
@@ -12,7 +13,6 @@ import {
 import { Effect, Ref, Schedule, Schema, pipe } from "effect";
 import { Directions, directions } from "../constant.js";
 import { move } from "./maze.js";
-
 
 const OutofBounds = (m: PlayMovement) =>
 	pipe(
@@ -142,7 +142,7 @@ export const validateMovement = (m: GamePlay) =>
 		Effect.catchTag("GamePlayError", (err) => Effect.fail(err)),
 	);
 
-const autoMove = (m: GameState) =>
+const randomMovement = (m: GameState) =>
 	Effect.sync(() =>
 		pipe(
 			Effect.succeed(m),
@@ -171,13 +171,12 @@ const checkFinalPosition = (state: GameState) =>
 			}
 			return Effect.fail(new GamePlayError("Game not over"));
 		}),
-		// Effect.flatMap((status) => status),
 		Effect.flatMap((status) => status),
 		Effect.catchTag("GamePlayError", (err) => Effect.succeed(err)),
 	);
 
 export const runAutoMove = (state: GameState) =>
-	Effect.repeat(autoMove(state), {
+	Effect.repeat(randomMovement(state), {
 		until: (action) =>
 			action.pipe(Effect.map((status) => status === "Game Over")),
 		schedule: Schedule.addDelay(Schedule.forever, () => "50 millis"),
@@ -188,28 +187,21 @@ const movePlayer = (m: GameState, position: CurrentPosition) =>
 		Effect.succeed(m),
 		Effect.bindTo("gameState"),
 		Effect.bind("state", ({ gameState }) => {
-			console.log(`Moving player to position: (${position.x}, ${position.y})`);
 			return Effect.succeed({ playerMoves: position, ...gameState });
 		}),
 		Effect.tap(({ state }) => move(state)),
 		Effect.flatMap(({ state }) => checkFinalPosition(state)),
 	);
 
-
 export const pathFinding = (state: GameState) =>
 	pipe(
 		Ref.get(state.maze),
 		Effect.flatMap(({ maze }) =>
-			solveMaze(maze).pipe(
-				Effect.flatMap((path) =>
-					Effect.forEach(path, (position) =>
-						movePlayer(state, position).pipe(Effect.delay("500 millis")),
-					),
-				),
+			solveMaze(maze, state).pipe(
+				Effect.catchTag("GamePlayError", (err) => Effect.fail(err)),
 			),
 		),
 	);
-
 
 const CheckVisitedWallRight = (
 	{ x, y, maze: { numCols, grid } }: Automove,
@@ -288,7 +280,7 @@ const validateVisitedPath = (m: Automove, visited: Set<string>) =>
 		}),
 	);
 
-const action = (visited: Set<string>, maze: Maze, stack: MazePath[]) =>
+const action = ({ visited, maze, stack }: FindPathArgs) =>
 	pipe(
 		Effect.succeed(stack.pop()),
 		Effect.flatMap((current) => {
@@ -313,7 +305,6 @@ const action = (visited: Set<string>, maze: Maze, stack: MazePath[]) =>
 		}),
 	);
 
-
 const loop = (maze: Maze) =>
 	Effect.loop(
 		{
@@ -322,19 +313,23 @@ const loop = (maze: Maze) =>
 			maze,
 		},
 		{
-			while: ({ stack }) => {
-				return stack.length > 0;
-			},
+			while: ({ stack }) => stack.length > 0,
 			step: (state) => state,
-			body: (state) => action(state.visited, state.maze, state.stack),
+			body: (state) => action(state),
 		},
 	);
 
-export const solveMaze = (maze: Maze) =>
+export const solveMaze = (maze: Maze, state: GameState) =>
 	loop(maze).pipe(
 		Effect.flatMap((result) => {
-			const path = result.find((s) => s !== undefined) || [] as CurrentPosition[];  
+			const path =
+				result.find((s) => s !== undefined) || ([] as CurrentPosition[]);
 			return Effect.succeed(path);
-		}
-	))
-
+		}),
+		Effect.flatMap((path) =>
+			Effect.forEach(path, (pos) =>
+				movePlayer(state, pos).pipe(Effect.delay("500 millis")),
+			),
+		),
+		Effect.catchTag("GamePlayError", (err) => Effect.fail(err)),
+	);

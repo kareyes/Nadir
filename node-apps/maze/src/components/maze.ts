@@ -6,11 +6,11 @@ import type {
 	Grid,
 } from "@nadir/global-types";
 import { Effect, Ref, pipe } from "effect";
+import { mazeApp } from "../app.js";
 import { CurrentPositionState, MazeDataState } from "../constant.js";
 import { clear } from "../util/index.js";
 import { BuilderMaze } from "./builder.js";
-import { pathFinding, runAutoMove, validateMovement } from "./gameplay.js";
-import { mazeApp } from "../app.js";
+import { pathFinding, validateMovement } from "./gameplay.js";
 import { playAgain } from "./menu.js";
 
 const getCurrentPosition = ({ x, y }: CurrentPosition, index: number) =>
@@ -78,7 +78,6 @@ export const move = ({ currentPosition, maze, playerMoves }: GamePlayState) =>
 				Ref.update(currentPosition, () => newPosition),
 				Effect.zip(drawMaze({ currentPosition, maze })),
 				Effect.zip(finalizePosition({ currentPosition, maze })),
-			
 			),
 		),
 		Effect.catchTag("GamePlayError", Effect.succeed),
@@ -107,8 +106,8 @@ const finalizePosition = (state: GameState) =>
 				console.log(
 					"Congratulations \u{1F389} \u{1F389} \u{1F389}! You have reached the end of the maze.",
 				);
-				process.stdin.removeAllListeners('keypress');
-				Effect.runPromise(playAgainPrompt())		
+				process.stdin.removeAllListeners("keypress");
+				Effect.runPromise(playAgainPrompt());
 			}
 		}),
 	);
@@ -142,9 +141,6 @@ const listener = (state: GameState) =>
 								playerMoves = { x: 0, y: 1 };
 								break;
 						}
-						console.log(
-							`Player Moves: ${JSON.stringify(playerMoves)}`,
-						);
 						move({ playerMoves, ...state });
 					}
 				});
@@ -169,13 +165,11 @@ const gameStart = pipe(
 		maze: MazeDataState,
 		currentPosition: CurrentPositionState,
 	}),
-	Effect.flatMap(({ maze, currentPosition }) =>
+	Effect.flatMap((state) =>
 		pipe(
-			Ref.get(maze),
+			Ref.get(state.maze),
 			Effect.flatMap((game) =>
-				game.gameMode === "Assist Mode"
-					? pathFinding({ maze, currentPosition })
-					: listener({ maze, currentPosition }),
+				game.gameMode === "Assist Mode" ? pathFinding(state) : listener(state),
 			),
 		),
 	),
@@ -186,9 +180,7 @@ export const initializeGameState = pipe(
 		maze: MazeDataState,
 		currentPosition: CurrentPositionState,
 	}),
-	Effect.tap(({ currentPosition, maze }) =>
-		drawMaze({ maze, currentPosition }),
-	),
+	Effect.tap((state) => drawMaze(state)),
 	Effect.tap(() => gameStart),
 	Effect.provideServiceEffect(CurrentPositionState, Ref.make({ x: 0, y: 0 })),
 );

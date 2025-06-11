@@ -1,8 +1,9 @@
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
 import type { DatabaseError } from "@nadir/global-types";
 import { Effect, Layer } from "effect";
+import { findMoonrepoRoot } from "../util/index.js";
 
-// import sql from "../../../../data.sqlite";
+const root = findMoonrepoRoot();
 
 export interface DatabaseService {
 	run: (
@@ -40,7 +41,7 @@ export const DatabaseServiceImp = (loc: string): DatabaseService => {
 export const DatabaseService = Effect.Service<DatabaseService>()(
 	"DatabaseService",
 	{
-		effect: Effect.succeed(DatabaseServiceImp("data.sqlite")),
+		effect: Effect.succeed(DatabaseServiceImp(`${root}/data.sqlite`)),
 	},
 );
 

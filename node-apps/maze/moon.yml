@@ -5,34 +5,37 @@ tasks:
   build:
     command: 'vite build'
 
-  dev:
-    command: 'vite dev --host'
-    deps:
-      - 'maze-api:dev'
-    env:
-      NODE_ENV: 'development'
-    options:
-      envFile: '/.env.shared'
+  # dev:
+  #   command: 'vite dev --host'
+  #   deps:
+  #     - 'maze-api:dev'
+  #   env:
+  #     NODE_ENV: 'development'
+  #   options:
+  #     envFile: '/.env.shared'
 
-  dev-run:
-    command: 'tsx --no-watch --experimental-sqlite src/app.ts'
+  dev:
+    command: 'tsx src/app.ts'
+    args: [
+      '--experimental-sqlite', '--no-watch ',
+      ]
     deps:
       - 'maze-api:start'
     local: true
     options:
       envFile: '/.env.shared'
 
-  dev-watch:
+  playground:
     command: 'tsx --watch --experimental-sqlite src/components/play.ts'
     local: true
     options:
       envFile: '/.env.shared'
 
   format:
-    command: 'biome check --fix --unsafe'
+    command: 'biome check --fix'
 
   start:
-    command: 'node --no-watch --experimental-sqlite dist/app.cjs'
+    command: 'node --experimental-sqlite dist/app.cjs'
     deps:
       - 'maze-api:start'
     local: true

@@ -32,6 +32,7 @@ tasks:
     deploy:
         command: ../../scripts/deploy.sh
         platform: system
+        local: true
         args: [
             "--projectID", "ouro-460410",
             "--serviceName", "maze-api",

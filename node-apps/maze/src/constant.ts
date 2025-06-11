@@ -16,7 +16,7 @@ export const APIURL = `http://${process.env.HOST}:${Number(process.env.PORT || "
 export const GameMode = {
 	auto: "Assist Mode",
 	manual: "Manual Mode",
-}
+};
 
 export const directions: CurrentPosition[] = [
 	{ x: 0, y: 1 }, // right
@@ -25,12 +25,12 @@ export const directions: CurrentPosition[] = [
 	{ x: -1, y: 0 }, // up
 ];
 
-export const Directions= {
-	"right": { x: 0, y: 1 },
-	"down": { x: 1, y: 0 },
-	"left": { x: 0, y: -1 },
-	"up": { x: -1, y: 0 },
-}
+export const Directions = {
+	right: { x: 0, y: 1 },
+	down: { x: 1, y: 0 },
+	left: { x: 0, y: -1 },
+	up: { x: -1, y: 0 },
+};
 export const RawData: MazeGameData = {
 	player: "",
 	maze: {
