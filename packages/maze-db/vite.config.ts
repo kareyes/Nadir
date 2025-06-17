@@ -12,13 +12,13 @@
 // 	// },
 // });
 
-import { defineConfig } from 'vite';
-import path from 'node:path';
+import path from "node:path";
+import { defineConfig } from "vite";
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      '@root': path.resolve(__dirname, '../../')
-    }
-  }
+	resolve: {
+		alias: {
+			"@root": path.resolve(__dirname, "../../"),
+		},
+	},
 });

@@ -18,14 +18,13 @@ export const createServer = (): HTTPServer => {
 	return {
 		start: () =>
 			Effect.async<never, unknown, never>((_resume) => {
-				const port = Number(process.env.PORT || "3000");
+				const port = Number(process.env.PORT || "8080");
 				server.listen({ host: "0.0.0.0", port: port }, (err, address) => {
 					if (err) {
 						console.error("Server error:", err);
 						process.exit(1);
 					}
 					console.log(`Server listening on ${address}`);
-					// Do not call resume, as the effect never completes
 				});
 			}),
 		register: (routes) =>

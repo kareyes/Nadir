@@ -3,6 +3,7 @@ type: "library"
 tasks:
     build:
         command: "vite build"
+        local: true
     
     dev:
         command: "vite --host"

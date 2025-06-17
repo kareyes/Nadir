@@ -59,31 +59,31 @@
 // 		});
 // 	});
 
-	// it("should return undefined for non-existent maze id", async () => {
-	//     const prog = MazeDBService.pipe(
-	//         Effect.flatMap((service) => service.getMazeById("non-existent-id")),
-	//         Effect.provide(MazeDBService.Default),
-	//     );
-	//     const result = await Effect.runPromise(prog);
-	//     expect(result).toBeUndefined();
-	// });
+// it("should return undefined for non-existent maze id", async () => {
+//     const prog = MazeDBService.pipe(
+//         Effect.flatMap((service) => service.getMazeById("non-existent-id")),
+//         Effect.provide(MazeDBService.Default),
+//     );
+//     const result = await Effect.runPromise(prog);
+//     expect(result).toBeUndefined();
+// });
 
-	// it("should retrieve all mazes", async () => {
-	//     const prog = MazeDBService.pipe(
-	//         Effect.flatMap((service) => service.getAllMazes),
-	//         Effect.provide(MazeDBService.Default),
-	//     );
-	//     const result = await Effect.runPromise(prog);
-	//     expect(Array.isArray(result)).toBe(true);
-	//     expect(result.length).toBeGreaterThanOrEqual(0);
-	// });
+// it("should retrieve all mazes", async () => {
+//     const prog = MazeDBService.pipe(
+//         Effect.flatMap((service) => service.getAllMazes),
+//         Effect.provide(MazeDBService.Default),
+//     );
+//     const result = await Effect.runPromise(prog);
+//     expect(Array.isArray(result)).toBe(true);
+//     expect(result.length).toBeGreaterThanOrEqual(0);
+// });
 
-	// it("should handle errors gracefully", async () => {
-	//     // Simulate error by passing invalid SQL or parameters if possible
-	//     const prog = MazeDBService.pipe(
-	//         Effect.flatMap((service) => service.getMazeById(undefined as never)),
-	//         Effect.provide(MazeDBService.Default),
-	//     );
-	//     await expect(Effect.runPromise(prog)).rejects.toBeDefined();
-	// });
+// it("should handle errors gracefully", async () => {
+//     // Simulate error by passing invalid SQL or parameters if possible
+//     const prog = MazeDBService.pipe(
+//         Effect.flatMap((service) => service.getMazeById(undefined as never)),
+//         Effect.provide(MazeDBService.Default),
+//     );
+//     await expect(Effect.runPromise(prog)).rejects.toBeDefined();
+// });
 // });

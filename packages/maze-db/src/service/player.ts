@@ -1,14 +1,14 @@
 import {
+	CREATE_PLAYER_TABLE,
+	DELETE_PLAYER,
 	type DatabaseError,
+	INSERT_PLAYER,
 	type PlayerData,
 	type PlayerDataArray,
-	CREATE_PLAYER_TABLE,
+	PlayerDataArraySchema,
+	PlayerDataSchema,
 	SELECT_ALL_PLAYERS,
 	SELECT_PLAYER,
-	PlayerDataArraySchema,
-	DELETE_PLAYER,
-	PlayerDataSchema,
-	INSERT_PLAYER,
 } from "@nadir/global-types";
 import { Effect, Schema, pipe } from "effect";
 import { DatabaseService } from "../db/index.js";
