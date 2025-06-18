@@ -1,10 +1,10 @@
-#### BASE STAGE
-#### Installs moon.
-
-FROM node:latest AS base
+# === BASE STAGE ===
+FROM node:20-alpine AS base
 WORKDIR /app
 
 # Install moon binary
+RUN apk add --no-cache bash curl 
+
 RUN curl -fsSL https://moonrepo.dev/install/moon.sh | bash
 ENV PATH="/root/.moon/bin:$PATH"
 
@@ -49,5 +49,8 @@ FROM base AS start
 COPY --from=build /root/.proto /root/.proto
 COPY --from=build /app /app
 
-CMD moon run maze-api:start
+# Copy built files only
+COPY --from=build /app/packages/maze-api/dist ./dist
 
+# Entrypoint for Cloud Run
+CMD ["moon",  "maze-api:start"]

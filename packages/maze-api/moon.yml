@@ -24,7 +24,7 @@ tasks:
         command: 'biome check --fix --unsafe'
 
     start:
-        command: "node --experimental-sqlite dist/index.cjs"
+        command: "node dist/index.cjs"
         deps: ["build"]
         local: true
         options:
