@@ -15,7 +15,7 @@ describe("Maze API Router Tests", () => {
 		server = fastify();
 
 		server.get("/", (request, reply) => {
-			reply.send([{ Hell: "Mazetes", age: 99 }]);
+			reply.send([{ Hell: "Maze", age: 99 }]);
 		});
 
 		return server;
