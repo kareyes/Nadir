@@ -10,6 +10,7 @@ env:
   REGION: us-central1
   SERVICE_NAME: maze-api
   IMAGE: us-central1-docker.pkg.dev/ouro-460410/astrid/maze-api:latest
+  DOCKER_IMAGE_PATH: ./packages/maze-api/Dockerfile
 
 jobs:
   deploy:
@@ -35,7 +36,7 @@ jobs:
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
       - name: Build Docker image
-        run: docker build -t $IMAGE .
+        run: docker build -f $DOCKER_IMAGE_PATH -t $IMAGE .
 
       - name: Push Docker image to GCR
         run: docker push $IMAGE
