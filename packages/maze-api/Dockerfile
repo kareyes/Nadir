@@ -53,4 +53,4 @@ COPY --from=build /app /app
 COPY --from=build /app/packages/maze-api/dist ./dist
 
 # Entrypoint for Cloud Run
-CMD ["moon",  "maze-api:start"]
+CMD ["node",  "dist/index.cjs"]
