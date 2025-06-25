@@ -185,9 +185,9 @@ const grid = [
 ];
 
 export const mazeModel = {
-	maze_id: '002',
-	mazeName: 'Level 2: The Maze of Shadows',
-	description: 'This is a 10x10 maze',
+	maze_id: "002",
+	mazeName: "Level 2: The Maze of Shadows",
+	description: "This is a 10x10 maze",
 	created_at: new Date().toISOString(),
 	numCols: 10,
 	numRows: 10,

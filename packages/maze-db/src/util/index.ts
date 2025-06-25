@@ -3,7 +3,7 @@ import * as path from "node:path";
 
 export const findMoonrepoRoot = (startDir: string = process.cwd()): string => {
 	let dir: string = startDir;
-	console.log(dir)
+	console.log(dir);
 
 	while (dir !== path.parse(dir).root) {
 		const moonConfigPath: string = path.join(dir, "README.md");

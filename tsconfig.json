@@ -6,6 +6,9 @@
   ],
   "references": [
     {
+      "path": "apps/maze-app"
+    },
+    {
       "path": "node-apps/maze"
     },
     {
@@ -19,6 +22,9 @@
     },
     {
       "path": "packages/maze-db"
+    },
+    {
+      "path": "ui-packages/starlight"
     }
   ]
 }

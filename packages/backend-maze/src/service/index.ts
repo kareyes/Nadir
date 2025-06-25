@@ -1,16 +1,16 @@
-import { Effect, Schema } from 'effect';
-import { DatabaseService } from '../db/index.js';
 import {
-	SELECT_METADATA,
-	SELECTED_MAZE,
 	type MazeMetaArray,
 	MetaArraySchema,
 	ParseMazeSchema,
 	type ResponseMaze,
-} from '@nadir/global-types';
+	SELECTED_MAZE,
+	SELECT_METADATA,
+} from "@nadir/global-types";
+import { Effect, Schema } from "effect";
+import { DatabaseService } from "../db/index.js";
 
 export class MazeDBServices extends Effect.Service<MazeDBServices>()(
-	'MazeDBApi',
+	"MazeDBApi",
 	{
 		dependencies: [DatabaseService.Default],
 		effect: Effect.gen(function* () {
@@ -24,12 +24,12 @@ export class MazeDBServices extends Effect.Service<MazeDBServices>()(
 								Effect.map((response) => {
 									return Schema.decodeUnknownSync(ParseMazeSchema)(response);
 								}),
-								Effect.catchTag('DatabaseError', (error) => {
-									console.log('err', error);
+								Effect.catchTag("DatabaseError", (error) => {
+									console.log("err", error);
 									return Effect.fail(error);
 								}),
 							);
-				}),
+					}),
 				getMetadata: () =>
 					Effect.gen(function* () {
 						return yield* databaseService
@@ -38,8 +38,8 @@ export class MazeDBServices extends Effect.Service<MazeDBServices>()(
 								Effect.map((response) => {
 									return Schema.decodeUnknownSync(MetaArraySchema)(response);
 								}),
-								Effect.catchTag('DatabaseError', (error) => {
-									console.log('err', error);
+								Effect.catchTag("DatabaseError", (error) => {
+									console.log("err", error);
 									return Effect.fail(error);
 								}),
 							);

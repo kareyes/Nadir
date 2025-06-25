@@ -1,5 +1,5 @@
 # === BASE STAGE ===
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 WORKDIR /app
 
 # Install moon binary
@@ -53,4 +53,4 @@ COPY --from=build /app /app
 COPY --from=build /app/packages/maze-api/dist ./dist
 
 # Entrypoint for Cloud Run
-CMD ["node",  "dist/index.cjs"]
+CMD ["moon",  "maze-api:start"]

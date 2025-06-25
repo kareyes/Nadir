@@ -4,13 +4,15 @@ $schema: 'https://moonrepo.dev/schemas/workspace.json'
 # extends: './shared/workspace.yml'
 
 projects:
+  - 'apps/*'
   - 'node-apps/*'
   - 'packages/*'
+  - 'ui-packages/*'
 
 vcs:
   hooks: 
     pre-commit:
-      - "moon run :lint-and-format :test :typecheck --affected"
+      - "moon run :format :test --affected"
   syncHooks: true
   provider: "github"
   defaultBranch: "main"

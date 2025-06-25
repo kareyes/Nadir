@@ -1,16 +1,20 @@
-// import { describe, it, expect } from "vitest";
-import { Data, Effect, pipe } from "effect";
 // import { DatabaseService } from "./index.js";
 // import { DatabaseError } from "@nadir/global-types";
 import { DatabaseSync, type SQLInputValue } from "node:sqlite";
-import { type DatabaseError, GET_ALL_MAZE_METADATA, type MazeMetaArray, SELECT_METADATA } from "@nadir/global-types";
-
+import {
+	type DatabaseError,
+	GET_ALL_MAZE_METADATA,
+	type MazeMetaArray,
+	SELECT_METADATA,
+} from "@nadir/global-types";
+// import { describe, it, expect } from "vitest";
+import { Data, Effect, pipe } from "effect";
 
 // // Mocking the DatabaseService for testing
 // // Note: In a real-world scenario, you might want to use a mocking library or framework
 // // to create a more sophisticated mock of the DatabaseService.
 // // This is a simple mock for demonstration purposes.
-// // Mocking the runPromise function to simulate database operations  
+// // Mocking the runPromise function to simulate database operations
 
 // const runPromise = <T>(effect: Effect.Effect<T, DatabaseError, never>) => {
 //   return Effect.runPromise(effect).catch((error) => {
@@ -54,10 +58,6 @@ import { type DatabaseError, GET_ALL_MAZE_METADATA, type MazeMetaArray, SELECT_M
 //     );
 //   }
 //   }
-
-
-
-
 
 // describe("DatabaseService", () => {
 //   const dbService = new DatabaseService();
@@ -106,67 +106,49 @@ import { type DatabaseError, GET_ALL_MAZE_METADATA, type MazeMetaArray, SELECT_M
 //   });
 // });
 
-
 export interface DatabaseService {
-  run: (
-    sql: string,
-    params?: SQLInputValue[],
-  ) => Effect.Effect<unknown, DatabaseError, never>;
-  get: <T>(
-    sql: string,
-    params: SQLInputValue[],
-  ) => Effect.Effect<T, DatabaseError, never>;
-  all: <T>(
-    sql: string,
-  ) => Effect.Effect<T, DatabaseError, never>;
+	run: (
+		sql: string,
+		params?: SQLInputValue[],
+	) => Effect.Effect<unknown, DatabaseError, never>;
+	get: <T>(
+		sql: string,
+		params: SQLInputValue[],
+	) => Effect.Effect<T, DatabaseError, never>;
+	all: <T>(sql: string) => Effect.Effect<T, DatabaseError, never>;
 }
 
 export const DatabaseServiceImp = (): DatabaseService => {
-  const db = new DatabaseSync("data.sqlite");
-  return {
-    get: <T>(sql: string, params: SQLInputValue[]) => Effect.tryPromise({
-      try: () => Promise.resolve(db.prepare(sql).get(...params) as T),
-      catch: (e) => e as DatabaseError
-    }),
-    all: <T>(sql: string)  => Effect.tryPromise({
-      try: () => Promise.resolve(db.prepare(sql).all() as T),
-      catch: (e) => e as DatabaseError
-    }),
-    run: (sql, params) => Effect.tryPromise({
-      try: () => Promise.resolve(db.prepare(sql).run(...(params ?? []))),
-      catch: (e) => e as DatabaseError
-    }),
-  };
+	const db = new DatabaseSync("data.sqlite");
+	return {
+		get: <T>(sql: string, params: SQLInputValue[]) =>
+			Effect.tryPromise({
+				try: () => Promise.resolve(db.prepare(sql).get(...params) as T),
+				catch: (e) => e as DatabaseError,
+			}),
+		all: <T>(sql: string) =>
+			Effect.tryPromise({
+				try: () => Promise.resolve(db.prepare(sql).all() as T),
+				catch: (e) => e as DatabaseError,
+			}),
+		run: (sql, params) =>
+			Effect.tryPromise({
+				try: () => Promise.resolve(db.prepare(sql).run(...(params ?? []))),
+				catch: (e) => e as DatabaseError,
+			}),
+	};
 };
 
 const DBServiceLive = Effect.succeed(DatabaseServiceImp());
 
-
-export const DBService = Effect.Service<DatabaseService>()(
-    'DatabaseService',
-    {
-        effect: Effect.succeed(DatabaseServiceImp())
-    },
-)
-
-
-
+export const DBService = Effect.Service<DatabaseService>()("DatabaseService", {
+	effect: Effect.succeed(DatabaseServiceImp()),
+});
 
 // Example usage of the DatabaseService
 // const SELECT_METADATA = GET_ALL_MAZE_METADATA;
 // const SELECTED_MAZE = "SELECT * FROM mazes WHERE id = ?";
-// const DatabaseService = Effect.provide(DBService, DBServiceLive);        
-
-
-
-
-
-
-
-
-
-
-
+// const DatabaseService = Effect.provide(DBService, DBServiceLive);
 
 // const runTest = pipe(
 //     DBService,
@@ -186,16 +168,12 @@ export const DBService = Effect.Service<DatabaseService>()(
 //     Effect.provide(DBService.Default),
 // )
 
-
 const runtest = Effect.gen(function* () {
-    const dbService = yield* DBService;
-    const result = yield* dbService.all<MazeMetaArray>(SELECT_METADATA);
-    console.log("Retrieved metadata:", result);
-    return result;
-}).pipe(
-    Effect.provide(DBService.Default)
-);
+	const dbService = yield* DBService;
+	const result = yield* dbService.all<MazeMetaArray>(SELECT_METADATA);
+	console.log("Retrieved metadata:", result);
+	return result;
+}).pipe(Effect.provide(DBService.Default));
 
-Effect.runPromise(runtest)
-    .then((test) => console.log(test))
-    // .catch((error: DatabaseError) => console.error("Error creating test table:", error));
+Effect.runPromise(runtest).then((test) => console.log(test));
+// .catch((error: DatabaseError) => console.error("Error creating test table:", error));

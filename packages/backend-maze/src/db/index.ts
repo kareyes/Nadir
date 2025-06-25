@@ -1,10 +1,10 @@
-import { DatabaseSync, type SQLInputValue } from 'node:sqlite';
-import {Effect, pipe } from 'effect';
-import { DatabaseError } from '@nadir/global-types';
-// import 
+import { DatabaseSync, type SQLInputValue } from "node:sqlite";
+import { DatabaseError } from "@nadir/global-types";
+import { Effect, pipe } from "effect";
+// import
 
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,7 +37,7 @@ const DBMazeClient = Effect.succeed(() => {
 });
 
 // const builder = {
-	
+
 // 	buildVerticalRow: (vertical: string ) =>
 // 		pipe(
 // 			Effect.succeed(vertical)
@@ -50,16 +50,12 @@ const DBMazeClient = Effect.succeed(() => {
 // >();
 
 // export const BuilderMazeLive = Layer.succeed(
-// 	BuilderMaze,  
+// 	BuilderMaze,
 // 	builder,
 // );
 
-
-
-
-
 export class DatabaseService extends Effect.Service<DatabaseService>()(
-	'DatabaseService',
+	"DatabaseService",
 	{
 		effect: Effect.gen(function* () {
 			return {

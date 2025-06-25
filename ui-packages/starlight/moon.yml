@@ -1,0 +1,34 @@
+type: "application"
+
+tasks:
+  build:
+    command:  "vite build"
+  
+  dev:
+    command: "vite build && npm run prepack"
+    local: true
+    options:
+      envFile: "/.env.shared"
+
+
+  preview:
+    command: "vite preview"
+    env:
+      NODE_ENV: "production"
+
+  lint-and-format:
+    command:
+      - 'biome'
+      - "check"
+      - "--fix"
+
+  storybook:
+    command: "storybook dev -p 6006"
+    local: true
+    options:
+      envFile: "/.env.shared"
+
+  storybook-build:
+    command: "storybook build"
+    options:
+      envFile: "/.env.shared" 

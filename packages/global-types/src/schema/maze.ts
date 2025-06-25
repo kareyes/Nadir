@@ -1,4 +1,4 @@
-import { Schema } from 'effect';
+import { Schema } from "effect";
 
 export const CellSchema = Schema.Boolean;
 
@@ -25,7 +25,7 @@ export const MazeSchema = Schema.Struct({
 	grid: Schema.Array(GridSchema),
 });
 
-export const ResponseMazeSchema = MazeSchema.omit('grid').pipe(
+export const ResponseMazeSchema = MazeSchema.omit("grid").pipe(
 	Schema.extend(Schema.Struct({ grid: Schema.String })),
 );
 
@@ -65,11 +65,8 @@ export const PlayMovementSchema = Schema.Struct({
 	maze: MazeSchema,
 });
 
-
-
 export const MazeGameDataSchema = Schema.Struct({
 	maze: MazeSchema,
 	player: Schema.String,
 	gameMode: Schema.String,
 });
-

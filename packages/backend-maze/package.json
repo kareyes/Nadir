@@ -3,9 +3,7 @@
 	"description": "Backend maze package for Nadir",
 	"version": "1.0.0",
 	"main": "./src/index.js",
-	"files": [
-		"src/**/*"
-	],
+	"files": ["src/**/*"],
 	"dependencies": {
 		"@effect/platform": "^0.80.7",
 		"@effect/platform-bun": "^0.60.12",

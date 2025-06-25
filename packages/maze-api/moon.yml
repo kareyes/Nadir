@@ -29,6 +29,13 @@ tasks:
         local: true
         options:
             envFile: "/.env.shared"
+    
+    docker-build:
+        command: "docker build -t maze-samp:latest -f ./packages/maze-api/Dockerfile ."
+        # command: "docker build -t us-central1-docker.pkg.dev/ouro-460410/astrid/maze-api:latest -f ./packages/maze-api/Dockerfile ."
+        local: true
+        options:
+            runFromWorkspaceRoot: true
 
     deploy:
         command: ../../scripts/deploy.sh

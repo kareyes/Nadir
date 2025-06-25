@@ -1,3 +1,5 @@
 packages:
+  - "apps/*"
   - "node-apps/*"
   - "packages/*"
+  - "ui-packages/*"

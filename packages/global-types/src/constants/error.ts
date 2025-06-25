@@ -1,19 +1,19 @@
 export class JSONError {
-	readonly _tag = 'JSONError';
+	readonly _tag = "JSONError";
 }
 
 export class FetchError {
-	readonly _tag = 'FetchError';
+	readonly _tag = "FetchError";
 	constructor(readonly message: string) {}
 }
 
 export class DatabaseError {
-	readonly _tag = 'DatabaseError';
+	readonly _tag = "DatabaseError";
 	constructor(readonly message: string) {}
 }
 
 export class GamePlayError {
-	readonly _tag = 'GamePlayError';
+	readonly _tag = "GamePlayError";
 	constructor(readonly message: string) {}
 }
 
