@@ -12,9 +12,6 @@
       "path": "node-apps/maze"
     },
     {
-      "path": "packages/backend-maze"
-    },
-    {
       "path": "packages/global-types"
     },
     {
