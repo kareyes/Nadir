@@ -25,6 +25,8 @@ export const MazeSchema = Schema.Struct({
 	grid: Schema.Array(GridSchema),
 });
 
+export const MazeArraySchema = Schema.Array(MazeSchema);
+
 export const ResponseMazeSchema = MazeSchema.omit("grid").pipe(
 	Schema.extend(Schema.Struct({ grid: Schema.String })),
 );

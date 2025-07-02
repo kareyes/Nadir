@@ -6,7 +6,7 @@
   ],
   "references": [
     {
-      "path": "apps/maze-app"
+      "path": "apps/maze-web"
     },
     {
       "path": "node-apps/maze"

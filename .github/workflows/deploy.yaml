@@ -1,42 +1,42 @@
-# name: Deploy to Cloud Run
+name: Deploy to Cloud Run
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# env:
-#   PROJECT_ID: ouro-460410
-#   REGION: us-central1
-#   SERVICE_NAME: maze-api
-#   IMAGE: us-central1-docker.pkg.dev/ouro-460410/astrid/maze-api:latest
-#   DOCKER_IMAGE_PATH: ./packages/maze-api/Dockerfile
+env:
+  PROJECT_ID: ouro-460410
+  REGION: us-central1
+  SERVICE_NAME: maze-api
+  IMAGE: us-central1-docker.pkg.dev/ouro-460410/astrid/maze-api:latest
+  DOCKER_IMAGE_PATH: ./packages/maze-api/Dockerfile
 
-# jobs:
-#   deploy:
-#     name: Build & Deploy
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
 
-#     permissions:
-#       contents: 'read'
-#       id-token: 'write'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-#     steps:
-#       - name: Checkout repo
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: Authenticate to Google Cloud
-#         uses: google-github-actions/auth@v2
-#         with:
-#           credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-#       - name: Set up Google Cloud SDK
-#         uses: google-github-actions/setup-gcloud@v2
-#         with:
-#           project_id: ${{ env.PROJECT_ID }}
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
 
-#       - name: Authenticate Docker for GCR
-#         run: gcloud auth configure-docker us-central1-docker.pkg.dev
+      - name: Authenticate Docker for GCR
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
 #       - name: Build Docker image
 #         run: docker build -f $DOCKER_IMAGE_PATH -t $IMAGE .

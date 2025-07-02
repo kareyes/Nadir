@@ -6,6 +6,8 @@ tasks:
   
   dev:
     command: "vite dev"
+    deps: 
+      - 'maze-api:start'
     local: true
     options:
       envFile: "/.env.shared"
