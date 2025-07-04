@@ -1,15 +1,26 @@
-type: "application"
+type: "library"
 
 tasks:
   build:
     command:  "vite build"
+    deps: ["prepack"]
   
   dev:
-    command: "vite build && npm run prepack"
+    command: "vite dev"
     local: true
     options:
       envFile: "/.env.shared"
+  
+  prepack:
+    command: "pnpm svelte-kit sync && svelte-package && publint"
 
+  check:
+    command: "pnpm svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+
+  pack:
+    command: "svelte-package"
+    options:
+      envFile: "/.env.shared"
 
   preview:
     command: "vite preview"

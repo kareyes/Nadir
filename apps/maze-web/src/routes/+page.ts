@@ -9,8 +9,8 @@ export const load = ({ params }) => {
             title: `Title for ${params} goes here`,
             // content: `Content for ${params.slug} goes here`
         },
-        maze: _loadMaze(),
-        players: _loadPlayers()
+        maze: _loadMaze,
+        players: _loadPlayers
     };
 };
 

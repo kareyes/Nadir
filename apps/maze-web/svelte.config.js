@@ -8,7 +8,8 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: { adapter: adapter() ,
 		alias: {
-			"@nadir/global-types": '../../packages/global-types/src/index'
+			"@nadir/global-types": '../../packages/global-types/src/*',
+			"@nadir/starlight": '../../ui-packages/starlight/src/*',
 		}
 	}
 };
