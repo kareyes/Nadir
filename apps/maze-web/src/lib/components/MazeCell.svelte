@@ -1,25 +1,34 @@
 <script lang="ts">
-const { row, col, isPlayer, isStart, isEnd, isInSolution, hasTopWall, hasLeftWall, hasBottomWall, hasRightWall } = $props<{
-    row: number;
-    col: number;
-    isPlayer: boolean;
-    isStart: boolean;
-    isEnd: boolean;
-    isInSolution: boolean;
-    hasTopWall: boolean;
-    hasLeftWall: boolean;
-    hasBottomWall: boolean;
-    hasRightWall: boolean;
+const {
+	row,
+	col,
+	isPlayer,
+	isStart,
+	isEnd,
+	isInSolution,
+	hasTopWall,
+	hasLeftWall,
+	hasBottomWall,
+	hasRightWall,
+} = $props<{
+	row: number;
+	col: number;
+	isPlayer: boolean;
+	isStart: boolean;
+	isEnd: boolean;
+	isInSolution: boolean;
+	hasTopWall: boolean;
+	hasLeftWall: boolean;
+	hasBottomWall: boolean;
+	hasRightWall: boolean;
 }>();
 
 const directions = {
-    top: hasTopWall ? 'top-0 left-0 right-0 h-0.5' : '',
-    left: hasLeftWall ? 'top-0 bottom-0 left-0 w-0.5' : '',
-    bottom: hasBottomWall ? 'bottom-0 left-0 right-0 h-0.5' : '',
-    right: hasRightWall ? 'top-0 bottom-0 right-0 w-0.5' : ''
+	top: hasTopWall ? "top-0 left-0 right-0 h-0.5" : "",
+	left: hasLeftWall ? "top-0 bottom-0 left-0 w-0.5" : "",
+	bottom: hasBottomWall ? "bottom-0 left-0 right-0 h-0.5" : "",
+	right: hasRightWall ? "top-0 bottom-0 right-0 w-0.5" : "",
 };
-
-
 </script>
 
 <div class="w-full h-full relative aspect-square bg-white">

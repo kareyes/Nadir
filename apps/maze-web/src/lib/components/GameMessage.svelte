@@ -1,12 +1,12 @@
 <script lang="ts">
-    import { fade } from 'svelte/transition';
+import { fade } from "svelte/transition";
 
-    export let message: string;
-    export let isGameOver: boolean;
+export let message: string;
+export let isGameOver: boolean;
 
-    function dispatch(e: CustomEvent) {
-        return e;
-    }
+function dispatch(e: CustomEvent) {
+	return e;
+}
 </script>
 
 {#if message}

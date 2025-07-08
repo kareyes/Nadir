@@ -3,15 +3,16 @@ type: "application"
 tasks:
   build:
     command:  "vite build"
+    local: true
   
   dev:
     command: "vite dev"
     deps: 
       - 'maze-api:start'
     local: true
-    options:
-      envFile: "/.env.shared"
-
+  
+  format:
+    command: 'biome check --fix --unsafe'
 
   preview:
     command: "node dist/app.js"

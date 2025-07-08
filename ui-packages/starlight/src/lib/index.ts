@@ -14,6 +14,7 @@ import * as Tooltip from "./components/ui/tooltip/index.js";
 import * as Form from "./components/ui/form/index.js";
 import * as Avatar from "./components/ui/avatar/index.js";
 import * as Label from "./components/ui/label/index.js";
+import * as Select from "./components/ui/select/index.js";
 export {
 	Avatar,
 	Button,
@@ -30,4 +31,5 @@ export {
 	Tooltip,
 	// DataTable,
 	Form,
+	Select
 };

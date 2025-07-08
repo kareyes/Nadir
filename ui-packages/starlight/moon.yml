@@ -3,7 +3,8 @@ type: "library"
 tasks:
   build:
     command:  "vite build"
-    deps: ["prepack"]
+    deps: ["prepack", pack, publint]
+    local: true
   
   dev:
     command: "vite dev"
@@ -12,13 +13,16 @@ tasks:
       envFile: "/.env.shared"
   
   prepack:
-    command: "pnpm svelte-kit sync && svelte-package && publint"
+    command: "pnpm svelte-kit sync"
+
+  publint:
+    command: "pnpm publint"
 
   check:
     command: "pnpm svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
 
   pack:
-    command: "svelte-package"
+    command: "pnpm svelte-package"
     options:
       envFile: "/.env.shared"
 

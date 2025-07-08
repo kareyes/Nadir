@@ -7,9 +7,8 @@ import {
 import { Effect, type Schema, flow, pipe } from "effect";
 // import { env } from '$env/dynamic/private';
 
-
 // console.log(process.env.PORT);
- 
+
 // const APIURL = `http://${process.env.HOST}:${Number(process.env.PORT || "8080")}`;
 const APIURL = "http://localhost:8080";
 

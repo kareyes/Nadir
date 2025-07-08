@@ -1,7 +1,7 @@
 <script lang="ts">
-    function dispatch(key: string) {
-        return new CustomEvent('move', { detail: key });
-    }
+function dispatch(key: string) {
+	return new CustomEvent("move", { detail: key });
+}
 </script>
 
 <div class="mt-8 text-center">
