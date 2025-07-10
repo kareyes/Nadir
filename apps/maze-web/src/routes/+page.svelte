@@ -2,10 +2,10 @@
 import ControlButtons from "$lib/components/ControlButtons.svelte";
 import GameMessage from "$lib/components/GameMessage.svelte";
 import LevelSelector from "$lib/components/LevelSelector.svelte";
-	import MazeGenerator from "$lib/components/MazeGenerator.svelte";
+import MazeGenerator from "$lib/components/MazeGenerator.svelte";
 import MazeGrid from "$lib/components/MazeGrid.svelte";
 import type { Maze } from "@nadir/global-types";
-import { Button } from "@nadir/starlight";
+import { Button } from "@nadir/solara";
 import { onMount } from "svelte";
 
 let { data } = $props();
@@ -193,9 +193,9 @@ onMount(() => {
 <main class="container mx-auto px-4 py-8">
     <h1 class="text-4xl font-bold mb-8 text-center">Maze Game</h1>
     
-    <!-- <Button variant="destructive" class="mb-4">
+    <Button variant="destructive" class="mb-4">
         Reset Game
-    </Button> -->
+    </Button>
     <!-- <MazeGenerator 
         initialRows={5} 
         initialCols={5} 

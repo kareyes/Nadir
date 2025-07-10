@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {Button, Badge} from "$library/index.js";
+    import {Button, Badge} from "$lib/index.js";
       import * as Select from "$lib/components/ui/select/index.js";
  
   const fruits = [

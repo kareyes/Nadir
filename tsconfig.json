@@ -21,7 +21,7 @@
       "path": "packages/maze-db"
     },
     {
-      "path": "ui-packages/midnight"
+      "path": "ui-packages/solara"
     },
     {
       "path": "ui-packages/starlight"

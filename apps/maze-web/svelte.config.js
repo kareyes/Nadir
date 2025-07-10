@@ -9,7 +9,10 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		alias: {
-			"@nadir/global-types": "../../packages/global-types/src/*"
+			"@nadir/global-types": "../../packages/global-types/src/*",
+			// "@nadir/starlight": "../../ui-packages/starlight/src/*",
+			"@nadir/solara": "../../ui-packages/solara/src/*",
+			complib: "../../ui-packages/solara/src/lib/*",
 		},
 	},
 };

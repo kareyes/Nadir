@@ -1,0 +1,48 @@
+type: "library"
+
+tasks:
+  build:
+    command:  "vite build"
+    local: true
+  
+  dev:
+    command: "vite dev"
+    local: true
+    options:
+      envFile: "/.env.shared"
+  
+  prepack:
+    command: "pnpm svelte-kit sync"
+
+  publint:
+    command: "pnpm publint"
+
+  check:
+    command: "pnpm svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+
+  pack:
+    command: "pnpm svelte-package"
+    options:
+      envFile: "/.env.shared"
+
+  preview:
+    command: "vite preview"
+    env:
+      NODE_ENV: "production"
+
+  lint-and-format:
+    command:
+      - 'biome'
+      - "check"
+      - "--fix"
+
+  storybook:
+    command: "storybook dev -p 6006"
+    local: true
+    options:
+      envFile: "/.env.shared"
+
+  storybook-build:
+    command: "storybook build"
+    options:
+      envFile: "/.env.shared" 

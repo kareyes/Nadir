@@ -1,25 +1,24 @@
 <script lang="ts">
-    // import {Select} from "@nadir/starlight"
+import { Select } from "@nadir/solara";
 const { levels, currentLevel, selectLevel } = $props<{
 	levels: number;
 	currentLevel: number;
 	selectLevel: (index: number) => void;
 }>();
 
-
 const fruits = [
-    { value: "apple", label: "Apple" },
-    { value: "banana", label: "Banana" },
-    { value: "blueberry", label: "Blueberry" },
-    { value: "grapes", label: "Grapes" },
-    { value: "pineapple", label: "Pineapple" }
-  ];
- 
-  let value = $state("");
- 
-  const triggerContent = $derived(
-    fruits.find((f) => f.value === value)?.label ?? "Select a fruit"
-  );
+	{ value: "apple", label: "Apple" },
+	{ value: "banana", label: "Banana" },
+	{ value: "blueberry", label: "Blueberry" },
+	{ value: "grapes", label: "Grapes" },
+	{ value: "pineapple", label: "Pineapple" },
+];
+
+let value = $state("");
+
+const triggerContent = $derived(
+	fruits.find((f) => f.value === value)?.label ?? "Select a fruit",
+);
 </script>
 
 {#if levels > 1}
@@ -39,7 +38,7 @@ const fruits = [
     </div>
 {/if}
 
-<!-- <Select.Root type="single" name="favoriteFruit" bind:value>
+<Select.Root type="single" name="favoriteFruit" bind:value>
   <Select.Trigger class="w-[180px]">
     {triggerContent}
   </Select.Trigger>
@@ -57,7 +56,7 @@ const fruits = [
       {/each}
     </Select.Group>
   </Select.Content>
-</Select.Root> -->
+</Select.Root>
 
 <!-- <div class="flex justify-center">
     <Select.Root

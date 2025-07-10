@@ -9,7 +9,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": ["node_modules", "tsconfig.json", "tsconfig.options.json"]
+		"ignore": ["node_modules", "tsconfig.json", "tsconfig.options.json", ".svelte-kit"]
 	},
 	"formatter": {
 		"enabled": true,
