@@ -1,7 +1,5 @@
 <script lang="ts">
 const {
-	row,
-	col,
 	isPlayer,
 	isStart,
 	isEnd,
@@ -10,18 +8,7 @@ const {
 	hasLeftWall,
 	hasBottomWall,
 	hasRightWall,
-} = $props<{
-	row: number;
-	col: number;
-	isPlayer: boolean;
-	isStart: boolean;
-	isEnd: boolean;
-	isInSolution: boolean;
-	hasTopWall: boolean;
-	hasLeftWall: boolean;
-	hasBottomWall: boolean;
-	hasRightWall: boolean;
-}>();
+} = $props();
 
 const directions = {
 	top: hasTopWall ? "top-0 left-0 right-0 h-0.5" : "",
@@ -31,50 +18,23 @@ const directions = {
 };
 </script>
 
-<div class="w-full h-full relative aspect-square bg-white">
+<div class="w-full h-full relative aspect-square bg-gray-900">
     {#if isPlayer}
-        <div class="absolute inset-0 flex items-center justify-center m-1 text-2xl">🧑‍🦱</div>
+        <div class="absolute inset-0 flex items-center justify-center m-1 text-2xl filter drop-shadow-[0_0_8px_#00e0ff]">🧑‍🦱</div>
     {:else if isStart}
-        <div class="absolute inset-0 bg-green-200 m-1"></div>
+        <div class="absolute inset-0 bg-green-400/30 border border-green-400/50 shadow-[0_0_10px_rgba(34,197,94,0.3)] m-1"></div>
     {:else if isEnd}
-        <div class="absolute inset-0 bg-red-200 m-1"></div>
+        <div class="absolute inset-0 bg-red-400/30 border border-red-400/50 shadow-[0_0_10px_rgba(239,68,68,0.3)] m-1"></div>
     {:else if isInSolution}
-        <div class="absolute inset-0 bg-yellow-200 opacity-70 m-1 animate-fade-in"></div>
+        <div class="absolute inset-0 flex items-center justify-center m-1">
+            <div class="w-2 h-2 bg-pink-400 border border-pink-300 rounded-full shadow-[0_0_6px_rgba(244,114,182,0.6)] animate-pulse"></div>
+        </div>
     {/if}
 
     {#each Object.entries(directions) as [index, wall]}
         {#if wall}
-            <div class="absolute bg-gray-800 {wall}"></div>
+            <div class="absolute bg-cyan-400 shadow-[0_0_4px_rgba(6,182,212,0.5)] {wall}"></div>
         {/if}
     {/each}
-
-    <!-- {#if hasTopWall}
-        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gray-800"></div>
-    {/if}
-    {#if hasLeftWall}
-        <div class="absolute top-0 bottom-0 left-0 w-0.5 bg-gray-800"></div>
-    {/if} -->
-
-    <!-- {#if hasTopWall}
-        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gray-800"></div>
-    {/if}
-    {#if hasLeftWall}
-        <div class="absolute top-0 bottom-0 left-0 w-0.5 bg-gray-800"></div>
-    {/if}
-    {#if hasBottomWall}
-        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-800"></div>
-    {/if}
-    {#if hasRightWall}
-        <div class="absolute top-0 bottom-0 right-0 w-0.5 bg-gray-800"></div>
-    {/if} -->
 </div>
 
-<style>
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 0.7; }
-}
-.animate-fade-in {
-  animation: fade-in 0.4s ease-in;
-}
-</style>

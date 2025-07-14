@@ -46,6 +46,11 @@ export const ParseMazeSchema = Schema.transform(
 	},
 );
 
+export const CoordinateSchema = Schema.Struct({
+	x: Schema.Number,
+	y: Schema.Number,
+});
+
 export const ParseMazeSchemArray = Schema.Array(ParseMazeSchema);
 
 export const CurrentPositionSchema = Schema.Struct({

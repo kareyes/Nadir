@@ -1,6 +1,7 @@
 import type { Ref, Schema } from "effect";
 import type {
 	CellSchema,
+	CoordinateSchema,
 	CurrentPositionSchema,
 	GamePlaySchema,
 	GridSchema,
@@ -25,6 +26,7 @@ export interface ResponseMaze
 export interface Maze extends Schema.Schema.Type<typeof ParseMazeSchema> {}
 export interface MazeArray
 	extends Schema.Schema.Type<typeof ParseMazeSchemArray> {}
+export interface Coordinates extends Schema.Schema.Type<typeof CoordinateSchema> {}
 
 export type GameState = {
 	maze: Ref.Ref<MazeGameData>;
@@ -56,3 +58,26 @@ export type FindPathArgs = {
 	maze: Maze;
 	stack: MazePath[];
 };
+
+export type TileMap={
+	row: number;
+	col: number;
+}
+
+export type PlayerStats ={
+	moves: number;
+	timeTaken: string; // in seconds
+}
+
+export type BuildMazeConditions = {
+	isPlayer: boolean;
+	isStart: boolean;
+	isEnd: boolean;
+	isInSolution: boolean;
+	hasTopWall: boolean;
+	hasLeftWall: boolean;
+	hasBottomWall: boolean;
+	hasRightWall: boolean;
+}
+
+
