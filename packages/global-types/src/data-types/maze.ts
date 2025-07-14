@@ -26,7 +26,8 @@ export interface ResponseMaze
 export interface Maze extends Schema.Schema.Type<typeof ParseMazeSchema> {}
 export interface MazeArray
 	extends Schema.Schema.Type<typeof ParseMazeSchemArray> {}
-export interface Coordinates extends Schema.Schema.Type<typeof CoordinateSchema> {}
+export interface Coordinates
+	extends Schema.Schema.Type<typeof CoordinateSchema> {}
 
 export type GameState = {
 	maze: Ref.Ref<MazeGameData>;
@@ -59,15 +60,15 @@ export type FindPathArgs = {
 	stack: MazePath[];
 };
 
-export type TileMap={
+export type TileMap = {
 	row: number;
 	col: number;
-}
+};
 
-export type PlayerStats ={
+export type PlayerStats = {
 	moves: number;
 	timeTaken: string; // in seconds
-}
+};
 
 export type BuildMazeConditions = {
 	isPlayer: boolean;
@@ -78,6 +79,4 @@ export type BuildMazeConditions = {
 	hasLeftWall: boolean;
 	hasBottomWall: boolean;
 	hasRightWall: boolean;
-}
-
-
+};

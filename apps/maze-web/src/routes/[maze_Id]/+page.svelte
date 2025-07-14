@@ -1,13 +1,13 @@
 
 
 <script lang="ts">
+import { goto } from "$app/navigation";
 import GameMessage from "$lib/components/GameMessage.svelte";
 import MazeGrid from "$lib/components/MazeGrid.svelte";
 import type { Coordinates, Maze, PlayerStats } from "@nadir/global-types";
 import { Button } from "@nadir/solara";
-import { onMount } from "svelte";
 import { Icons } from "@nadir/solara";
-import { goto } from "$app/navigation";
+import { onMount } from "svelte";
 
 let { data } = $props();
 let currentMaze = $state<Maze | null>(null);

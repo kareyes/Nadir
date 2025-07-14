@@ -1,8 +1,8 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
-import { onMount } from "svelte";
-import { ToggleGroup, Button } from "@nadir/solara";
 import type { Maze } from "@nadir/global-types";
+import { Button, ToggleGroup } from "@nadir/solara";
+import { onMount } from "svelte";
 
 let { data } = $props();
 let mazes = $state<Maze[]>([]);
@@ -15,7 +15,7 @@ onMount(async () => {
 	try {
 		const mazeData = await data.maze();
 		mazes = Array.isArray(mazeData) ? mazeData : [mazeData];
-		
+
 		// Initialize audio
 		initializeAudio();
 	} catch (error) {
@@ -25,17 +25,17 @@ onMount(async () => {
 
 const initializeAudio = () => {
 	// Create background music audio element
-	backgroundMusic = new Audio('/audio/background-music.mp3');
+	backgroundMusic = new Audio("/audio/background-music.mp3");
 	backgroundMusic.loop = true;
 	backgroundMusic.volume = 0.3;
-	
+
 	// Create click sound effect
-	clickSound = new Audio('/audio/click.mp3');
+	clickSound = new Audio("/audio/click.mp3");
 	clickSound.volume = 0.5;
-	
+
 	// Start playing background music if sound is enabled
 	if (soundEnabled && backgroundMusic) {
-		backgroundMusic.play().catch(e => {
+		backgroundMusic.play().catch((e) => {
 			console.log("Auto-play prevented. Music will start on user interaction.");
 		});
 	}
@@ -44,7 +44,9 @@ const initializeAudio = () => {
 const playClickSound = () => {
 	if (soundEnabled && clickSound) {
 		clickSound.currentTime = 0; // Reset to beginning
-		clickSound.play().catch(e => console.log("Error playing click sound:", e));
+		clickSound
+			.play()
+			.catch((e) => console.log("Error playing click sound:", e));
 	}
 };
 
@@ -55,11 +57,13 @@ const handlePlay = () => {
 
 const toggleSound = () => {
 	soundEnabled = !soundEnabled;
-	
+
 	if (soundEnabled) {
 		// Enable sound and start background music
 		if (backgroundMusic) {
-			backgroundMusic.play().catch(e => console.log("Error playing background music:", e));
+			backgroundMusic
+				.play()
+				.catch((e) => console.log("Error playing background music:", e));
 		}
 		console.log("Sound enabled");
 	} else {
@@ -69,7 +73,7 @@ const toggleSound = () => {
 		}
 		console.log("Sound disabled");
 	}
-	
+
 	// Play click sound for the toggle action itself
 	playClickSound();
 };

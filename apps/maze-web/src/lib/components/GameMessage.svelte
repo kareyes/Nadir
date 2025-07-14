@@ -1,6 +1,6 @@
 <script lang="ts">
-import { Button, Dialog } from "@nadir/solara";
 import type { PlayerStats } from "@nadir/global-types";
+import { Button, Dialog } from "@nadir/solara";
 
 const { playerStats, isGameOver, resetGame } = $props<{
 	playerStats: PlayerStats;
