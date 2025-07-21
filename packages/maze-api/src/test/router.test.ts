@@ -35,7 +35,7 @@ describe("Maze API Router Tests", () => {
 		});
 		expect(response.statusCode).toBe(200);
 		console.log(response.json());
-		expect(response.json()).toEqual([{ Hell: "Maze", age: 99 }]);
+		expect(response.json()).toEqual([{ Hell: "Mazes", age: 99 }]);
 	});
 
 	// it("should fetch all maze metadata", async () => {

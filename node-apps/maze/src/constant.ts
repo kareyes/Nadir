@@ -11,7 +11,7 @@ export class MazeDataState extends Context.Tag("MazeDataState")<
 	Ref.Ref<MazeGameData>
 >() {}
 
-export const APIURL = `http://${process.env.HOST}:${Number(process.env.PORT || "8080")}`;
+export const APIURL = `http://${process.env.API_HOST}:${Number(process.env.API_PORT || "8080")}`;
 
 export const GameMode = {
 	auto: "Assist Mode",

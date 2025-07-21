@@ -35,7 +35,7 @@ export type GameState = {
 };
 
 export type GamePlayState = GameState & {
-	playerMoves: CurrentPosition;
+	playerMoves: Coordinates;
 };
 
 export interface PlayMovement
@@ -46,11 +46,11 @@ export interface CurrentPosition
 export interface MazeGameData
 	extends Schema.Schema.Type<typeof MazeGameDataSchema> {}
 
-export type MazePath = CurrentPosition & {
-	path: Array<CurrentPosition>;
+export type MazePath = Coordinates & {
+	path: Array<Coordinates>;
 };
 
-export type Automove = CurrentPosition & {
+export type Automove = Coordinates & {
 	maze: Maze;
 };
 
@@ -79,4 +79,18 @@ export type BuildMazeConditions = {
 	hasLeftWall: boolean;
 	hasBottomWall: boolean;
 	hasRightWall: boolean;
+};
+
+export type GameStats = {
+	moves: number;
+	startTime: number;
+	endTime: number;
+	timeTaken: number;
+};
+
+export type MazeGameState = {
+	playerPosition: Coordinates;
+	isGameOver: boolean;
+	gameStats: GameStats;
+	currentMaze: Maze | null;
 };
