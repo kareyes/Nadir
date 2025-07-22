@@ -10,6 +10,10 @@ const { resetGame, onSolveMaze, onBackToMain } = $props<{
 
 
 <div class="flex flex-wrap gap-4 justify-center mb-8">
+    <Button variant="neon" size="lg" onclick={onBackToMain}>
+        <Icons.MenuIcon />
+        Back to Main
+    </Button>
     <Button variant="neon-pink" color="green" size="lg" onclick={resetGame}>
         <Icons.RotateCcwIcon />
         Reset Game
@@ -18,8 +22,5 @@ const { resetGame, onSolveMaze, onBackToMain } = $props<{
         <Icons.LightbulbIcon />
         Tips
     </Button>
-    <Button variant="neon" size="lg" onclick={onBackToMain}>
-        <Icons.MenuIcon />
-        Back to Main
-    </Button>
+
 </div>

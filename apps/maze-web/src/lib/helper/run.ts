@@ -1,3 +1,4 @@
+import { env } from "$env/dynamic/public";
 import {
 	FetchHttpClient,
 	HttpClient,
@@ -5,7 +6,6 @@ import {
 	HttpClientResponse,
 } from "@effect/platform";
 import { Effect, type Schema, flow, pipe } from "effect";
-import { env } from '$env/dynamic/public';
 
 // For static environment variables (known at build time), use:
 // import { PUBLIC_API_URL } from '$env/static/public';

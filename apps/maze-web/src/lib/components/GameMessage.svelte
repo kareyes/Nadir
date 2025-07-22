@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 import type { PlayerStats } from "@nadir/global-types";
 import { Button, Dialog } from "@nadir/solara";
 
@@ -7,6 +8,10 @@ const { playerStats, isGameOver, resetGame } = $props<{
 	isGameOver: boolean;
 	resetGame: () => void;
 }>();
+const handleBackToMain = () => {
+  goto(`/`);
+  // Logic to navigate back to the main menu
+};
 </script>
 
  
@@ -18,7 +23,7 @@ const { playerStats, isGameOver, resetGame } = $props<{
         <span class="text-lg text-cyan-400 whitespace-pre-line">Here are your statistic: </span>
         <div class="text-md text-cyan-400 whitespace-pre-line">
           🚀 Moves: {playerStats.moves}<br>
-          ⏱️ Time: {playerStats.timeTaken}
+          ⏱️ Time:  {playerStats.timeTaken}
         </div>
       </Dialog.Description>
     </Dialog.Header>
@@ -26,8 +31,8 @@ const { playerStats, isGameOver, resetGame } = $props<{
       <Button variant="neon-pink" onclick={resetGame}>
         🎮 Play Again
       </Button>
-      <Button variant="solid-neon">
-        Next Level
+      <Button variant="solid-neon" onclick={handleBackToMain}>
+        Back to Main
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
