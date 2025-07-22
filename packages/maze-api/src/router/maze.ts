@@ -3,6 +3,8 @@ import {
 	GET_ALL_MAZE,
 	GET_ALL_MAZE_METADATA,
 	GET_SELECTED_MAZE,
+	POST_MAZE,
+	type ResponseMaze,
 } from "@nadir/global-types";
 import { MazeDBService } from "@nadir/maze-db";
 import { Effect, pipe } from "effect";
@@ -24,6 +26,25 @@ export const MazeRoutes = (server: FastifyInstance) =>
 					.catch((error) => {
 						console.error("Error fetching maze:", error);
 						reply.status(500).send({ error: "Failed to fetch maze" });
+					});
+			});
+
+			server.post(POST_MAZE, async (request, reply) => {
+				const mazeData = request.body as ResponseMaze;
+
+				return Router.createMaze(mazeData)
+					.then((result: unknown) => {
+						reply.status(201).send({
+							status: "success",
+							message: "Maze created successfully",
+							data: result,
+						});
+					})
+					.catch((error: unknown) => {
+						console.error("Error creating maze:", error);
+						reply
+							.status(ERROR_CODE.INTERNAL_SERVER_ERROR)
+							.send({ status: "error", error: "Failed to create maze" });
 					});
 			});
 
@@ -59,6 +80,13 @@ const Router = {
 		pipe(
 			MazeDBService,
 			Effect.flatMap((service) => service.getMazeById(mazeId)),
+			Effect.provide(MazeDBService.Default),
+			Effect.runPromise,
+		),
+	createMaze: (mazeData: ResponseMaze) =>
+		pipe(
+			MazeDBService,
+			Effect.flatMap((service) => service.insertMaze(mazeData)),
 			Effect.provide(MazeDBService.Default),
 			Effect.runPromise,
 		),

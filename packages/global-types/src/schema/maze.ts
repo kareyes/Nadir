@@ -12,6 +12,7 @@ export const GridSchema = Schema.Struct({
 export const MazeMetaSchema = Schema.Struct({
 	maze_id: Schema.String,
 	mazeName: Schema.String,
+	level: Schema.Union(Schema.Literal(1), Schema.Literal(2), Schema.Literal(3)),
 	description: Schema.String,
 	created_at: Schema.String,
 });

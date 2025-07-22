@@ -24,6 +24,7 @@ export const grid = [
 export const mazeModel = {
 	maze_id: "001",
 	mazeName: "Level 1: The Labyrinths",
+	level: 1 as 1 | 2 | 3,
 	description: "This is a 5x5 maze",
 	created_at: new Date().toISOString(),
 	numCols: 5,

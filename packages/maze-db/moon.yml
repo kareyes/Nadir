@@ -27,3 +27,7 @@ tasks:
     
     format:
         command: 'biome check --fix --unsafe'
+
+    
+    test-unit:
+        command: 'tsx src/test/init-test.ts'

@@ -60,16 +60,19 @@ export const runRequestWithParams = <A, I, R>(
 		Effect.flatMap((response) => parseResponse(response, schema)),
 		Effect.provide(FetchHttpClient.layer),
 	);
-// export const runPostRequest = <A, I, R>(
-// 	endpoint: string,
-// 	body: Record<string, unknown>,
-// 	schema: Schema.Schema<A, I, R>,
-// ) =>
-// 	pipe(
-// 		createHttpClient,
-// 		Effect.flatMap((request) =>
-// 			request.post(endpoint, HttpClientRequest.bodyJson(body)),
-// 		),
-// 		Effect.flatMap((response) => parseResponse(response, schema)),
-// 		Effect.provide(FetchHttpClient.layer),
-// 	);
+
+export const runPostRequest = async (endpoint: string, body: unknown) => {
+	const response = await fetch(`${APIURL}${endpoint}`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(body),
+	});
+
+	if (!response.ok) {
+		throw new Error(`HTTP error! status: ${response.status}`);
+	}
+
+	return response.json();
+};

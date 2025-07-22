@@ -921,9 +921,12 @@ const grid = [
 	},
 ];
 
+
+
 export const mazeModel = {
 	maze_id: "003",
 	mazeName: "Level 3:  Cursed Catacombs",
+	level:  3 as 1 | 2 | 3,
 	description: "This is a 20x20 maze",
 	created_at: new Date().toISOString(),
 	numCols: 20,

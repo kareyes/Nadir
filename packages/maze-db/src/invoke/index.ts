@@ -22,6 +22,7 @@ import { PlayerDBService } from "../service/player.js";
 const maze = MazeDBService.pipe(
 	Effect.tap((service) => {
 		return pipe(
+			// service.deleteMaze("002"),
 			service.initMazeSchema,
 			Effect.flatMap(() => service.insertMaze(m1)),
 			Effect.flatMap(() => service.insertMaze(m2)),
@@ -29,7 +30,7 @@ const maze = MazeDBService.pipe(
 		);
 	}),
 	Effect.andThen((service) => service.getAllMazes),
-	Effect.provide(MazeDBServiceMock.Default),
+	Effect.provide(MazeDBService.Default),
 );
 
 const player = PlayerDBService.pipe(
@@ -46,6 +47,6 @@ const player = PlayerDBService.pipe(
 	Effect.provide(PlayerDBService.Default),
 );
 
-Effect.runPromise(player)
+Effect.runPromise(maze)
 	.then((result) => console.log("Result:", result))
 	.catch((error) => console.error("Error:", error));

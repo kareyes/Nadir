@@ -7,14 +7,15 @@ const e = require("effect"),
 	l = { INTERNAL_SERVER_ERROR: 500 },
 	N = "SELECT * FROM mazes WHERE maze_id = ?",
 	M = "SELECT * FROM mazes",
-	_ = "SELECT maze_id, mazeName, description, created_at FROM mazes",
-	P =
-		"INSERT INTO mazes (maze_id, mazeName, description, created_at ,numCols, numRows, grid) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING maze_id, created_at",
-	z = "DELETE FROM mazes WHERE maze_id = ?",
+	z = "SELECT maze_id, mazeName, description, created_at FROM mazes",
+	_ =
+		"INSERT INTO mazes (maze_id, mazeName, level, description, created_at ,numCols, numRows, grid) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING maze_id, created_at",
+	P = "DELETE FROM mazes WHERE maze_id = ?",
 	D = `
 CREATE TABLE IF NOT EXISTS mazes (
 	maze_id TEXT PRIMARY KEY,
 	mazeName TEXT NOT NULL,
+	level INTEGER NOT NULL CHECK (level IN (1, 2, 3)),
 	description TEXT NOT NULL,
 	numCols INTEGER NOT NULL,
 	numRows INTEGER NOT NULL,
@@ -34,38 +35,44 @@ CREATE TABLE IF NOT EXISTS players (
 	C = "SELECT * FROM players",
 	b = "DELETE FROM players WHERE playerID = ?",
 	U = "/player/:playerID",
-	B = "/player",
-	F = "/maze/:maze_id",
-	G = "/maze",
-	Y = "/maze/metadata";
+	F = "/player",
+	G = "/maze/:maze_id",
+	B = "/maze",
+	H = "/maze/metadata",
+	Y = "/maze/create";
 e.Config.integer("PORT").pipe(e.Config.withDefault(8081));
 e.Config.string("HOST").pipe(e.Config.withDefault("localhost"));
-const H = e.Schema.Boolean,
-	m = e.Schema.Array(H),
-	w = e.Schema.Struct({ vertical: m, horizontal: m }),
+const w = e.Schema.Boolean,
+	m = e.Schema.Array(w),
+	X = e.Schema.Struct({ vertical: m, horizontal: m }),
 	u = e.Schema.Struct({
 		maze_id: e.Schema.String,
 		mazeName: e.Schema.String,
+		level: e.Schema.Union(
+			e.Schema.Literal(1),
+			e.Schema.Literal(2),
+			e.Schema.Literal(3),
+		),
 		description: e.Schema.String,
 		created_at: e.Schema.String,
 	}),
-	X = e.Schema.Array(u),
+	Z = e.Schema.Array(u),
 	E = e.Schema.Struct({
 		...u.fields,
 		numCols: e.Schema.Number,
 		numRows: e.Schema.Number,
-		grid: e.Schema.Array(w),
+		grid: e.Schema.Array(X),
 	});
 e.Schema.Array(E);
-const Z = E.omit("grid").pipe(
+const x = E.omit("grid").pipe(
 		e.Schema.extend(e.Schema.Struct({ grid: e.Schema.String })),
 	),
-	h = e.Schema.transform(Z, E, {
+	d = e.Schema.transform(x, E, {
 		encode: (t) => ({ ...t, grid: JSON.stringify(t.grid) }),
 		decode: (t) => ({ ...t, grid: JSON.parse(t.grid) }),
 	});
 e.Schema.Struct({ x: e.Schema.Number, y: e.Schema.Number });
-const x = e.Schema.Array(h),
+const V = e.Schema.Array(d),
 	S = e.Schema.Struct({ x: e.Schema.Number, y: e.Schema.Number });
 e.Schema.Struct({ maze: E, currentPosition: S, playerMoves: S });
 e.Schema.Struct({
@@ -80,13 +87,13 @@ e.Schema.Struct({
 	player: e.Schema.String,
 	gameMode: e.Schema.String,
 });
-const d = e.Schema.Struct({
+const h = e.Schema.Struct({
 		playerID: e.Schema.String,
 		name: e.Schema.String,
 		value: e.Schema.String,
 		description: e.Schema.String,
 	}),
-	k = e.Schema.Array(d),
+	k = e.Schema.Array(h),
 	g = (t) => {
 		const a = new y.DatabaseSync(t);
 		return {
@@ -118,28 +125,28 @@ const d = e.Schema.Struct({
 		),
 		insertMaze: (a) =>
 			e.pipe(
-				t.run(P, Object.values(a)),
+				t.run(_, Object.values(a)),
 				e.Effect.catchTag("DatabaseError", (c) => e.Effect.fail(c)),
 			),
 		getMazeById: (a) =>
 			e.pipe(
 				t.get(N, [a]),
-				e.Effect.map((c) => e.Schema.decodeUnknownSync(h)(c)),
+				e.Effect.map((c) => e.Schema.decodeUnknownSync(d)(c)),
 				e.Effect.catchTag("DatabaseError", (c) => e.Effect.fail(c)),
 			),
 		getMetadata: e.pipe(
-			t.all(_),
-			e.Effect.map((a) => e.Schema.decodeUnknownSync(X)(a)),
+			t.all(z),
+			e.Effect.map((a) => e.Schema.decodeUnknownSync(Z)(a)),
 			e.Effect.catchTag("DatabaseError", (a) => e.Effect.fail(a)),
 		),
 		getAllMazes: e.pipe(
 			t.all(M),
-			e.Effect.map((a) => e.Schema.decodeUnknownSync(x)(a)),
+			e.Effect.map((a) => e.Schema.decodeUnknownSync(V)(a)),
 			e.Effect.catchTag("DatabaseError", (a) => e.Effect.fail(a)),
 		),
 		deleteMaze: (a) =>
 			e.pipe(
-				t.run(z, [a]),
+				t.run(P, [a]),
 				e.Effect.catchTag("DatabaseError", (c) => e.Effect.fail(c)),
 			),
 	}),
@@ -151,7 +158,7 @@ e.Effect.Service()("MazeDBService", {
 	dependencies: [q],
 	effect: o.pipe(e.Effect.map(R)),
 });
-const V = (t) => ({
+const W = (t) => ({
 		initPlayereSchema: e.pipe(
 			t.run(v),
 			e.Effect.map(() => t),
@@ -164,7 +171,7 @@ const V = (t) => ({
 		getPlayerById: (a) =>
 			e.pipe(
 				t.get(O, [a]),
-				e.Effect.map((c) => e.Schema.decodeUnknownSync(d)(c)),
+				e.Effect.map((c) => e.Schema.decodeUnknownSync(h)(c)),
 				e.Effect.catchTag("DatabaseError", (c) => e.Effect.fail(c)),
 			),
 		getAllPlayers: e.pipe(
@@ -180,15 +187,15 @@ const V = (t) => ({
 	}),
 	f = e.Effect.Service()("PlayerDBService", {
 		dependencies: [o.Default],
-		effect: o.pipe(e.Effect.map(V)),
+		effect: o.pipe(e.Effect.map(W)),
 	}),
-	W = (t) =>
+	j = (t) =>
 		e.pipe(
 			e.Effect.sync(() => {
 				t.get("/", async (a, c) => {
 					c.send([{ Hell: "Maze", age: 99 }]);
 				}),
-					t.get(F, async (a, c) => {
+					t.get(G, async (a, c) => {
 						const { maze_id: r } = a.params;
 						return i
 							.getMaze(r)
@@ -200,7 +207,25 @@ const V = (t) => ({
 									c.status(500).send({ error: "Failed to fetch maze" });
 							});
 					}),
-					t.get(Y, async (a, c) =>
+					t.post(Y, async (a, c) => {
+						const r = a.body;
+						return i
+							.createMaze(r)
+							.then((s) => {
+								c.status(201).send({
+									status: "success",
+									message: "Maze created successfully",
+									data: s,
+								});
+							})
+							.catch((s) => {
+								console.error("Error creating maze:", s),
+									c
+										.status(l.INTERNAL_SERVER_ERROR)
+										.send({ status: "error", error: "Failed to create maze" });
+							});
+					}),
+					t.get(H, async (a, c) =>
 						i
 							.getAllMetaData()
 							.then((r) => {
@@ -213,7 +238,7 @@ const V = (t) => ({
 								});
 							}),
 					),
-					t.get(G, async (a, c) =>
+					t.get(B, async (a, c) =>
 						i
 							.getAllMazes()
 							.then((r) => {
@@ -237,6 +262,13 @@ const V = (t) => ({
 				e.Effect.provide(n.Default),
 				e.Effect.runPromise,
 			),
+		createMaze: (t) =>
+			e.pipe(
+				n,
+				e.Effect.flatMap((a) => a.insertMaze(t)),
+				e.Effect.provide(n.Default),
+				e.Effect.runPromise,
+			),
 		getAllMetaData: () =>
 			e.pipe(
 				n,
@@ -252,7 +284,7 @@ const V = (t) => ({
 				e.Effect.runPromise,
 			),
 	},
-	j = (t) =>
+	K = (t) =>
 		e.pipe(
 			e.Effect.sync(() => {
 				t.get(U, async (a, c) => {
@@ -267,7 +299,7 @@ const V = (t) => ({
 								c.status(500).send({ error: "Failed to fetch player" });
 						});
 				}),
-					t.get(B, async (a, c) =>
+					t.get(F, async (a, c) =>
 						p
 							.getAllPlayers()
 							.then((r) => {
@@ -339,14 +371,14 @@ const V = (t) => ({
 		);
 	},
 	T = e.Effect.Service()("HTTPServer", { effect: e.Effect.succeed(J()) }),
-	K = async () =>
+	$ = async () =>
 		T.pipe(
-			e.Effect.tap((t) => t.register(W)),
 			e.Effect.tap((t) => t.register(j)),
+			e.Effect.tap((t) => t.register(K)),
 			e.Effect.tap((t) => t.process()),
 			e.Effect.tap((t) => t.start()),
 			e.Effect.provide(T.Default),
 			e.Effect.runPromise,
 		),
-	$ = K();
-exports.viteNodeApp = $;
+	Q = $();
+exports.viteNodeApp = Q;

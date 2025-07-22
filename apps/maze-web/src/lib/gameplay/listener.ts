@@ -150,7 +150,6 @@ export const handleKeydown = (event: KeyEvent, gameState: MazeGameState) =>
 		}),
 	);
 
-// Helper function to run the Effect and get the result synchronously
 export const handleKeydownSync = (
 	event: KeyEvent,
 	gameState: MazeGameState,
@@ -158,7 +157,6 @@ export const handleKeydownSync = (
 	return Effect.runSync(handleKeydown(event, gameState));
 };
 
-// Helper function to run the Effect as a Promise
 export const handleKeydownAsync = (
 	event: KeyEvent,
 	gameState: MazeGameState,
