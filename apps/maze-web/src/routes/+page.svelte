@@ -22,6 +22,8 @@ onMount(async () => {
 const handlePlay = () => {
 	goto(`/` + selectedLevel);
 };
+
+
 </script>
 
 
@@ -31,17 +33,20 @@ const handlePlay = () => {
     <p class="mb-8 text-lg text-center">Choose your maze level and start playing!</p>
 
     {#if mazes.length > 0}
-        <div class="flex flex-wrap gap-4 justify-center mb-8">
-            <ToggleGroup.Root type="single" size="lg" variant="neon" class="mb-4 gap-3" bind:value={selectedLevel}>
+        <div class="grid grid-cols-2 gap-4 justify-center mb-8 max-w-md">
+            <ToggleGroup.Root type="single" size="lg" variant="neon" class="contents gap-3" bind:value={selectedLevel}>
           
             {#each mazes as maze}
-                <ToggleGroup.Item value={`${maze.maze_id}`} aria-label="Toggle bold" class="py-10 max-w-[200px]" >
-                    <span class="font-bold px-6 py-6 text-wrap">{maze.mazeName}</span>
-                </ToggleGroup.Item>
+            <ToggleGroup.Item value={`${maze.maze_id}`} aria-label="Toggle bold" class="py-10" >
+            <div class="font-bold px-6 py-6 text-wrap text-center">
+            <div>Level {maze.level}:</div>
+            <div>{maze.mazeName}</div>
+            </div>
+            </ToggleGroup.Item>
             {/each}
               </ToggleGroup.Root>
         </div>
-        <Button variant="solid-neon" disabled={!selectedLevel} size="lg" class="mb-8 w-40" onclick={handlePlay}>
+        <Button variant="solid-neon" disabled={!selectedLevel} size="lg" class="mb-8 w-64" onclick={handlePlay}>
             Start Game
         </Button>
 

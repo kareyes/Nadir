@@ -8,9 +8,9 @@ on:
 env:
   PROJECT_ID: ouro-460410
   REGION: us-central1
-  SERVICE_NAME: maze-api
-  IMAGE: us-central1-docker.pkg.dev/ouro-460410/astrid/maze-api:latest
-  DOCKER_IMAGE_PATH: ./packages/maze-api/Dockerfile
+  SERVICE_NAME: maze-web
+  IMAGE: us-central1-docker.pkg.dev/ouro-460410/astrid/maze-web:latest
+  DOCKER_IMAGE_PATH: ./apps/maze-web/Dockerfile
 
 jobs:
   deploy:
@@ -38,16 +38,16 @@ jobs:
       - name: Authenticate Docker for GCR
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
 
-#       - name: Build Docker image
-#         run: docker build -f $DOCKER_IMAGE_PATH -t $IMAGE .
+      - name: Build Docker image
+        run: docker build -f $DOCKER_IMAGE_PATH -t $IMAGE .
 
-#       - name: Push Docker image to GCR
-#         run: docker push $IMAGE
+      - name: Push Docker image to GCR
+        run: docker push $IMAGE
 
-#       - name: Deploy to Cloud Run
-#         run: |
-#           gcloud run deploy $SERVICE_NAME \
-#             --image $IMAGE \
-#             --region $REGION \
-#             --platform managed \
-#             --allow-unauthenticated
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy $SERVICE_NAME \
+            --image $IMAGE \
+            --region $REGION \
+            --platform managed \
+            --allow-unauthenticated

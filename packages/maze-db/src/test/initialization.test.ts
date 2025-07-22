@@ -14,8 +14,8 @@ describe("Maze DB Initialization", () => {
 
 		// const result = await Effect.runPromise(program);
 		// expect("test").toBeDefined();
-        const test = "hello"
-        expect(test).toBe("hello");
+		const test = "hello";
+		expect(test).toBe("hello");
 	});
 
 	// it("should initialize player schema successfully", async () => {
@@ -44,7 +44,7 @@ describe("Maze DB Initialization", () => {
 
 	// it("should insert and retrieve a player", async () => {
 	// 	const testPlayer = playerSymbols[0];
-		
+
 	// 	const program = PlayerDBService.pipe(
 	// 		Effect.tap((service) => service.initPlayereSchema),
 	// 		Effect.tap((service) => service.insertPlayer(testPlayer)),
@@ -75,7 +75,7 @@ describe("Maze DB Initialization", () => {
 
 	// it("should retrieve all players after insertion", async () => {
 	// 	const testPlayer = playerSymbols[0];
-		
+
 	// 	const program = PlayerDBService.pipe(
 	// 		Effect.tap((service) => service.initPlayereSchema),
 	// 		Effect.tap((service) => service.insertPlayer(testPlayer)),
@@ -116,7 +116,7 @@ describe("Maze DB Initialization", () => {
 
 	// it("should delete a player successfully", async () => {
 	// 	const testPlayer = playerSymbols[0];
-		
+
 	// 	const program = PlayerDBService.pipe(
 	// 		Effect.tap((service) => service.initPlayereSchema),
 	// 		Effect.tap((service) => service.insertPlayer(testPlayer)),

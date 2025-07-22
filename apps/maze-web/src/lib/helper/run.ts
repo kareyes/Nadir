@@ -5,13 +5,12 @@ import {
 	HttpClientResponse,
 } from "@effect/platform";
 import { Effect, type Schema, flow, pipe } from "effect";
-// import { env } from '$env/dynamic/private';
+import { env } from '$env/dynamic/public';
 
-// console.log(process.env.PORT);
+// For static environment variables (known at build time), use:
+// import { PUBLIC_API_URL } from '$env/static/public';
 
-// const APIURL = `http://${process.env.HOST}:${Number(process.env.PORT || "8080")}`;
-const APIURL = "http://localhost:8080";
-
+const APIURL = env.PUBLIC_API_URL || "http://localhost:8080"; // Fallback URL if env variable is not set
 export const createHttpClient = Effect.map(HttpClient.HttpClient, (client) =>
 	client.pipe(
 		HttpClient.mapRequest(

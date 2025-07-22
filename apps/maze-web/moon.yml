@@ -10,11 +10,16 @@ tasks:
     deps: 
       - 'maze-api:start'
     local: true
+    options:
+      envFile: '/.env.shared'
   
   format:
     command: 'biome check --fix --unsafe'
 
   preview:
-    command: "node dist/app.js"
+    command: "vite preview"
+    local: true
+    deps:
+      - 'maze-api:start'
     env:
       NODE_ENV: "production"

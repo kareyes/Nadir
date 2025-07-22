@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 import { Effect, pipe } from "effect";
-import { MazeDBService } from "../service/maze.js";
-import { PlayerDBService } from "../service/player.js";
 import { mazeModel as testMaze } from "../seed/maze1.js";
 import { playerSymbols } from "../seed/players.js";
+import { MazeDBService } from "../service/maze.js";
+import { PlayerDBService } from "../service/player.js";
 
 console.log("🧪 Starting Maze DB Initialization Test...\n");
 
 // Test Maze Service Initialization
 const testMazeService = async () => {
 	console.log("🏗️  Testing Maze Service...");
-	
+
 	try {
 		const program = MazeDBService.pipe(
 			Effect.tap((service) => {
@@ -33,7 +33,9 @@ const testMazeService = async () => {
 		);
 
 		const result = await Effect.runPromise(program);
-		console.log(`  ✅ Maze service test passed! Found ${result.length} maze(s)\n`);
+		console.log(
+			`  ✅ Maze service test passed! Found ${result.length} maze(s)\n`,
+		);
 		return true;
 	} catch (error) {
 		console.error("  ❌ Maze service test failed:", error);
@@ -44,10 +46,10 @@ const testMazeService = async () => {
 // Test Player Service Initialization
 const testPlayerService = async () => {
 	console.log("👤 Testing Player Service...");
-	
+
 	try {
 		const testPlayer = playerSymbols[0];
-		
+
 		const program = PlayerDBService.pipe(
 			Effect.tap((service) => {
 				console.log("  • Initializing player schema...");
@@ -69,7 +71,9 @@ const testPlayerService = async () => {
 		);
 
 		const result = await Effect.runPromise(program);
-		console.log(`  ✅ Player service test passed! Found ${result.length} player(s)\n`);
+		console.log(
+			`  ✅ Player service test passed! Found ${result.length} player(s)\n`,
+		);
 		return true;
 	} catch (error) {
 		console.error("  ❌ Player service test failed:", error);
@@ -80,7 +84,7 @@ const testPlayerService = async () => {
 // Test Full Initialization
 const testFullInitialization = async () => {
 	console.log("🎯 Testing Full Database Initialization...");
-	
+
 	try {
 		const mazeProgram = MazeDBService.pipe(
 			Effect.tap((service) => service.initMazeSchema),
@@ -98,7 +102,7 @@ const testFullInitialization = async () => {
 
 		const [mazeMetadata, players] = await Promise.all([
 			Effect.runPromise(mazeProgram),
-			Effect.runPromise(playerProgram)
+			Effect.runPromise(playerProgram),
 		]);
 
 		console.log("  ✅ Full initialization test passed!");
@@ -116,15 +120,15 @@ const runTests = async () => {
 	const results = await Promise.all([
 		testMazeService(),
 		testPlayerService(),
-		testFullInitialization()
+		testFullInitialization(),
 	]);
 
-	const passedTests = results.filter(result => result).length;
+	const passedTests = results.filter((result) => result).length;
 	const totalTests = results.length;
 
 	console.log("📊 Test Results:");
 	console.log(`   Passed: ${passedTests}/${totalTests}`);
-	
+
 	if (passedTests === totalTests) {
 		console.log("🎉 All tests passed! Maze DB is properly initialized.");
 		process.exit(0);
