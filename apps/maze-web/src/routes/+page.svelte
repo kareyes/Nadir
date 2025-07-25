@@ -22,6 +22,18 @@ onMount(async () => {
 const handlePlay = () => {
 	goto(`/` + selectedLevel);
 };
+
+const getNeonVariant = (
+	index: number,
+): "neon" | "neon-green" | "neon-purple" => {
+	const colorCycle: ("neon" | "neon-green" | "neon-purple")[] = [
+		"neon",
+		"neon-green",
+		"neon-purple",
+	];
+	const cycleIndex = Math.floor(index / 2) % colorCycle.length;
+	return colorCycle[cycleIndex];
+};
 </script>
 
 
@@ -32,10 +44,10 @@ const handlePlay = () => {
 
     {#if mazes.length > 0}
         <div class="grid grid-cols-2 gap-4 justify-center mb-14 max-w-md">
-            <ToggleGroup.Root type="single" size="lg" variant="neon" class="contents gap-3" bind:value={selectedLevel}>
+            <ToggleGroup.Root variant="odd" type="single" size="lg" class="contents gap-3" bind:value={selectedLevel}>
           
-            {#each mazes as maze}
-            <ToggleGroup.Item value={`${maze.maze_id}`} aria-label="Toggle bold" class="py-10" >
+            {#each mazes as maze, index}
+            <ToggleGroup.Item value={`${maze.maze_id}`} variant={getNeonVariant(index)} aria-label="Toggle bold" class="py-10" >
             <div class="font-bold px-6 py-6 text-wrap text-center">
             <div>Level {maze.level}:</div>
             <div>{maze.mazeName}</div>

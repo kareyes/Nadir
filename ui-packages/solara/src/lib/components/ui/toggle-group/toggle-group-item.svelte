@@ -13,7 +13,11 @@
 		...restProps
 	}: ToggleGroupPrimitive.ItemProps & ToggleVariants = $props();
 
-	const ctx = getToggleGroupCtx();
+
+	const tgGroup = getToggleGroupCtx();
+	const ctx = tgGroup.variant == "odd" ? { variant, size: tgGroup.size } : tgGroup;
+	// }
+	// console.log(ctx.variant);
 </script>
 
 <ToggleGroupPrimitive.Item

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
+import { goto } from "$app/navigation";
 import type { PlayerStats } from "@nadir/global-types";
 import { Button, Dialog } from "@nadir/solara";
 
@@ -9,8 +9,8 @@ const { playerStats, isGameOver, resetGame } = $props<{
 	resetGame: () => void;
 }>();
 const handleBackToMain = () => {
-  goto(`/`);
-  // Logic to navigate back to the main menu
+	goto(`/`);
+	// Logic to navigate back to the main menu
 };
 </script>
 

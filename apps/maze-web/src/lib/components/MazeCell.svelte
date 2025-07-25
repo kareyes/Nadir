@@ -1,4 +1,6 @@
 <script lang="ts">
+import { getCellThemeColors } from "$lib/helper/util";
+
 const {
 	isPlayer,
 	isStart,
@@ -8,7 +10,18 @@ const {
 	hasLeftWall,
 	hasBottomWall,
 	hasRightWall,
-} = $props();
+	level = 1,
+} = $props<{
+	isPlayer: boolean;
+	isStart: boolean;
+	isEnd: boolean;
+	isInSolution: boolean;
+	hasTopWall: boolean;
+	hasLeftWall: boolean;
+	hasBottomWall: boolean;
+	hasRightWall: boolean;
+	level?: number;
+}>();
 
 const directions = {
 	top: hasTopWall ? "top-0 left-0 right-0 h-0.5" : "",
@@ -16,11 +29,13 @@ const directions = {
 	bottom: hasBottomWall ? "bottom-0 left-0 right-0 h-0.5" : "",
 	right: hasRightWall ? "top-0 bottom-0 right-0 w-0.5" : "",
 };
+
+const themeColors = getCellThemeColors(level);
 </script>
 
 <div class="w-full h-full relative aspect-square bg-gray-900">
     {#if isPlayer}
-        <div class="absolute inset-0 flex items-center justify-center m-1 text-2xl filter drop-shadow-[0_0_8px_#00e0ff]">
+        <div class="absolute inset-0 flex items-center justify-center m-1 text-2xl filter {themeColors.playerShadow}">
             <img src="/Fox.gif" alt="Player"  />
         </div>
     {:else if isStart}
@@ -35,7 +50,7 @@ const directions = {
 
     {#each Object.entries(directions) as [_, wall]}
         {#if wall}
-            <div class="absolute bg-cyan-400 shadow-[0_0_4px_rgba(6,182,212,0.5)] {wall}"></div>
+            <div class="absolute {themeColors.wall} {themeColors.wallShadow} {wall}"></div>
         {/if}
     {/each}
 </div>

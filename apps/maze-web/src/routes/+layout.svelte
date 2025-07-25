@@ -19,7 +19,6 @@ const initializeAudio = () => {
 	}
 };
 
-
 const toggleSound = () => {
 	soundEnabled = !soundEnabled;
 
@@ -36,7 +35,6 @@ const toggleSound = () => {
 		}
 		console.log("Sound disabled");
 	}
-
 };
 
 onMount(async () => {

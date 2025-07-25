@@ -1,10 +1,11 @@
 <script lang="ts">
 import { Button, Icons } from "@nadir/solara";
 
-const { resetGame, onSolveMaze, onBackToMain } = $props<{
+const { resetGame, onSolveMaze, onBackToMain, onAutoSolve } = $props<{
 	resetGame: () => void;
 	onSolveMaze: () => void;
 	onBackToMain: () => void;
+	onAutoSolve: () => void;
 }>();
 </script>
 
@@ -21,6 +22,10 @@ const { resetGame, onSolveMaze, onBackToMain } = $props<{
     <Button variant="neon-orange" size="lg" onclick={onSolveMaze}>
         <Icons.LightbulbIcon />
         Tips
+    </Button>
+    <Button variant="neon-purple" size="lg" onclick={onAutoSolve}>
+        <Icons.BotIcon />
+        Game Bot
     </Button>
 
 </div>

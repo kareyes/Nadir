@@ -6,11 +6,14 @@
 		variants: {
 			variant: {
 				default: "bg-transparent",
+				odd: "",
 				outline:
 					"border-input shadow-xs hover:bg-accent hover:text-accent-foreground border bg-transparent",
 				individual:
 					"shadow-xs hover:bg-accent hover:text-accent-foreground border bg-transparent",
-				neon: "bg-transparent border border-cyan-400/50 shadow-[0_0_10px_rgba(6,182,212,0.3)] hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] data-[state=on]:shadow-[0_0_20px_rgba(6,182,212,0.7)] data-[state=on]:border-cyan-300 transition-[color,box-shadow,border-color] duration-300 min-w-16 px-4 !rounded-md",
+				neon: "bg-transparent border-2 border-cyan-400/50 shadow-[0_0_10px_rgba(6,182,212,0.3)] hover:shadow-[0_0_15px_rgba(6,182,212,0.5)] data-[state=on]:shadow-[0_0_20px_rgba(6,182,212,0.7)] data-[state=on]:border-cyan-300 transition-[color,box-shadow,border-color] duration-300 min-w-16 px-4 !rounded-md",
+				"neon-green": "bg-transparent border-2 border-green-400/50 shadow-[0_0_10px_rgba(34,197,94,0.3)] hover:shadow-[0_0_15px_rgba(34,197,94,0.5)] data-[state=on]:shadow-[0_0_20px_rgba(34,197,94,0.7)] data-[state=on]:border-green-300 transition-[color,box-shadow,border-color] duration-300 min-w-16 px-4 !rounded-md",
+				"neon-purple": "bg-transparent border-2 border-purple-400/50 shadow-[0_0_10px_rgba(147,51,234,0.3)] hover:shadow-[0_0_15px_rgba(147,51,234,0.5)] data-[state=on]:shadow-[0_0_20px_rgba(147,51,234,0.7)] data-[state=on]:border-purple-300 transition-[color,box-shadow,border-color] duration-300 min-w-16 px-4 !rounded-md",
 			},
 			size: {
 				default: "h-9 min-w-9 px-2",

@@ -4,11 +4,13 @@ import GameButtons from "$lib/components/GameButtons.svelte";
 import GameMessage from "$lib/components/GameMessage.svelte";
 import MazeGrid from "$lib/components/MazeGrid.svelte";
 import { solveMaze } from "$lib/gameplay/actionRule.js";
+import { autoSolveMazeSync } from "$lib/gameplay/autoPlayer.js";
 import { handleKeydownSync } from "$lib/gameplay/listener.js";
 import type {
 	Coordinates,
 	GameStats,
 	Maze,
+	MazeGameState,
 	PlayerStats,
 } from "@nadir/global-types";
 import { onMount } from "svelte";
@@ -26,37 +28,57 @@ let gameStats = $state<GameStats>({
 	timeTaken: 0,
 });
 
-const handleKeydown = (event: KeyboardEvent | { key: string }) => {
-	if (!currentMaze || isGameOver) return;
+let isAutoSolving = $state(false);
 
-	const currentGameState = {
-		playerPosition,
-		isGameOver,
-		gameStats,
-		currentMaze,
+const updatePlayerStats = ({ timeTaken, moves }: GameStats) => {
+	const minutes = Math.floor(timeTaken / 60);
+	const seconds = timeTaken % 60;
+	playerStats = {
+		moves,
+		timeTaken: minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`,
 	};
-	const newGameState = handleKeydownSync(event, currentGameState);
+};
 
-	playerPosition = newGameState.playerPosition;
-	isGameOver = newGameState.isGameOver;
-	gameStats = newGameState.gameStats;
+const updateGameState = (newState: MazeGameState) => {
+	playerPosition = newState.playerPosition || playerPosition;
+	isGameOver = newState.isGameOver || isGameOver;
+	gameStats = newState.gameStats || gameStats;
 
-	if (newGameState.isGameOver) {
-		const { timeTaken, moves } = gameStats;
-		const minutes = Math.floor(timeTaken / 60);
-		const seconds = timeTaken % 60;
+	if (newState.isGameOver) updatePlayerStats(newState.gameStats);
+};
 
-		playerStats = {
-			moves,
-			timeTaken: minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`,
-		};
+const getCurrentGameState = () => ({
+	playerPosition,
+	isGameOver,
+	gameStats,
+	currentMaze,
+});
+
+const handleKeydown = (event: KeyboardEvent | { key: string }) => {
+	if (!currentMaze || isGameOver || isAutoSolving) return;
+	updateGameState(handleKeydownSync(event, getCurrentGameState()));
+};
+
+const onAutoSolve = async () => {
+	if (!currentMaze || isGameOver || isAutoSolving) return;
+	
+	isAutoSolving = true;
+	try {
+		const finalState = await autoSolveMazeSync(getCurrentGameState(), updateGameState);
+		updateGameState(finalState);
+	} catch (error) {
+		console.error("Auto-solve failed:", error);
+	} finally {
+		isAutoSolving = false;
 	}
 };
+
 
 const resetGame = () => {
 	playerPosition = { x: 0, y: 0 };
 	solutionPath = null;
 	isGameOver = false;
+	isAutoSolving = false;
 	playerStats = { moves: 0, timeTaken: "" };
 	gameStats = {
 		moves: 0,
@@ -65,12 +87,12 @@ const resetGame = () => {
 		timeTaken: 0,
 	};
 };
+
 const onSolveMaze = () => {
 	if (currentMaze) {
 		solutionPath = solveMaze(currentMaze);
 	}
 };
-
 const onBackToMain = () => {
 	goto("/");
 };
@@ -103,6 +125,7 @@ onMount(() => {
 		{resetGame}
 		{onSolveMaze}
 		{onBackToMain}
+		{onAutoSolve}
 	/>
         <MazeGrid
             maze={currentMaze}

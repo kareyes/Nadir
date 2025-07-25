@@ -1,6 +1,5 @@
 <script lang="ts">
-  let { size = 48 } = $props();
-
+let { size = 48 } = $props();
 </script>
 
 <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} x="0px" y="0px" viewBox="6.1050004959106445 6.804999351501465 35.7910041809082 34.38946533203125" enable-background="new 0 0 48 48">
