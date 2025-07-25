@@ -27,7 +27,6 @@ let gameStats = $state<GameStats>({
 	endTime: 0,
 	timeTaken: 0,
 });
-
 let isAutoSolving = $state(false);
 
 const updatePlayerStats = ({ timeTaken, moves }: GameStats) => {
@@ -61,10 +60,13 @@ const handleKeydown = (event: KeyboardEvent | { key: string }) => {
 
 const onAutoSolve = async () => {
 	if (!currentMaze || isGameOver || isAutoSolving) return;
-	
+
 	isAutoSolving = true;
 	try {
-		const finalState = await autoSolveMazeSync(getCurrentGameState(), updateGameState);
+		const finalState = await autoSolveMazeSync(
+			getCurrentGameState(),
+			updateGameState,
+		);
 		updateGameState(finalState);
 	} catch (error) {
 		console.error("Auto-solve failed:", error);
@@ -72,7 +74,6 @@ const onAutoSolve = async () => {
 		isAutoSolving = false;
 	}
 };
-
 
 const resetGame = () => {
 	playerPosition = { x: 0, y: 0 };
@@ -119,19 +120,21 @@ onMount(() => {
 </script>
 
 <main class="container mx-auto px-4 py-8">
-    <h1 class="text-4xl font-bold mb-8 text-center text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">{currentMaze?.mazeName}</h1>
     {#if currentMaze}
-	<GameButtons
-		{resetGame}
-		{onSolveMaze}
-		{onBackToMain}
-		{onAutoSolve}
-	/>
         <MazeGrid
             maze={currentMaze}
             {playerPosition}
             {solutionPath} 
         />
+		<div class="fixed right-10 top-1/4 transform -translate-y-1/2 z-10">
+			<GameButtons
+				{resetGame}
+				{onSolveMaze}
+				{onBackToMain}
+				{onAutoSolve}
+				vertical={true}
+			/>
+		</div>
     {:else} 
 	<!-- @todo: Loading in solara -->
         <div class="text-center">

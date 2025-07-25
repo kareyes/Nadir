@@ -1,6 +1,6 @@
 
 <script lang="ts">
-import { getGridThemeColors } from "$lib/helper/util";
+import { getThemeColors } from "$lib/helper/util";
 import type { Coordinates, Maze } from "@nadir/global-types";
 import MazeCell from "./MazeCell.svelte";
 
@@ -31,9 +31,9 @@ const getMazeCellProps = (row: number, col: number) => ({
 		solutionPath.some((pos) => pos.x === row && pos.y === col),
 });
 
-const themeColors = getGridThemeColors(maze.level);
+const themeColors = getThemeColors(maze.level);
 </script>
-
+<h1 class="text-4xl font-bold mb-8 text-center {themeColors.text} {themeColors.dropShadow}">{maze.mazeName}</h1>
 <div class="aspect-1 w-full max-w-2xl mx-auto p-4 bg-gray-900/80 rounded-lg {themeColors.borderOpacity} {themeColors.shadow}" class:border={true}>
     <div
         class="p-[1px] bg-gray-900 grid gap-0 relative border-2 {themeColors.border} {themeColors.innerShadow}"
