@@ -68,6 +68,8 @@ export type TileMap = {
 export type PlayerStats = {
 	moves: number;
 	timeTaken: string; // in seconds
+	rating: number; // 1-5 stars based on performance
+	ratingText: string; // description of the rating
 };
 
 export type BuildMazeConditions = {

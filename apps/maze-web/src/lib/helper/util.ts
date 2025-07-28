@@ -111,3 +111,42 @@ export const levelToTheme = (
 			};
 	}
 };
+
+export const calculatePlayerRating = (
+	moves: number,
+	timeTaken: number,
+	solutionPath?: { x: number; y: number }[],
+	mazeSize = 100,
+): { rating: number; ratingText: string } => {
+	const optimalMoves = solutionPath
+		? solutionPath.length - 1
+		: Math.sqrt(mazeSize) * 2;
+	const optimalTime = solutionPath
+		? (solutionPath.length - 1) * 0.8
+		: Math.sqrt(mazeSize) * 1.5;
+	const moveEfficiency = moves / optimalMoves;
+	const timeEfficiency = timeTaken / optimalTime;
+	const combinedEfficiency = (moveEfficiency + timeEfficiency) / 2;
+
+	let rating: number;
+	let ratingText: string;
+
+	if (combinedEfficiency <= 1.2) {
+		rating = 5;
+		ratingText = "🏆 Master Navigator!";
+	} else if (combinedEfficiency <= 1.5) {
+		rating = 4;
+		ratingText = "⭐ Excellent Performance!";
+	} else if (combinedEfficiency <= 2.0) {
+		rating = 3;
+		ratingText = "👍 Good Job!";
+	} else if (combinedEfficiency <= 3.0) {
+		rating = 2;
+		ratingText = "📈 Room for Improvement";
+	} else {
+		rating = 1;
+		ratingText = "🎯 Keep Practicing!";
+	}
+
+	return { rating, ratingText };
+};

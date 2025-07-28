@@ -4,8 +4,13 @@ import GameButtons from "$lib/components/GameButtons.svelte";
 import GameMessage from "$lib/components/GameMessage.svelte";
 import MazeGrid from "$lib/components/MazeGrid.svelte";
 import { solveMaze } from "$lib/gameplay/actionRule.js";
-import { autoSolveMazeSync } from "$lib/gameplay/autoPlayer.js";
+import {
+	autoSolveMazeSync,
+	getSolutionPath,
+} from "$lib/gameplay/autoPlayer.js";
 import { handleKeydownSync } from "$lib/gameplay/listener.js";
+import { calculatePlayerRating } from "$lib/helper/util.js";
+
 import type {
 	Coordinates,
 	GameStats,
@@ -13,6 +18,7 @@ import type {
 	MazeGameState,
 	PlayerStats,
 } from "@nadir/global-types";
+import { Icons, Loading } from "@nadir/solara";
 import { onMount } from "svelte";
 
 let { data } = $props();
@@ -20,7 +26,12 @@ let currentMaze = $state<Maze | null>(null);
 let playerPosition = $state<Coordinates>({ x: 0, y: 0 });
 let solutionPath = $state<Coordinates[] | null>(null);
 let isGameOver = $state(false);
-let playerStats = $state<PlayerStats>({ moves: 0, timeTaken: "" });
+let playerStats = $state<PlayerStats>({
+	moves: 0,
+	timeTaken: "",
+	rating: 0,
+	ratingText: "",
+});
 let gameStats = $state<GameStats>({
 	moves: 0,
 	startTime: Date.now(),
@@ -29,12 +40,28 @@ let gameStats = $state<GameStats>({
 });
 let isAutoSolving = $state(false);
 
-const updatePlayerStats = ({ timeTaken, moves }: GameStats) => {
+const updatePlayerStats = (
+	{ timeTaken, moves }: GameStats,
+	solutionPath: Coordinates[],
+) => {
 	const minutes = Math.floor(timeTaken / 60);
 	const seconds = timeTaken % 60;
+
+	const mazeSize = currentMaze
+		? currentMaze.numCols * currentMaze.numRows
+		: 100;
+	const { rating, ratingText } = calculatePlayerRating(
+		moves,
+		timeTaken,
+		solutionPath,
+		mazeSize,
+	);
+
 	playerStats = {
 		moves,
 		timeTaken: minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`,
+		rating,
+		ratingText,
 	};
 };
 
@@ -43,7 +70,8 @@ const updateGameState = (newState: MazeGameState) => {
 	isGameOver = newState.isGameOver || isGameOver;
 	gameStats = newState.gameStats || gameStats;
 
-	if (newState.isGameOver) updatePlayerStats(newState.gameStats);
+	const solvePath = getSolutionPath(newState);
+	if (newState.isGameOver) updatePlayerStats(newState.gameStats, solvePath);
 };
 
 const getCurrentGameState = () => ({
@@ -80,7 +108,12 @@ const resetGame = () => {
 	solutionPath = null;
 	isGameOver = false;
 	isAutoSolving = false;
-	playerStats = { moves: 0, timeTaken: "" };
+	playerStats = {
+		moves: 0,
+		timeTaken: "",
+		rating: 0,
+		ratingText: "",
+	};
 	gameStats = {
 		moves: 0,
 		startTime: Date.now(),
@@ -136,10 +169,16 @@ onMount(() => {
 			/>
 		</div>
     {:else} 
-	<!-- @todo: Loading in solara -->
-        <div class="text-center">
-            <p class="text-xl text-gray-600">Loading maze...</p>
-        </div>
+		<div class="flex justify-center items-center h-screen">
+		      <Loading.Root 
+				color="neon" 
+				alignment="vertical"
+				text="Loading Maze..."
+				size="xl"
+			>
+				<Icons.Loader class="size-full" />
+			</Loading.Root>
+		</div>
     {/if}
 </main>
 
