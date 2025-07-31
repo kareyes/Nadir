@@ -7,10 +7,9 @@ import {
 } from "@effect/platform";
 import { Effect, type Schema, flow, pipe } from "effect";
 
-// For static environment variables (known at build time), use:
-// import { PUBLIC_API_URL } from '$env/static/public';
 
-const APIURL = env.PUBLIC_API_URL || "http://localhost:8080"; // Fallback URL if env variable is not set
+
+const APIURL = env.PUBLIC_API_URL || "http://localhost:8080"; 
 export const createHttpClient = Effect.map(HttpClient.HttpClient, (client) =>
 	client.pipe(
 		HttpClient.mapRequest(

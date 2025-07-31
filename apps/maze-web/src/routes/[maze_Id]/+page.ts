@@ -4,7 +4,6 @@ import { Effect } from "effect";
 export const load = ({ params }) => {
 	const { maze_Id } = params;
 	return {
-		post: maze_Id,
 		maze: _getCurrentMaze(maze_Id),
 	};
 };

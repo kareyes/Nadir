@@ -23,3 +23,7 @@ tasks:
       - 'maze-api:start'
     env:
       NODE_ENV: "production"
+  
+  test:
+    command: "vitest run --project=server"
+    local: true

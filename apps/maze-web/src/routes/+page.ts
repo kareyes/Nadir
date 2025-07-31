@@ -3,12 +3,7 @@ import { Effect } from "effect";
 
 export const load = ({ params }) => {
 	return {
-		post: {
-			title: `Title for ${params} goes here`,
-			// content: `Content for ${params.slug} goes here`
-		},
 		maze: _loadMaze,
-		players: _loadPlayers,
 	};
 };
 
