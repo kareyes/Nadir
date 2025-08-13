@@ -8,8 +8,10 @@ import * as Toggle from "./components/ui/toggle/index.js";
 import * as ToggleGroup from "./components/ui/toggle-group/index.js";
 import * as Loading from "./components/ui/loading/index.js";
 import * as Rating from "./components/ui/rating/index.js";
+import { Input } from "./components/ui/input/index.js";
+import * as Card from "./components/ui/card/index.js";
 
 import * as Icons from "@lucide/svelte"
 
 
-export { Button ,DropdownMenu, AlertDialog, Dialog, Select , Toggle, ToggleGroup, Loading, Rating , Icons };
+export { Button ,DropdownMenu, AlertDialog, Dialog, Select , Toggle, ToggleGroup, Loading, Rating , Input, Card, Icons };

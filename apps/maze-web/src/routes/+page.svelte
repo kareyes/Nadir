@@ -20,9 +20,38 @@ onMount(async () => {
 const handlePlay = () => {
 	goto(`/` + selectedLevel);
 };
+
+const handleLogin = () => {
+	goto("/login");
+};
+
+const handleRegister = () => {
+	goto("/register");
+};
 </script>
 
 <main class="container mx-auto px-4 py-16 flex flex-col items-center">
+    <!-- Header with login/register buttons -->
+    <div class="fixed top-4 right-4 z-10 flex gap-2">
+        <Button 
+            variant="outline" 
+            size="sm" 
+            onclick={handleLogin}
+            class="border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-white"
+        >
+            <Icons.LogInIcon class="w-4 h-4 mr-2" />
+            Login
+        </Button>
+        <Button 
+            variant="solid-neon" 
+            size="sm" 
+            onclick={handleRegister}
+        >
+            <Icons.UserPlusIcon class="w-4 h-4 mr-2" />
+            Register
+        </Button>
+    </div>
+
     <img src="/logo.png" alt="Neon Quest Logo" class="mb-8 w-[400px] h-auto drop-shadow-[0_0_16px_#00e0ff]" />
     <p class="mb-8 text-lg text-center">Choose your maze level and start playing!</p>
 
