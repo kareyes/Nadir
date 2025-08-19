@@ -44,6 +44,7 @@
 		"@effect/platform": "^0.80.7",
 		"clsx": "^2.1.1",
 		"effect": "^3.12.6",
+		"firebase": "^12.1.0",
 		"tailwind-merge": "^3.3.1"
 	}
 }

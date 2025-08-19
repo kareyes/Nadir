@@ -88,7 +88,7 @@ describe("+page.svelte", () => {
 		render(Page, { data: mockData });
 
 		// Wait for mazes to load
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		const forestMaze = page.getByText("Forest Maze");
 		await expect.element(forestMaze).toBeInTheDocument();
@@ -105,7 +105,7 @@ describe("+page.svelte", () => {
 		render(Page, { data: mockData });
 
 		// Wait for mazes to load
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		const startButton = page.getByText("Start Game");
 		await expect.element(startButton).toBeInTheDocument();
@@ -120,7 +120,7 @@ describe("+page.svelte", () => {
 		render(Page, { data: mockData });
 
 		// Wait for processing
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		const loadingText = page.getByText("Loading Maze...");
 		await expect.element(loadingText).toBeInTheDocument();
@@ -142,15 +142,17 @@ describe("+page.svelte", () => {
 		render(Page, { data: mockData });
 
 		// Wait for processing
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		const soloMaze = page.getByText("Solo Maze");
 		await expect.element(soloMaze).toBeInTheDocument();
 	});
 
 	it("should handle maze loading errors", async () => {
-		const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
-		
+		const consoleError = vi
+			.spyOn(console, "error")
+			.mockImplementation(() => {});
+
 		const mockData = {
 			maze: vi.fn().mockRejectedValue(new Error("Failed to load mazes")),
 		};
@@ -158,7 +160,7 @@ describe("+page.svelte", () => {
 		render(Page, { data: mockData });
 
 		// Wait for error handling
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		expect(consoleError).toHaveBeenCalledWith(
 			"Error loading maze list:",

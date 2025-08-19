@@ -1,6 +1,7 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
-import { Button, Input, Icons, Card } from "@nadir/solara";
+import { authService } from "$lib/auther/auth";
+import { Button, Card, Icons, Input } from "@nadir/solara";
 
 let email = $state("");
 let password = $state("");
@@ -19,15 +20,15 @@ const handleSubmit = async (e: Event) => {
 	errorMessage = "";
 
 	try {
-		// TODO: Implement actual authentication logic here
-		// For now, we'll simulate a login process
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+		const result = await authService.signIn(email, password);
 
-		// Mock successful login
-		console.log("Login attempt:", { email, password });
-
-		// Redirect to home page after successful login
-		goto("/");
+		if (result.success) {
+			console.log("Login successful:", result.user);
+			// Redirect to home page after successful login
+			goto("/");
+		} else {
+			errorMessage = result.error || "Login failed. Please try again.";
+		}
 	} catch (error) {
 		errorMessage = "Login failed. Please try again.";
 		console.error("Login error:", error);

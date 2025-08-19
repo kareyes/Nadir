@@ -1,6 +1,8 @@
 <script lang="ts">
 import { goto } from "$app/navigation";
-import { Button, Input, Icons, Card } from "@nadir/solara";
+import { authService } from "$lib/auther/auth";
+import { userProfileService } from "$lib/auther/userProfile";
+import { Button, Card, Icons, Input } from "@nadir/solara";
 
 let email = $state("");
 let password = $state("");
@@ -11,7 +13,7 @@ let errorMessage = $state("");
 
 const handleSubmit = async (e: Event) => {
 	e.preventDefault();
-	
+
 	if (!email || !password || !confirmPassword || !username) {
 		errorMessage = "Please fill in all fields";
 		return;
@@ -31,15 +33,25 @@ const handleSubmit = async (e: Event) => {
 	errorMessage = "";
 
 	try {
-		// TODO: Implement actual registration logic here
-		// For now, we'll simulate a registration process
-		await new Promise(resolve => setTimeout(resolve, 1000));
-		
-		// Mock successful registration
-		console.log("Registration attempt:", { email, username, password });
-		
-		// Redirect to login page after successful registration
-		goto("/login");
+		const result = await authService.signUp(email, password);
+
+		if (result.success && result.user) {
+			// Create user profile in Firestore
+			const profileResult = await userProfileService.createUserProfile(
+				result.user,
+				username,
+			);
+
+			if (profileResult.success) {
+				console.log("Registration successful:", result.user);
+				// Redirect to home page after successful registration
+				goto("/");
+			} else {
+				errorMessage = profileResult.error || "Failed to create user profile";
+			}
+		} else {
+			errorMessage = result.error || "Registration failed. Please try again.";
+		}
 	} catch (error) {
 		errorMessage = "Registration failed. Please try again.";
 		console.error("Registration error:", error);

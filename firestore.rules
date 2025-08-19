@@ -1,0 +1,26 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can only read and write their own user profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to read and write game data (you can customize this)
+    match /games/{gameId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Allow authenticated users to read and write maze data (you can customize this)
+    match /mazes/{mazeId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Public read access to shared game content (optional)
+    match /public/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

@@ -5,36 +5,36 @@ import { validateBounds, validateMaze } from "./validation.js";
 
 describe("Maze Validation", () => {
 	const mockMaze: Maze = {
-        maze_id: "test-maze",
-        mazeName: "Test Maze",
-        level: 1,
-        numRows: 5,
-        numCols: 5,
-        grid: [
-            {
-                horizontal: [false, false, false, false, false],
-                vertical: [false, false, false, false, false],
-            },
-            {
-                horizontal: [false, false, false, false, false],
-                vertical: [false, false, false, false, false],
-            },
-            {
-                horizontal: [false, false, false, false, false],
-                vertical: [false, false, false, false, false],
-            },
-            {
-                horizontal: [false, false, false, false, false],
-                vertical: [false, false, false, false, false],
-            },
-            {
-                horizontal: [false, false, false, false, false],
-                vertical: [false, false, false, false, false],
-            },
-        ],
-        description: "",
-        created_at: ""
-    };
+		maze_id: "test-maze",
+		mazeName: "Test Maze",
+		level: 1,
+		numRows: 5,
+		numCols: 5,
+		grid: [
+			{
+				horizontal: [false, false, false, false, false],
+				vertical: [false, false, false, false, false],
+			},
+			{
+				horizontal: [false, false, false, false, false],
+				vertical: [false, false, false, false, false],
+			},
+			{
+				horizontal: [false, false, false, false, false],
+				vertical: [false, false, false, false, false],
+			},
+			{
+				horizontal: [false, false, false, false, false],
+				vertical: [false, false, false, false, false],
+			},
+			{
+				horizontal: [false, false, false, false, false],
+				vertical: [false, false, false, false, false],
+			},
+		],
+		description: "",
+		created_at: "",
+	};
 
 	describe("validateMaze", () => {
 		it("should succeed with valid maze", async () => {

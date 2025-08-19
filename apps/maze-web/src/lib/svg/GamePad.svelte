@@ -1,0 +1,16 @@
+<script lang="ts">
+let { size = 1, class: className } = $props();
+</script>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" class={className} x="0px" y="0px" viewBox="14.768998146057129 14.931000709533691 34.4630012512207 34.137908935546875" enable-background="new 0 0 64 64">
+<g>
+	
+		<path fill="#FFFFFF00" stroke="#FFFFFFFF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="   M48.732,27.437V42.39c0,3.1-2.272,5.864-5.359,6.152c-3.54,0.33-6.505-2.436-6.505-5.894v-2.281c0-0.577-0.467-1.044-1.044-1.044   h-7.647c-0.577,0-1.044,0.467-1.044,1.044v2.281c0,3.459-2.965,6.225-6.505,5.894c-3.087-0.288-5.359-3.052-5.359-6.152V27.437   c0-6.627,5.378-12.006,12.016-12.006h9.431C43.354,15.431,48.732,20.809,48.732,27.437z"/>
+</g>
+<g>
+	<path fill="none" stroke="#00D3F3FF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="   M25.285,31.038v-7.324 M21.623,27.376h7.324"/>
+	
+		<circle fill="none" stroke="#00D3F3FF" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" cx="38.638" cy="27.11" r="3.806"/>
+</g>
+</svg>

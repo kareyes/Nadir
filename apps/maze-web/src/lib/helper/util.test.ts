@@ -10,7 +10,9 @@ import {
 describe("Utility Functions", () => {
 	describe("cn function", () => {
 		it("should merge class names correctly", () => {
-			expect(cn("text-red-500", "bg-blue-500")).toBe("text-red-500 bg-blue-500");
+			expect(cn("text-red-500", "bg-blue-500")).toBe(
+				"text-red-500 bg-blue-500",
+			);
 		});
 
 		it("should handle conditional classes", () => {
@@ -145,7 +147,7 @@ describe("Utility Functions", () => {
 				{ x: 3, y: 0 },
 				{ x: 4, y: 0 },
 			]);
-			
+
 			const badResult = calculatePlayerRating(50, 40, [
 				{ x: 0, y: 0 },
 				{ x: 1, y: 0 },
@@ -162,12 +164,16 @@ describe("Utility Functions", () => {
 				{ x: 1, y: 0 },
 				{ x: 2, y: 0 },
 			];
-			
+
 			// Perfect performance (moves = optimal, time = optimal)
 			const optimalMoves = solutionPath.length - 1; // 2 moves
 			const optimalTime = optimalMoves * 0.8; // 1.6 seconds
-			
-			const perfectResult = calculatePlayerRating(optimalMoves, optimalTime, solutionPath);
+
+			const perfectResult = calculatePlayerRating(
+				optimalMoves,
+				optimalTime,
+				solutionPath,
+			);
 			expect(perfectResult.rating).toBe(5);
 		});
 	});

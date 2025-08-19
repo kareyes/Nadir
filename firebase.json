@@ -1,0 +1,35 @@
+{
+  "projects": {
+    "default": "ouro-460410"
+  },
+  "targets": {
+    "ouro-460410": {
+      "hosting": {
+        "maze-web": [
+          "ouro-460410"
+        ]
+      }
+    }
+  },
+  "hosting": [
+    {
+      "target": "maze-web",
+      "public": "apps/maze-web/dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

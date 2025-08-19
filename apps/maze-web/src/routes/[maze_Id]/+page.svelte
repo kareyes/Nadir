@@ -39,6 +39,7 @@ let gameStats = $state<GameStats>({
 	timeTaken: 0,
 });
 let isAutoSolving = $state(false);
+let isMobile = $state(window.matchMedia("(max-width: 768px)").matches);
 
 const updatePlayerStats = (
 	{ timeTaken, moves }: GameStats,
@@ -152,25 +153,32 @@ onMount(() => {
 });
 </script>
 
-<main class="container mx-auto px-4 py-8">
-    {#if currentMaze}
-        <MazeGrid
-            maze={currentMaze}
-            {playerPosition}
-            {solutionPath} 
-        />
-		<div class="fixed right-10 top-1/4 transform -translate-y-1/2 z-10">
-			<GameButtons
-				{resetGame}
-				{onSolveMaze}
-				{onBackToMain}
-				{onAutoSolve}
-				vertical={true}
-			/>
+<main class="min-h-screen w-full">
+	{#if currentMaze}
+		<div class="flex flex-col md:flex-row items-center justify-center min-h-screen relative p-4 md:p-0">
+			<div class="md:fixed md:left-4 md:top-1/4 md:-translate-y-1/2 z-10 mb-4 md:mb-0 w-full md:w-auto flex justify-center md:block">
+				<GameButtons
+					{resetGame}
+					{onSolveMaze}
+					{onBackToMain}
+					{onAutoSolve}
+					vertical={true}
+				/>
+			</div>
+			
+			<div class="flex-1 flex justify-center items-center md:px-16 w-full max-h-fit">
+				<div class="w-full max-w-full max-h-[calc(100vh-8rem)] md:max-h-[100vh] overflow-auto">
+					<MazeGrid
+						maze={currentMaze}
+						{playerPosition}
+						{solutionPath} 
+					/>
+				</div>
+			</div>
 		</div>
-    {:else} 
-		<div class="flex justify-center items-center h-screen">
-		      <Loading.Root 
+	{:else} 
+		<div class="flex justify-center items-center h-screen px-4">
+			<Loading.Root 
 				color="neon" 
 				alignment="vertical"
 				text="Loading Maze..."
@@ -179,11 +187,11 @@ onMount(() => {
 				<Icons.Loader class="size-full" />
 			</Loading.Root>
 		</div>
-    {/if}
+	{/if}
 </main>
 
-    <GameMessage
-        {playerStats}
-        {isGameOver}
-		{resetGame}
-    />
+<GameMessage
+    {playerStats}
+    {isGameOver}
+    {resetGame}
+/>

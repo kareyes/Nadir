@@ -7,9 +7,7 @@ import {
 } from "@effect/platform";
 import { Effect, type Schema, flow, pipe } from "effect";
 
-
-
-const APIURL = env.PUBLIC_API_URL || "http://localhost:8080"; 
+const APIURL = env.PUBLIC_API_URL || "http://localhost:8080";
 export const createHttpClient = Effect.map(HttpClient.HttpClient, (client) =>
 	client.pipe(
 		HttpClient.mapRequest(
